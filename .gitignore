@@ -1,0 +1,13 @@
+# Saida de compilacao
+out/
+build/
+target/
+*.class
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Sistema operacional
+Thumbs.db
+.DS_Store

@@ -9,7 +9,7 @@ public class JogoController {
     private MenuInicial menuInicial = new MenuInicial();
 
     public void iniciarPartida() {
-        //Chamando o MenuInicial e retornando o numero digitado
+        //Chamando o menuInicial e retornando o numero digitado
         int escolha = menuInicial.exibir();
 
 
