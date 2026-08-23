@@ -14,16 +14,10 @@ public class MenuInicial {
 
         // Captura a opção e manda para o controller
         return teclado.nextInt();}
-    public void iniciarJogo () {
-        System.out.println("o jogo está sendo iniciado");
+    // Na sua View (MenuInicial):
+    public void exibirMensagem(String texto) {
+        System.out.println(texto);
     }
-    public void terminarJogo () {
-        System.out.println("Encerrando jogo");
-    }
-    public void erro () {
-        System.out.println("Opção inválida! Tente novamente.");
-    }
-
 
     }
 

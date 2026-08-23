@@ -14,17 +14,18 @@ public class JogoController {
 
 
         //Case para escolha
+
         switch (escolha) {
             case 1:
-                menuInicial.iniciarJogo();
+                menuInicial.exibirMensagem("O jogo está sendo iniciado...");
                 break;
             case 2:
-                menuInicial.terminarJogo();
+                menuInicial.exibirMensagem("Encerrando jogo.");
+                System.exit(0);
                 break;
             default:
-                menuInicial.erro();
+                menuInicial.exibirMensagem("Opção inválida! Tente novamente.");
                 break;
-
         }
     }
 }
