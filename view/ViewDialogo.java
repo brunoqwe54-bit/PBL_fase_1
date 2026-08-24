@@ -2,9 +2,9 @@ package view;
 
 import model.Dialogo;
 
-publicS class ViewDialogo {
+public class ViewDialogo {
     public void mostrar(Dialogo dialogo) {
 
-        System.out.println(Dialogo.getPersonagem.getNome + ":" + Dialogo.getTexto);
+        System.out.println(dialogo.getPersonagem().getNome() + ":" + dialogo.getTexto());
     }
 }
