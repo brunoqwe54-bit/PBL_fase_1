@@ -6,7 +6,7 @@ public class Dialogo {
     private Personagem personagem;
     private String texto;
 
-    public void dialogo(Personagem personagem, String texto) {
+    public void Dialogo(Personagem personagem, String texto) {
         this.personagem = personagem;
         this.texto = texto;
     }

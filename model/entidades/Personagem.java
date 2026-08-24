@@ -6,7 +6,7 @@ public abstract class Personagem {
     public Personagem(String nome) {
         this.nome = nome;
     }
-    protected int atrituto_1;
+    protected int atributo_1;
     protected int atributo_2;
     protected int atributo_3;
 
