@@ -1,4 +1,4 @@
-package model;
+package model.entidades;
 
 public abstract class Personagem {
     public String nome;

@@ -1,4 +1,7 @@
 package model;
+
+import model.entidades.Personagem;
+
 public class Dialogo {
     private Personagem personagem;
     private String texto;
