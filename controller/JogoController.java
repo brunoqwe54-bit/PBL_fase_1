@@ -4,12 +4,13 @@ import view.MenuInicial;
 import view.ViewDialogo;
 import model.Dialogo;
 import model.entidades.Protagonista;
-
+import java.util.Scanner;
 
 public class JogoController {
     //Dando acesso ao view
     private MenuInicial menuInicial = new MenuInicial();
     private ViewDialogo viewDialogo = new ViewDialogo();
+    private Scanner scanner = new Scanner(System.in);
 
     public void iniciarPartida() {
         //Chamando o menuInicial e retornando o numero digitado
@@ -34,7 +35,9 @@ public class JogoController {
 
     }
     public void iniciarJogo() {
-        Protagonista protagonista = new Protagonista("Andre");
+        System.out.println("Digite o seu nome:");
+        String nome = scanner.nextLine();
+        Protagonista protagonista = new Protagonista(nome);
         Dialogo fala1 = new Dialogo(protagonista, "Blablablabla");
 
         viewDialogo.mostrar(fala1);
