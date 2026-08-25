@@ -41,4 +41,29 @@ public class JogoController {
 
         viewDialogo.mostrar(fala1);
     }
+
+
+    //teste menu de escolhas
+
+    public void cenaPraca(){
+
+        Protagonista heroi = new Protagonista("Agnaldo");
+        Dialogo d1 = new Dialogo(heroi,"vish, tem um cara estranho na praça");
+
+        String[] opcoesPraca = {
+            "Falar com estranho","Evitar estranho",
+
+         };
+
+        int decisao = viewDialogo.exibirMenuNarrativo(d1,opcoesPraca);
+
+        if(decisao == 1){
+            menuInicial.exibirMensagem("Resultado: o estranho está possuido e ataca você");
+        }
+        if(decisao == 2){
+            menuInicial.exibirMensagem("Resultado: o estranho não interage e você sai ileso");
+        }
+
+
+}
 }
