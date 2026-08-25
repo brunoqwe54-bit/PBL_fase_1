@@ -35,8 +35,7 @@ public class JogoController {
 
     }
     public void iniciarJogo() {
-        System.out.println("Digite o seu nome:");
-        String nome = scanner.nextLine();
+        String nome = menuInicial.pedirNome();
         Protagonista protagonista = new Protagonista(nome);
         Dialogo fala1 = new Dialogo(protagonista, "Blablablabla");
 

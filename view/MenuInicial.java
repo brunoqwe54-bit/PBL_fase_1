@@ -18,7 +18,10 @@ public class MenuInicial {
     public void exibirMensagem(String texto) {
         System.out.println(texto);
     }
-
+    public String pedirNome(){
+        System.out.println("Digite o seu nome: ");
+                return teclado.nextLine();
+    }
     }
 
 
