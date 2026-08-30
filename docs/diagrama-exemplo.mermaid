@@ -1,0 +1,196 @@
+classDiagram
+    direction TB
+
+    %% ===================== MODEL =====================
+
+    class Personagem {
+        <<abstract>>
+        #String nome
+        +getNome() String
+    }
+
+    class Protagonista {
+        -int folego
+        -int nervo
+        -int lucidez
+        -int voltasRestantes
+        +getAtributo(TipoAtributo) int
+        +alterarAtributo(TipoAtributo, int) void
+        +consumirVolta() boolean
+        +getVoltasRestantes() int
+    }
+
+    class Npc {
+        -int confianca
+        +getConfianca() int
+        +alterarConfianca(int) void
+    }
+
+    class Inventario {
+        -List~Item~ itens
+        +adicionar(Item) void
+        +possui(String) boolean
+        +remover(String) boolean
+    }
+
+    class Item {
+        -String nome
+        -String descricao
+        +getNome() String
+    }
+
+    class Historia {
+        -List~Capitulo~ capitulos
+        +getCapitulo(int) Capitulo
+        +totalCapitulos() int
+    }
+
+    class Capitulo {
+        -int id
+        -String titulo
+        -List~Dialogo~ falas
+        -List~Escolha~ escolhas
+        +getFalas() List~Dialogo~
+        +escolhasDisponiveis(Partida) List~Escolha~
+    }
+
+    class Dialogo {
+        -Personagem personagem
+        -String texto
+        +getPersonagem() Personagem
+        +getTexto() String
+    }
+
+    class Escolha {
+        -String texto
+        -int idCapituloDestino
+        +getTexto() String
+        +estaDisponivel(Partida) boolean
+        +aplicar(Partida) void
+    }
+
+    class Condicao {
+        -TipoAtributo atributo
+        -int valorMinimo
+        -String itemNecessario
+        -String npcAlvo
+        -int confiancaMinima
+        +avaliar(Partida) boolean
+    }
+
+    class Consequencia {
+        -TipoAtributo atributo
+        -int delta
+        -String npcAlvo
+        -int deltaConfianca
+        -Item itemGanho
+        -boolean fatal
+        +aplicar(Partida) void
+    }
+
+    class Partida {
+        -int capituloAtual
+        -List~Integer~ historicoEscolhas
+        -boolean encerrada
+        +getProtagonista() Protagonista
+        +getNpc(String) Npc
+        +avancarPara(int) void
+        +registrarEscolha(int) void
+        +sofrerMorte() boolean
+        +encerrar(TipoFim) void
+    }
+
+    class TipoAtributo {
+        <<enumeration>>
+        FOLEGO
+        NERVO
+        LUCIDEZ
+    }
+
+    class TipoFim {
+        <<enumeration>>
+        CHEGA_A_TEMPO
+        CHEGA_TARDE
+        DESISTE_E_SOBREVIVE
+        GAME_OVER
+    }
+
+    %% ===================== VIEW =====================
+
+    class MenuInicial {
+        <<view>>
+        +exibir() int
+        +exibirMensagem(String) void
+    }
+
+    class ViewCapitulo {
+        <<view>>
+        +mostrarCapitulo(Capitulo) void
+        +mostrarEscolhas(List~Escolha~) void
+        +lerOpcao(int) int
+    }
+
+    class ViewDialogo {
+        <<view>>
+        +mostrar(Dialogo) void
+    }
+
+    class ViewStatus {
+        <<view>>
+        +mostrarAtributos(Protagonista) void
+        +mostrarVoltas(int) void
+    }
+
+    %% ===================== CONTROLLER =====================
+
+    class JogoController {
+        <<controller>>
+        -Partida partida
+        -Historia historia
+        +iniciar() void
+        +novaPartida() void
+        +executarCapitulo(int) void
+        +processarEscolha(Escolha) void
+        +encerrar(TipoFim) void
+    }
+
+    class Main {
+        <<controller>>
+        +main(String[]) void
+    }
+
+    %% ===================== RELACOES =====================
+
+    Personagem <|-- Protagonista
+    Personagem <|-- Npc
+
+    Protagonista "1" *-- "1" Inventario
+    Inventario "1" o-- "0..*" Item
+
+    Historia "1" *-- "10..*" Capitulo
+    Capitulo "1" *-- "0..*" Dialogo
+    Capitulo "1" *-- "1..*" Escolha
+
+    Escolha "1" --> "0..1" Condicao
+    Escolha "1" --> "1" Consequencia
+    Consequencia "0..1" --> "1" Item : concede
+
+    Dialogo "0..*" --> "1" Personagem : quem fala
+
+    Partida "1" --> "1" Protagonista
+    Partida "1" --> "3..*" Npc
+    Partida "1" --> "1" Historia
+    Partida "1" --> "0..1" TipoFim
+
+    Protagonista ..> TipoAtributo
+    Condicao ..> TipoAtributo
+    Consequencia ..> TipoAtributo
+
+    JogoController "1" --> "1" Partida
+    JogoController "1" --> "1" Historia
+    JogoController "1" --> "1" MenuInicial
+    JogoController "1" --> "1" ViewCapitulo
+    JogoController "1" --> "1" ViewDialogo
+    JogoController "1" --> "1" ViewStatus
+
+    Main "1" --> "1" JogoController
