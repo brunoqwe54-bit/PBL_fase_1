@@ -8,7 +8,7 @@ import model.entidades.Dialogo;
 
 public class Historia {
     private PersonagemBase otavio = new PersonagemBase("Otávio");
-    private Protagonista vicente = new PersonagemBase("Vicente");
+    private Protagonista vicente = new Protagonista("Vicente");
     private PersonagemBase mae = new PersonagemBase("Mãe");
 
     public Cena montarHistoria(){

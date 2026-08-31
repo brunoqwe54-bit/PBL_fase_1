@@ -1,16 +1,20 @@
 package controller;
 
+import model.entidades.Cena;
+import model.factory.Historia;
+import view.ExibirJogo;
 import view.MenuInicial;
-import view.ViewDialogo;
-import model.entidades.Dialogo;
-import model.entidades.Protagonista;
-import java.util.Scanner;
+
+
+
+
 
 public class JogoController {
     //Dando acesso ao view
     private MenuInicial menuInicial = new MenuInicial();
-    private ViewDialogo viewDialogo = new ViewDialogo();
-    private Scanner scanner = new Scanner(System.in);
+    private ExibirJogo exibirJogo = new ExibirJogo();
+    private Historia historia = new Historia();
+
 
     public void iniciarPartida() {
         //Chamando o menuInicial e retornando o numero digitado
@@ -34,11 +38,37 @@ public class JogoController {
         }
 
     }
-    public void iniciarJogo() {
-        String nome = menuInicial.pedirNome();
-        Protagonista protagonista = new Protagonista(nome);
+    private void iniciarJogo(){
+        //cria a cena 1
+        Cena cenaAtual = historia.montarHistoria();
+
+        //loop para rodar o jogo
+        while(cenaAtual != null){
+            //chama view para exibir os textos, dialogos e opções
+            exibirJogo.exibirCena(cenaAtual);
+
+            //verifica se é o final do jogo (uma cena sem escolhas)
+            if (cenaAtual.getOpcoes().isEmpty()) {
+                System.out.println("--- FIM DE JOGO ---");
+                break; // Sai do loop e encerra
+            }
+            //numero digitado pelo jogador
+            int escolhaJogador = exibirJogo.pedirEscolhaJogador();
+
+
+            try {
+                // A lista (ArrayList) começa em 0, por isso fazemos escolhaJogador - 1
+                cenaAtual = cenaAtual.getOpcoes().get(escolhaJogador - 1).getCenaDestino();
+            } catch (IndexOutOfBoundsException e) {
+                //caso o jogador digite um número que não está na lista (
+                System.out.println("\n[ERRO] Opção inválida. Digite o número correspondente à escolha.");
+
+            }
+        }
+
 
     }
+
 
 
 }

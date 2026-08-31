@@ -9,10 +9,10 @@ public class Recurso {
         this.descricao = descricao;
 
     }
-    public getNome(){
+    public String getNome(){
         return this.nome;
     }
     public String getDescricao() {
-        return descricao;
+        return this.descricao;
     }
 }
