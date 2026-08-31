@@ -1,6 +1,6 @@
 package view;
 
-import model.Dialogo;
+import model.entidades.Dialogo;
 
 import java.util.Scanner;
 

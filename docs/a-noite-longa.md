@@ -72,7 +72,7 @@ que salvar alguém custa tempo, e tempo é a única coisa que não volta.
 
 ### 4.1 Atributos do protagonista (requisito: mínimo 3, variáveis)
 
-Todos vão de **0 a 10**. Começam distribuídos pelo jogador na criação do personagem.
+Todos vão de **0 a 10**. Começam distribuídos pelo jogador na criação do personagemBase.
 
 | ID | Atributo | O que representa | Sobe quando | Desce quando |
 |---|---|---|---|---|
@@ -1087,7 +1087,7 @@ DAVI: Ai eu vim atras do senhor porque o senhor foi o unico que
 
 **`ESC0508` — "Atravessar o riacho pela água, fora da ponte, pra ganhar tempo."**
 - Condição: `FOLEGO >= 5`
-- Consequência: se `ITEM(RADIO)` **ou** `LUCIDEZ >= 7`, o personagem desiste no meio e
+- Consequência: se `ITEM(RADIO)` **ou** `LUCIDEZ >= 7`, o personagemBase desiste no meio e
   volta (`FOLEGO -2`); caso contrário `MORTE(MORTE_AGUA)`
 
 ### Texto de morte `MORTE_AGUA`
@@ -1312,7 +1312,7 @@ e escolheu nao estar ali.
 
 ### Ecos
 - `FLAG_AVISOU_ANTONIO` (CAP04) determina se Antônio está no ar.
-- `ITEM(LANTERNA)` (criação do personagem) determina o acesso a `ESC0602` e `ESC0604`.
+- `ITEM(LANTERNA)` (criação do personagemBase) determina o acesso a `ESC0602` e `ESC0604`.
 - `FLAG_VIU_AS_JANELAS` habilita `ESC0606` e altera a fala final de `CAP10`.
 - `CONFIANCA(ZULMIRA)` acumulada desde `CAP03` decide se ela está no muro.
 
