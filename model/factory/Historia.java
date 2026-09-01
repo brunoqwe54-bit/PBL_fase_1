@@ -1,15 +1,14 @@
 package model.factory;
 
-import model.entidades.Cena;
-import model.entidades.Escolha;
-import model.entidades.PersonagemBase;
-import model.entidades.Protagonista;
-import model.entidades.Dialogo;
+import model.entidades.*;
+import model.enums.Personagens;
+
+import static model.enums.Personagens.*;
 
 public class Historia {
-    private PersonagemBase otavio = new PersonagemBase("Otávio");
-    private Protagonista vicente = new Protagonista("Vicente");
-    private PersonagemBase mae = new PersonagemBase("Mãe");
+    private Npc otavio = new Npc(OTAVIO);
+    private Protagonista vicente = new Protagonista(VICENTE);
+    private Npc mae = new Npc(MAE);
 
     public Cena montarHistoria(){
         // criação de próxima cena
@@ -51,9 +50,9 @@ public class Historia {
         cap01.getDialogos().add(fala5);
 
         // escolhas
-        Escolha opcao1 = new Escolha("ESC0101","Sair em silêncio. Não vale a pena discutir.", cap02);
-        Escolha opcao2 = new Escolha("ESC0102", "Pedir para ele deixar a porta destrancada.", cap02);
-        Escolha opcao3 = new Escolha("ESC0103", "Tentar convencer Otávio a ir junto com você.", cap02);
+        Escolha opcao1 = new Escolha("ESC0101","Sair em silêncio. Não vale a pena discutir.", cap02, -10,OTAVIO);
+        Escolha opcao2 = new Escolha("ESC0102", "Pedir para ele deixar a porta destrancada.", cap02,0,OTAVIO);
+        Escolha opcao3 = new Escolha("ESC0103", "Tentar convencer Otávio a ir junto com você.", cap02,0, OTAVIO);
 
         // guardando escohas na lista do cap01
         cap01.getOpcoes().add(opcao1);

@@ -1,5 +1,6 @@
 package model.entidades;
 
+import model.enums.Personagens;package model.entidades.Npc;
 
 
 public class Escolha {
@@ -9,11 +10,17 @@ public class Escolha {
     private String textoExibido;
     // conectar com a proxima cena
     private Cena cenaDestino;
+    // variavel para alterar atributo dos npcs
+    private int consquencia;
+    // Npc que vai sofrer a consequncia
+    private Npc npc
 
-    public Escolha(String id, String textoExibido, Cena cenaDestino) {
+    public Escolha(String id, String textoExibido, Cena cenaDestino, int consquencia, Personagens npc) {
         this.id = id;
         this.textoExibido = textoExibido;
         this.cenaDestino = cenaDestino;
+        this.consquencia += consquencia;
+        this.npc = npc;
     }
     // Getters para o Controller conseguir acessar esses dados depois
     public String getId() { return id; }
