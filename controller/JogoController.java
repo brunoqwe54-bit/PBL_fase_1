@@ -4,7 +4,7 @@ import model.entidades.Cena;
 import model.factory.Historia;
 import view.ExibirJogo;
 import view.MenuInicial;
-
+import model.entidades.*;
 
 
 
@@ -57,6 +57,9 @@ public class JogoController {
 
 
             try {
+                if (escolhaJogador.getNpc() != null && escolhaJogador.getConsequencia() != 0) {
+                    escolhaJogador.getNpc().alterarConfianca(escolhaJogador.getConsequencia());
+                }
                 // A lista (ArrayList) começa em 0, por isso fazemos escolhaJogador - 1
                 cenaAtual = cenaAtual.getOpcoes().get(escolhaJogador - 1).getCenaDestino();
             } catch (IndexOutOfBoundsException e) {
