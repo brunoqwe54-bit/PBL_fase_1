@@ -13,14 +13,18 @@ public class MenuInicial {
         System.out.println("2 - Sair do jogo");
 
         // Captura a opção e manda para o controller
-        return teclado.nextInt();}
+        int opcao = teclado.nextInt();
+        teclado.nextLine(); // consome o \n deixado pelo nextInt()
+        return opcao;}
     // Na sua View (MenuInicial):
     public void exibirMensagem(String texto) {
         System.out.println(texto);
     }
-    public String pedirNome(){
-        System.out.println("Digite o seu nome: ");
-                return teclado.nextLine();
+    public String pedirNome() {
+        System.out.println("Como você se chama?");
+        System.out.print("(ENTER para usar \"Vicente\") > ");
+        String nome = teclado.nextLine().trim();
+        return nome.isEmpty() ? "Vicente" : nome;
     }
     }
 

@@ -3,14 +3,14 @@ package model.factory;
 import model.entidades.*;
 import model.enums.Personagens;
 
-import static model.enums.Personagens.*;
-
 public class Historia {
-    private Npc otavio = new Npc(OTAVIO);
-    private Protagonista vicente = new Protagonista(VICENTE);
-    private Npc mae = new Npc(MAE);
+    private Npc otavio = new Npc(Personagens.OTAVIO.getNomeExibicao());
+    private Npc mae = new Npc(Personagens.MAE.getNomeExibicao());
+    private Protagonista vicente;
 
-    public Cena montarHistoria(){
+    public Cena montarHistoria(String nomeProtagonista) {
+        this.vicente = new Protagonista(nomeProtagonista);
+
         // criação de próxima cena
         Cena cap02 = new Cena(
                 "CAP02",
@@ -50,11 +50,11 @@ public class Historia {
         cap01.getDialogos().add(fala5);
 
         // escolhas
-        Escolha opcao1 = new Escolha("ESC0101","Sair em silêncio. Não vale a pena discutir.", cap02, -10,OTAVIO);
-        Escolha opcao2 = new Escolha("ESC0102", "Pedir para ele deixar a porta destrancada.", cap02,0,OTAVIO);
-        Escolha opcao3 = new Escolha("ESC0103", "Tentar convencer Otávio a ir junto com você.", cap02,0, OTAVIO);
+        Escolha opcao1 = new Escolha("ESC0101", "Sair em silêncio. Não vale a pena discutir.", cap02, -10, otavio);
+        Escolha opcao2 = new Escolha("ESC0102", "Pedir para ele deixar a porta destrancada.", cap02, 0, otavio);
+        Escolha opcao3 = new Escolha("ESC0103", "Tentar convencer Otávio a ir junto com você.", cap02, 0, otavio);
 
-        // guardando escohas na lista do cap01
+        // guardando escolhas na lista do cap01
         cap01.getOpcoes().add(opcao1);
         cap01.getOpcoes().add(opcao2);
         cap01.getOpcoes().add(opcao3);
