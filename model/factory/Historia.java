@@ -22,7 +22,7 @@ public class Historia {
                         "Na metade do quarteirao voce escuta a voz de mainha."
         );
 
-        Dialogo falaMae = new Dialogo(mae, "Vicente.");
+        Dialogo falaMae = new Dialogo(mae, vicente.getNome());
         cap02.getDialogos().add(falaMae);
 
         // criando cena 01
