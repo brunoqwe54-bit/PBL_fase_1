@@ -3,44 +3,106 @@ package view;
 import model.entidades.Cena;
 import model.entidades.Dialogo;
 import model.entidades.Escolha;
+import model.entidades.Partida;
+import model.enums.Atributo;
+
+import java.util.List;
 import java.util.Scanner;
 
 public class ExibirJogo {
-    private Scanner scanner = new Scanner(System.in);
 
-    public void exibirCena(Cena cena){
-        System.out.println("\n==="+ cena.getTitulo()+"===");
-        aguardarTecla();
+    // O Scanner vem de fora (do controller), o mesmo do MenuInicial.
+    private Scanner teclado;
+
+    public ExibirJogo(Scanner teclado) {
+        this.teclado = teclado;
+    }
+
+    /**
+     * Mostra a cena inteira: titulo, narracao, falas, status e as opcoes.
+     * Recebe as listas ja separadas pelo controller.
+     */
+    public void exibirCena(Cena cena, Partida partida,
+                           List<Escolha> disponiveis, List<Escolha> bloqueadas) {
+
+        System.out.println();
+        System.out.println("========================================");
+        System.out.println("  " + cena.getTitulo());
+        System.out.println("========================================");
+        System.out.println();
         System.out.println(cena.getTextoPrincipal());
-        aguardarTecla();
-        System.out.println();
 
-        //pecorre os dialogos e printa
-        for(Dialogo fala: cena.getDialogos()){
-            System.out.println("["+ fala.getPersonagem().getNome()+"]:" + fala.getTexto());
-            aguardarTecla();
-
+        if (!cena.getDialogos().isEmpty()) {
+            System.out.println();
+            for (Dialogo fala : cena.getDialogos()) {
+                System.out.println(fala.getPersonagem().getNome() + ": " + fala.getTexto());
+            }
         }
-        System.out.println();
 
-        //percorre as opções e printa
-        int index=1;
-        for(Escolha opcao : cena.getOpcoes()){
-            System.out.println(index + " - " + opcao.getTextoExibido());
-            index++;
+        exibirStatus(partida);
+
+        System.out.println();
+        int numero = 1;
+        for (Escolha opcao : disponiveis) {
+            System.out.println("  [" + numero + "] " + opcao.getTextoExibido());
+            numero++;
+        }
+
+        // Mostrar o que esta bloqueado e de proposito: o jogador precisa
+        // perceber que existia outro caminho e que ele mesmo o fechou.
+        for (Escolha opcao : bloqueadas) {
+            System.out.println("  [-] " + opcao.getTextoExibido()
+                    + "  (" + opcao.getMotivoDoBloqueio() + ")");
         }
     }
 
-    // Pausa a exibição até o jogador apertar ENTER
-    private void aguardarTecla() {
-        System.out.print("\nv\n");
-        scanner.nextLine();
+    public void exibirStatus(Partida partida) {
+        System.out.println();
+        System.out.println("  [ Fôlego "  + partida.getProtagonista().getAtributo(Atributo.FOLEGO)
+                        + " | Nervo "     + partida.getProtagonista().getAtributo(Atributo.NERVO)
+                        + " | Lucidez "   + partida.getProtagonista().getAtributo(Atributo.LUCIDEZ)
+                        + " ]  Mochila: " + partida.getInventario().listar());
     }
 
-    public int pedirEscolhaJogador(){
-        System.out.print("\nO que você faz? ");
-        int opcao = scanner.nextInt();
-        scanner.nextLine(); // limpa o \n pendente, evita bug no próximo nextLine()
-        return opcao;
+    /** Mostra o que a escolha mudou. Se nao mudou nada, nao mostra nada. */
+    public void exibirConsequencia(String aviso) {
+        if (aviso != null) {
+            System.out.println("\n  > " + aviso);
+            aguardarEnter();
+        }
+    }
+
+    /** Le a escolha e so aceita um numero valido. */
+    public int pedirEscolhaJogador(int quantidadeDeOpcoes) {
+        while (true) {
+            System.out.print("\nO que você faz? ");
+            try {
+                int opcao = teclado.nextInt();
+                teclado.nextLine();
+                if (opcao >= 1 && opcao <= quantidadeDeOpcoes) {
+                    return opcao;
+                }
+                System.out.println("Digite um número entre 1 e " + quantidadeDeOpcoes + ".");
+            } catch (java.util.InputMismatchException e) {
+                teclado.nextLine();
+                System.out.println("Isso não é um número.");
+            } catch (java.util.NoSuchElementException e) {
+                return 1; // entrada acabou
+            }
+        }
+    }
+
+    public void exibirMensagemFimDeJogo() {
+        System.out.println("\n--- FIM DE JOGO ---");
+        aguardarEnter();
+    }
+
+    private void aguardarEnter() {
+        System.out.print("\n[ENTER] ");
+        try {
+            teclado.nextLine();
+        } catch (java.util.NoSuchElementException e) {
+            // entrada acabou, segue
+        }
     }
 }

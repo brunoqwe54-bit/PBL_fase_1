@@ -1,67 +1,93 @@
 package controller;
 
 import model.entidades.Cena;
+import model.entidades.Escolha;
+import model.entidades.Partida;
 import model.factory.Historia;
 import view.ExibirJogo;
 import view.MenuInicial;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class JogoController {
-    //Dando acesso ao view
-    private MenuInicial menuInicial = new MenuInicial();
-    private ExibirJogo exibirJogo = new ExibirJogo();
+
+    // Um unico Scanner no programa inteiro, criado aqui e emprestado pras
+    // duas views. Com dois Scanners lendo System.in, um "rouba" a entrada do
+    // outro quando o texto chega rapido -- e e assim que um teste alimenta.
+    private Scanner teclado = new Scanner(System.in);
+
+    private MenuInicial menuInicial = new MenuInicial(teclado);
+    private ExibirJogo exibirJogo = new ExibirJogo(teclado);
     private Historia historia = new Historia();
 
     public void iniciarPartida() {
-        //Chamando o menuInicial e retornando o numero digitado
-        int escolha = menuInicial.exibir();
+        boolean rodando = true;
 
+        // O menu roda em laco: quando a partida acaba, volta pra ca.
+        while (rodando) {
+            int escolha = menuInicial.exibir();
 
-        //Case para escolha
-
-        switch (escolha) {
-            case 1:
-                String nomeProtagonista = menuInicial.pedirNome();
-                menuInicial.exibirMensagem("O jogo está sendo iniciado...");
-                iniciarJogo(nomeProtagonista);
-                break;
-            case 2:
-                menuInicial.exibirMensagem("Encerrando jogo.");
-                System.exit(0);
-                break;
-            default:
-                menuInicial.exibirMensagem("Opção inválida! Tente novamente.");
-                break;
+            switch (escolha) {
+                case 1:
+                    String nomeProtagonista = menuInicial.pedirNome();
+                    menuInicial.exibirMensagem("O jogo está sendo iniciado...");
+                    jogar(nomeProtagonista);
+                    break;
+                case 2:
+                    menuInicial.exibirInstrucoes();
+                    break;
+                case 3:
+                    menuInicial.exibirCreditos();
+                    break;
+                case 4:
+                    menuInicial.exibirMensagem("\nAté a próxima Noite Longa.");
+                    rodando = false;
+                    break;
+                default:
+                    menuInicial.exibirMensagem("Opção inválida! Tente novamente.");
+                    break;
+            }
         }
     }
 
-    private void iniciarJogo(String nomeProtagonista) {
-        Cena cenaAtual = historia.montarHistoria(nomeProtagonista);
+    private void jogar(String nomeProtagonista) {
 
-        //loop para rodar o jogo
-        while(cenaAtual != null){
-            //chama view para exibir os textos, dialogos e opções
-            exibirJogo.exibirCena(cenaAtual);
+        // Partida nova = estado novo. Nada da partida anterior sobra.
+        Partida partida = new Partida(nomeProtagonista);
+        partida.setCenaAtual(historia.montarHistoria(partida));
 
-            //verifica se é o final do jogo (uma cena sem escolhas)
-            if (cenaAtual.getOpcoes().isEmpty()) {
-                System.out.println("--- FIM DE JOGO ---");
+        while (partida.getCenaAtual() != null) {
+
+            Cena cena = partida.getCenaAtual();
+
+            // Separa as escolhas que o jogador pode ver das bloqueadas.
+            List<Escolha> disponiveis = new ArrayList<>();
+            List<Escolha> bloqueadas = new ArrayList<>();
+            for (Escolha opcao : cena.getOpcoes()) {
+                if (opcao.estaDisponivel(partida)) {
+                    disponiveis.add(opcao);
+                } else {
+                    bloqueadas.add(opcao);
+                }
+            }
+
+            exibirJogo.exibirCena(cena, partida, disponiveis, bloqueadas);
+
+            // Cena sem escolhas = fim (desfecho ou game over).
+            if (disponiveis.isEmpty()) {
+                exibirJogo.exibirMensagemFimDeJogo();
                 break;
             }
-            //numero digitado pelo jogador
-            int escolhaJogador = exibirJogo.pedirEscolhaJogador();
 
-            try {
-                model.entidades.Escolha opcaoEscolhida = cenaAtual.getOpcoes().get(escolhaJogador - 1);
+            int numero = exibirJogo.pedirEscolhaJogador(disponiveis.size());
+            Escolha escolhida = disponiveis.get(numero - 1);
 
-                if (opcaoEscolhida.getNpc() != null && opcaoEscolhida.getConsequencia() != 0) {
-                    opcaoEscolhida.getNpc().alterarConfianca(opcaoEscolhida.getConsequencia());
-                }
-                // A lista (ArrayList) começa em 0, por isso fazemos escolhaJogador - 1
-                cenaAtual = cenaAtual.getOpcoes().get(escolhaJogador - 1).getCenaDestino();
-            } catch (IndexOutOfBoundsException e) {
-                //caso o jogador digite um número que não está na lista (
-                System.out.println("\n[ERRO] Opção inválida. Digite o número correspondente à escolha.");
-            }
+            // A escolha aplica os proprios efeitos e devolve o que contar.
+            exibirJogo.exibirConsequencia(escolhida.aplicar(partida));
+
+            partida.setCenaAtual(escolhida.getCenaDestino());
         }
     }
 }
