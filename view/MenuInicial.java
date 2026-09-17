@@ -1,5 +1,7 @@
 package view;
 
+import model.enums.Preset;
+
 import java.util.Scanner;
 
 public class MenuInicial {
@@ -35,6 +37,29 @@ public class MenuInicial {
         return nome.isEmpty() ? "Vicente" : nome;
     }
 
+    public Preset pedirPreset() {
+        Preset[] opcoes = Preset.values();
+
+        System.out.println("\nQue tipo de menino é o Vicente?");
+        for (int i = 0; i < opcoes.length; i++) {
+            System.out.println();
+            System.out.println((i + 1) + " - " + opcoes[i].getNome());
+            System.out.println("    " + opcoes[i].getDescricao());
+            System.out.println("    Fôlego " + opcoes[i].getFolego()
+                             + " | Coragem " + opcoes[i].getCoragem()
+                             + " | Lucidez " + opcoes[i].getLucidez());
+        }
+
+        while (true) {
+            System.out.print("\nEscolha: ");
+            int numero = lerNumero();
+            if (numero >= 1 && numero <= opcoes.length) {
+                return opcoes[numero - 1];
+            }
+            System.out.println("Escolha um número de 1 a " + opcoes.length + ".");
+        }
+    }
+
     public void exibirInstrucoes() {
         System.out.println();
         System.out.println("COMO SE JOGA");
@@ -42,8 +67,10 @@ public class MenuInicial {
         System.out.println("Você lê, você escolhe, você vive com isso.");
         System.out.println("Digite o número da alternativa e pressione ENTER.");
         System.out.println();
-        System.out.println("Vicente tem três atributos: FÔLEGO, NERVO e LUCIDEZ.");
-        System.out.println("Eles sobem e descem conforme o que você faz, e algumas");
+        System.out.println("Vicente tem três atributos: FÔLEGO, CORAGEM e LUCIDEZ.");
+        System.out.println("O FÔLEGO só desce, e a água do cantil é o único jeito de");
+        System.out.println("recuperar um pouco. Coragem e Lucidez sobem e descem");
+        System.out.println("conforme o que você faz, e algumas");
         System.out.println("escolhas só aparecem se o atributo for alto o bastante.");
         System.out.println();
         System.out.println("As pessoas que você encontra confiam mais ou menos em você.");

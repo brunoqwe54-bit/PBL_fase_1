@@ -1,6 +1,7 @@
 package model.entidades;
 
 import model.enums.Atributo;
+import model.enums.Preset;
 
 public class Protagonista extends PersonagemBase {
 
@@ -8,12 +9,16 @@ public class Protagonista extends PersonagemBase {
     public static final int MINIMO = 0;
     public static final int MAXIMO = 100;
 
-    private int folego = 50;
-    private int nervo = 50;
-    private int lucidez = 50;
+    private int folego;
+    private int coragem;
+    private int lucidez;
 
-    public Protagonista(String nome) {
+    // Os valores iniciais vem do Preset que o jogador escolheu no menu.
+    public Protagonista(String nome, Preset preset) {
         super(nome);
+        this.folego  = preset.getFolego();
+        this.coragem = preset.getCoragem();
+        this.lucidez = preset.getLucidez();
     }
 
     /**
@@ -23,7 +28,7 @@ public class Protagonista extends PersonagemBase {
     public void alterarAtributo(Atributo atributo, int variacao) {
         switch (atributo) {
             case FOLEGO:  folego  = limitar(folego + variacao);  break;
-            case NERVO:   nervo   = limitar(nervo + variacao);   break;
+            case CORAGEM: coragem = limitar(coragem + variacao); break;
             case LUCIDEZ: lucidez = limitar(lucidez + variacao); break;
         }
     }
@@ -31,7 +36,7 @@ public class Protagonista extends PersonagemBase {
     public int getAtributo(Atributo atributo) {
         switch (atributo) {
             case FOLEGO:  return folego;
-            case NERVO:   return nervo;
+            case CORAGEM: return coragem;
             case LUCIDEZ: return lucidez;
             default:      return 0;
         }
@@ -44,6 +49,6 @@ public class Protagonista extends PersonagemBase {
     }
 
     public int getFolego()  { return folego; }
-    public int getNervo()   { return nervo; }
+    public int getCoragem() { return coragem; }
     public int getLucidez() { return lucidez; }
 }

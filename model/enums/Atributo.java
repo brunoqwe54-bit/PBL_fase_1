@@ -2,7 +2,7 @@ package model.enums;
 
 public enum Atributo {
     FOLEGO("Fôlego"),
-    NERVO("Nervo"),
+    CORAGEM("Coragem"),
     LUCIDEZ("Lucidez");
 
     private String nomeExibicao;

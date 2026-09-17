@@ -1,0 +1,276 @@
+---
+title: A Noite Longa - Diagrama de Classes (Fase 1)
+---
+classDiagram
+    direction TB
+
+    %% ===================== MODEL / ENTIDADES =====================
+
+    class PersonagemBase {
+        <<abstract>>
+        -String nome
+        +getNome() String
+    }
+
+    class Protagonista {
+        +int MINIMO$
+        +int MAXIMO$
+        -int folego
+        -int nervo
+        -int lucidez
+        +alterarAtributo(Atributo, int) void
+        +getAtributo(Atributo) int
+        -limitar(int) int
+    }
+
+    class Npc {
+        +int MINIMO$
+        +int MAXIMO$
+        -int confianca
+        +getConfianca() int
+        +alterarConfianca(int) void
+        -limitar(int) int
+    }
+
+    class Dialogo {
+        -PersonagemBase personagem
+        -String texto
+        +getPersonagem() PersonagemBase
+        +getTexto() String
+    }
+
+    class Cena {
+        -String id
+        -String titulo
+        -String textoPrincipal
+        -List~Escolha~ opcoes
+        -List~Dialogo~ dialogos
+        +getId() String
+        +getTitulo() String
+        +getTextoPrincipal() String
+        +getOpcoes() List~Escolha~
+        +getDialogos() List~Dialogo~
+    }
+
+    class Escolha {
+        -String id
+        -String textoExibido
+        -Cena cenaDestino
+        -Npc npc
+        -int consequencia
+        -Atributo atributoAfetado
+        -int deltaAtributo
+        -Item itemGanho
+        -Item itemPerdido
+        -Flag flagLigada
+        -Atributo atributoExigido
+        -int valorMinimoAtributo
+        -Item itemExigido
+        -Npc npcConfianca
+        -int confiancaMinima
+        -Flag flagExigida
+        -Flag flagProibida
+        -String motivoDoBloqueio
+        +comConfianca(Npc, int) Escolha
+        +comAtributo(Atributo, int) Escolha
+        +ganhaItem(Item) Escolha
+        +perdeItem(Item) Escolha
+        +ligaFlag(Flag) Escolha
+        +exigeAtributo(Atributo, int, String) Escolha
+        +exigeItem(Item, String) Escolha
+        +exigeConfianca(Npc, int, String) Escolha
+        +exigeFlag(Flag, String) Escolha
+        +proibeFlag(Flag, String) Escolha
+        +estaDisponivel(Partida) boolean
+        +aplicar(Partida) String
+        +getCenaDestino() Cena
+        +getMotivoDoBloqueio() String
+    }
+
+    class Partida {
+        -Protagonista protagonista
+        -Inventario inventario
+        -Cena cenaAtual
+        -Set~Flag~ flags
+        -Npc otavio
+        -Npc mae
+        -Npc davi
+        -Npc zulmira
+        -Npc antonio
+        -Npc homemDeTerno
+        -Npc manuela
+        +ligarFlag(Flag) void
+        +temFlag(Flag) boolean
+        +getProtagonista() Protagonista
+        +getInventario() Inventario
+        +getCenaAtual() Cena
+        +setCenaAtual(Cena) void
+        +getOtavio() Npc
+        +getDavi() Npc
+        +getZulmira() Npc
+        +getAntonio() Npc
+        +getManuela() Npc
+    }
+
+    class Inventario {
+        -boolean temTercoDaMae
+        -boolean temRadioDePilha
+        -boolean temMedalhaSaoJorge
+        -boolean temChaveCemiterio
+        -boolean temCasacoVinho
+        -boolean temVelaApagada
+        -boolean temCantil
+        +possui(Item) boolean
+        +adicionar(Item) void
+        +remover(Item) void
+        +listar() String
+        -definir(Item, boolean) void
+    }
+
+    %% ===================== MODEL / ENUMS =====================
+
+    class Atributo {
+        <<enumeration>>
+        FOLEGO
+        NERVO
+        LUCIDEZ
+        -String nomeExibicao
+        +getNomeExibicao() String
+    }
+
+    class Item {
+        <<enumeration>>
+        LANTERNA
+        FACA
+        TERCO
+        RADIO
+        CANTIL
+        MEDALHA
+        VELA
+        CHAVE
+        CASACO
+        +getNomeExibicao() String
+    }
+
+    class Flag {
+        <<enumeration>>
+        PORTA_ABERTA
+        SALVOU_DAVI
+        ABANDONOU_DAVI
+        DAVI_JUNTO
+        DAVI_NA_PONTE
+        AJOELHOU
+        GRITOU_NOME
+        OUVIU_RADIO
+        AVISOU_ANTONIO
+        PEGOU_MEDALHA
+        PROMETEU_VOLTAR
+        FALOU_DA_VOZ
+        FALOU_DA_PORTA
+    }
+
+    class Personagens {
+        <<enumeration>>
+        VICENTE
+        OTAVIO
+        MANUELA
+        MAE
+        DAVI
+        ZULMIRA
+        ANTONIO
+        HOMEM_DE_TERNO
+        NARRADOR
+        +getNomeExibicao() String
+    }
+
+    %% ===================== MODEL / FACTORY =====================
+
+    class Historia {
+        -Map~String, Cena~ cenas
+        +montarHistoria(Partida) Cena
+        -criarCenas() void
+        -montarCap01(Partida) void
+        -montarCap02(Partida) void
+        -montarCap10(Partida) void
+        -criar(String, String, String) void
+        -falar(Cena, PersonagemBase, String) void
+        +getCena(String) Cena
+        +totalDeCenas() int
+    }
+
+    %% ===================== VIEW =====================
+
+    class MenuInicial {
+        <<view>>
+        -Scanner teclado
+        +exibir() int
+        +pedirNome() String
+        +exibirMensagem(String) void
+        +exibirInstrucoes() void
+        +exibirCreditos() void
+        -lerNumero() int
+    }
+
+    class ExibirJogo {
+        <<view>>
+        -Scanner teclado
+        +exibirCena(Cena, Partida, List~Escolha~, List~Escolha~) void
+        +exibirStatus(Partida) void
+        +exibirConsequencia(String) void
+        +pedirEscolhaJogador(int) int
+        +exibirMensagemFimDeJogo() void
+    }
+
+    %% ===================== CONTROLLER =====================
+
+    class JogoController {
+        <<controller>>
+        -Scanner teclado
+        -MenuInicial menuInicial
+        -ExibirJogo exibirJogo
+        -Historia historia
+        +iniciarPartida() void
+        -jogar(String) void
+    }
+
+    class Main {
+        <<controller>>
+        +main(String[])$ void
+    }
+
+    %% ===================== RELACOES =====================
+
+    PersonagemBase <|-- Protagonista
+    PersonagemBase <|-- Npc
+
+    Cena "1" *-- "0..*" Dialogo : falas
+    Cena "1" *-- "0..*" Escolha : opcoes
+    Dialogo "0..*" --> "1" PersonagemBase : quem fala
+    Escolha "0..*" --> "1" Cena : cenaDestino
+    Escolha "0..*" --> "0..1" Npc : alvo da confianca
+
+    Partida "1" *-- "1" Protagonista
+    Partida "1" *-- "1" Inventario
+    Partida "1" *-- "7" Npc : elenco
+    Partida "1" o-- "0..*" Flag : decisoes tomadas
+    Partida "1" --> "1" Cena : cenaAtual
+
+    Inventario ..> Item
+    Protagonista ..> Atributo
+    Escolha ..> Atributo
+    Escolha ..> Item
+    Escolha ..> Flag
+    Historia ..> Personagens
+
+    Historia "1" --> "28" Cena : monta
+    Historia ..> Partida
+
+    JogoController "1" --> "1" Historia
+    JogoController "1" --> "1" Partida : cria
+    JogoController "1" --> "1" MenuInicial
+    JogoController "1" --> "1" ExibirJogo
+    Main "1" --> "1" JogoController
+
+    ExibirJogo ..> Cena
+    ExibirJogo ..> Partida
+    ExibirJogo ..> Escolha

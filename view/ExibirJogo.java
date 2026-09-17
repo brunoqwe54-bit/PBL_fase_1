@@ -25,18 +25,26 @@ public class ExibirJogo {
     public void exibirCena(Cena cena, Partida partida,
                            List<Escolha> disponiveis, List<Escolha> bloqueadas) {
 
-        System.out.println();
+        limparTela();
         System.out.println("========================================");
         System.out.println("  " + cena.getTitulo());
         System.out.println("========================================");
-        System.out.println();
-        System.out.println(cena.getTextoPrincipal());
 
-        if (!cena.getDialogos().isEmpty()) {
+        // A narracao ja vem escrita com uma linha em branco entre os
+        // paragrafos. Aqui ela e quebrada nesse ponto e mostrada um
+        // paragrafo por vez, pra nao despejar a tela inteira de uma vez.
+        String[] paragrafos = cena.getTextoPrincipal().split("\n\n");
+        for (int i = 0; i < paragrafos.length; i++) {
             System.out.println();
-            for (Dialogo fala : cena.getDialogos()) {
-                System.out.println(fala.getPersonagem().getNome() + ": " + fala.getTexto());
-            }
+            System.out.println(paragrafos[i]);
+            aguardarEnter();
+        }
+
+        // Cada fala tambem espera o ENTER, como numa conversa.
+        for (Dialogo fala : cena.getDialogos()) {
+            System.out.println();
+            System.out.println(fala.getPersonagem().getNome() + ": " + fala.getTexto());
+            aguardarEnter();
         }
 
         exibirStatus(partida);
@@ -59,7 +67,7 @@ public class ExibirJogo {
     public void exibirStatus(Partida partida) {
         System.out.println();
         System.out.println("  [ Fôlego "  + partida.getProtagonista().getAtributo(Atributo.FOLEGO)
-                        + " | Nervo "     + partida.getProtagonista().getAtributo(Atributo.NERVO)
+                        + " | Coragem "   + partida.getProtagonista().getAtributo(Atributo.CORAGEM)
                         + " | Lucidez "   + partida.getProtagonista().getAtributo(Atributo.LUCIDEZ)
                         + " ]  Mochila: " + partida.getInventario().listar());
     }
@@ -95,6 +103,13 @@ public class ExibirJogo {
     public void exibirMensagemFimDeJogo() {
         System.out.println("\n--- FIM DE JOGO ---");
         aguardarEnter();
+    }
+
+    /** Empurra o texto antigo pra cima pra cada cena comecar com a tela limpa. */
+    private void limparTela() {
+        for (int i = 0; i < 40; i++) {
+            System.out.println();
+        }
     }
 
     private void aguardarEnter() {

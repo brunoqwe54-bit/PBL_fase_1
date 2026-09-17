@@ -2,6 +2,7 @@ package model.entidades;
 
 import model.enums.Flag;
 import model.enums.Personagens;
+import model.enums.Preset;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -37,8 +38,8 @@ public class Partida {
     private Npc homemDeTerno;
     private Npc manuela;
 
-    public Partida(String nomeJogador) {
-        this.protagonista = new Protagonista(nomeJogador);
+    public Partida(String nomeJogador, Preset preset) {
+        this.protagonista = new Protagonista(nomeJogador, preset);
         this.inventario = new Inventario();
         this.flags = new HashSet<>();
 

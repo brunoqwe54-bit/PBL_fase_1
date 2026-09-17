@@ -3,6 +3,7 @@ package controller;
 import model.entidades.Cena;
 import model.entidades.Escolha;
 import model.entidades.Partida;
+import model.enums.Preset;
 import model.factory.Historia;
 import view.ExibirJogo;
 import view.MenuInicial;
@@ -32,8 +33,9 @@ public class JogoController {
             switch (escolha) {
                 case 1:
                     String nomeProtagonista = menuInicial.pedirNome();
+                    Preset preset = menuInicial.pedirPreset();
                     menuInicial.exibirMensagem("O jogo está sendo iniciado...");
-                    jogar(nomeProtagonista);
+                    jogar(nomeProtagonista, preset);
                     break;
                 case 2:
                     menuInicial.exibirInstrucoes();
@@ -52,10 +54,10 @@ public class JogoController {
         }
     }
 
-    private void jogar(String nomeProtagonista) {
+    private void jogar(String nomeProtagonista, Preset preset) {
 
         // Partida nova = estado novo. Nada da partida anterior sobra.
-        Partida partida = new Partida(nomeProtagonista);
+        Partida partida = new Partida(nomeProtagonista, preset);
         partida.setCenaAtual(historia.montarHistoria(partida));
 
         while (partida.getCenaAtual() != null) {
