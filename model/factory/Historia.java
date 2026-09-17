@@ -80,10 +80,19 @@ public class Historia {
             "luz vermelha do letreiro NO AR é a única acesa em quatro quarteirões.\n\n" +
             "Um farol teimoso, quase ridículo na insistência, numa cidade que\n" +
             "escolheu o escuro.\n\n" +
-            "A porta está encostada.";
+            "A porta está encostada.\n\n" +
+            "Dentro, no cômodo da frente, um homem de uns setenta anos está sentado\n" +
+            "de costas diante da mesa de som, fones pendurados no pescoço, falando\n" +
+            "num microfone preso a um pedestal torto. É Seu Antônio, que lê o\n" +
+            "boletim nessa rádio desde antes de você nascer.\n\n" +
+            "Ele não se assusta quando a porta range. Ele desliga o microfone e\n" +
+            "gira a cadeira como quem já sabia que ia ter visita.";
 
     private static final String T_CAP04B =
-            "Tem uma coisa batendo na janela dos fundos faz uns vinte minutos.\n\n" +
+            "Seu Antônio se levanta, pega o lampião e vai até o segundo cômodo, o\n" +
+            "dos fundos, onde ficam as caixas de disco e a janela que dá pro quintal.\n" +
+            "Ele não pede pra você ir junto, mas espera na porta até você ir.\n\n" +
+            "Tem uma coisa batendo nessa janela faz uns vinte minutos.\n\n" +
             "Bate três vezes, para, bate três vezes.\n\n" +
             "Não é o vento, porque não tem vento nenhum nesta noite.";
 
@@ -92,7 +101,10 @@ public class Historia {
             "cidade onde você sente, pela primeira vez desde que saiu de casa, que\n" +
             "não tem ninguém atrás de você.\n\n" +
             "Do outro lado a estrada se divide: a leste, subindo, o cemitério.\n" +
-            "A oeste, de volta pro bairro alto. Pra sua casa.";
+            "A oeste, de volta pro bairro alto. Pra sua casa.\n\n" +
+            "De uma das casas do bairro alto, atrás de você, alguém deixou um rádio\n" +
+            "ligado. A voz atravessa a água fina e sem chiado, e é a mesma voz de\n" +
+            "setenta anos que você deixou na emissora vinte minutos atrás.";
 
     private static final String T_CAP06 =
             "O hospital fechou em 2011 e ninguém nunca decidiu o que fazer com o\n" +
@@ -123,7 +135,10 @@ public class Historia {
             "No meio da rua, a Procissão está parada. Não andando: parada, de frente\n" +
             "pro cemitério, cantando baixo, esperando alguma coisa que ainda não\n" +
             "chegou.\n\n" +
-            "Você entende, olhando, que não é alguma coisa. É alguém.";
+            "Você entende, olhando, que não é alguma coisa. É alguém.\n\n" +
+            "Numa das casas da esquina, atrás de uma janela fechada, um rádio\n" +
+            "continua ligado. Ninguém está ouvindo ali dentro. O velho fala\n" +
+            "assim mesmo, pra cidade inteira que fechou a janela.";
 
     private static final String T_CAP08B =
             "Do outro lado da rua, sentada no meio-fio entre duas velas como quem\n" +
@@ -132,12 +147,30 @@ public class Historia {
     private static final String T_CAP09 =
             "O cemitério de Riacho do Fogo tem três fileiras de túmulos e um mausoléu\n" +
             "no fundo, da família Peixoto.\n\n" +
+            "Encostada no muro leste tem a capela: um cômodo só, cal descascando,\n" +
+            "duas telhas quebradas. É onde se rezava o corpo antes de enterrar,\n" +
+            "quando ainda tinha padre na cidade. Ela tem duas portas -- a da frente,\n" +
+            "que abre pro pátio onde eles estão, e a lateral, que abre pra fora do\n" +
+            "muro. A lateral vive trancada desde que o padre velho morreu, e a chave\n" +
+            "ficou com quem varria a capela todo sábado por trinta e um anos.\n\n" +
             "A Procissão inteira está lá dentro, em círculo, cantando a mesma melodia\n" +
             "desde as onze da noite, cercando alguma coisa que você não consegue ver\n" +
             "do portão.\n\n" +
-            "No chão, na entrada, tem um casaco vinho.";
+            "No chão, na entrada, dobrado em cima de uma pedra do jeito de quem tira\n" +
+            "o casaco pra trabalhar, tem um casaco vinho de menina.";
 
     private static final String T_CAP09B =
+            "Daqui do portão dá pra contar o círculo. São umas trinta pessoas, e o\n" +
+            "problema não é serem trinta. O problema é que você conhece quase todas.\n\n" +
+            "A terceira da esquerda é a professora Dalva, que ensinou metade da\n" +
+            "cidade a ler e morreu quando você tinha nove anos. Do lado dela, o Seu\n" +
+            "Nilton do armazém, com a mesma vela da praça, na mesma posição da mão.\n" +
+            "Três cabeças adiante tem um rapaz de dezenove anos que você nunca\n" +
+            "conheceu -- mas o pai dele você conheceu hoje, numa sala com uma luz\n" +
+            "vermelha escrito NO AR.\n\n" +
+            "E em algum ponto do círculo tem uma voz que você conhece desde antes de\n" +
+            "saber andar. Você procura a cara e não acha. Mas a voz está ali.\n\n" +
+            "Todos estão de frente pro centro. Nenhum se virou ainda.\n\n" +
             "Três formas de entrar. Só uma delas não envolve trinta cabeças virando\n" +
             "ao mesmo tempo pra receber você.";
 
@@ -393,6 +426,7 @@ public class Historia {
         Cena cena = getCena("CAP02");
         Npc mae = partida.getMae();
         Npc davi = partida.getDavi();
+        Protagonista vicente = partida.getProtagonista();
 
         // O nome vem do que o jogador digitou no menu.
         String nome = partida.getProtagonista().getNome();
@@ -418,6 +452,10 @@ public class Historia {
 
         falar(esquina, davi, "O Tico fugiu. Eu só vim pegar o Tico.");
         falar(esquina, davi, "Aí eu virei e a minha casa ficou longe.");
+        falar(esquina, davi, "Eu bati na porta da minha mãe. Bati bastante. Ela não abriu.");
+        falar(esquina, vicente, "Davi, você viu minha irmã passar?");
+        falar(esquina, davi, "Vi. Faz tempo. Ela não tava correndo, não -- ela falou oi pra mim.");
+        falar(esquina, davi, "Ela subiu pro lado da praça.");
 
         esquina.getOpcoes().add(
                 new Escolha("ESC0204", "Dar o terço da sua mãe pra ele.", getCena("CAP03"))
@@ -436,7 +474,6 @@ public class Historia {
 
         esquina.getOpcoes().add(
                 new Escolha("ESC0206", "Mandar ele correr pra casa sozinho.", getCena("CAP03"))
-                        .ligaFlag(Flag.ABANDONOU_DAVI)
                         .comConfianca(davi, -20)
                         .comAtributo(Atributo.CORAGEM, -10));
     }
@@ -454,7 +491,6 @@ public class Historia {
 
         cena.getOpcoes().add(
                 new Escolha("ESC0301", "Ajoelhar e baixar os olhos.", getCena("CAP03B"))
-                        .ligaFlag(Flag.AJOELHOU)
                         .comAtributo(Atributo.LUCIDEZ, 10)
                         .comConfianca(zulmira, 20));
 
@@ -466,7 +502,6 @@ public class Historia {
 
         cena.getOpcoes().add(
                 new Escolha("ESC0303", "Gritar o nome da Manuela.", getCena("CAP03B"))
-                        .ligaFlag(Flag.GRITOU_NOME)
                         .comAtributo(Atributo.LUCIDEZ, -15)
                         .comConfianca(zulmira, -25));
 
@@ -517,6 +552,9 @@ public class Historia {
         falar(cena, antonio, "Escuta uma coisa antes de sair daqui.");
         falar(cena, antonio, "Se te oferecerem qualquer coisa hoje -- vela, carona, lugar na fila -- não aceita.");
         falar(cena, antonio, "Aceitar é responder. E responder é dizer sim, mesmo que você ache que tá só sendo educado.");
+        falar(cena, antonio, "E olha: passou uma menina aqui na frente faz umas duas horas.");
+        falar(cena, antonio, "Miúda, cabelo preso, casaco vinho. Subindo a rua, no passo de quem sabe onde vai.");
+        falar(cena, antonio, "Eu bati na vidraça pra ela entrar. Ela acenou pra mim e continuou.");
 
         cena.getOpcoes().add(
                 new Escolha("ESC0401", "Ouvir a transmissão inteira.", getCena("CAP04B"))
@@ -553,8 +591,6 @@ public class Historia {
         janela.getOpcoes().add(
                 new Escolha("ESC0406", "Avisar Seu Antônio pra não abrir de jeito nenhum.", getCena("CAP05"))
                         .exigeFlag(Flag.OUVIU_RADIO, "você não sabe o que tem naquele corredor")
-                        .ligaFlag(Flag.AVISOU_ANTONIO)
-                        .ganhaItem(Item.RADIO)
                         .comConfianca(antonio, 30)
                         .comAtributo(Atributo.LUCIDEZ, 10));
     }
@@ -569,8 +605,8 @@ public class Historia {
         Npc davi = partida.getDavi();
         Npc antonio = partida.getAntonio();
 
-        falar(cena, davi, "A minha mãe não abriu. Eu bati bastante.");
-        falar(cena, antonio, "Pra quem estiver perto de água corrente: fiquem. E o único lugar que eles não pisam.");
+        falar(cena, antonio, "Aqui é a Serra, três e dez da manhã, e eu vou repetir porque é importante.");
+        falar(cena, antonio, "Pra quem estiver perto de água corrente: fiquem. É o único lugar que eles não pisam.");
 
         cena.getOpcoes().add(
                 new Escolha("ESC0501", "Levar Davi junto.", getCena("CAP06"))
@@ -584,7 +620,6 @@ public class Historia {
         cena.getOpcoes().add(
                 new Escolha("ESC0502", "Deixar Davi na ponte, perto da água.", getCena("CAP06"))
                         .exigeFlag(Flag.SALVOU_DAVI, "não tem ninguém com você")
-                        .ligaFlag(Flag.DAVI_NA_PONTE)
                         .comConfianca(davi, 5));
 
         cena.getOpcoes().add(
@@ -635,6 +670,9 @@ public class Historia {
         falar(muro, zulmira, "Demorou.");
         falar(muro, vicente, "A senhora ta me esperando?");
         falar(muro, zulmira, "Eu to indo pro mesmo lugar que você, menino. Faz trinta e um ano.");
+        falar(muro, zulmira, "Ela passou por esse muro faz uma hora. Sentou aqui onde eu to sentada.");
+        falar(muro, zulmira, "Ficou um tempo parada olhando pro pátio, depois foi. Sem vela na mão.");
+        falar(muro, zulmira, "Isso é bom. Enquanto não tiver vela na mão dela, tem noite.");
 
         muro.getOpcoes().add(
                 new Escolha("ESC0604", "Perguntar o que ela vai fazer no cemitério.", getCena("CAP07"))
@@ -688,7 +726,6 @@ public class Historia {
                 new Escolha("ESC0705", "Subir no caixote e pegar a caixinha.", getCena("CAP08"))
                         .exigeAtributo(Atributo.FOLEGO, 55, "você não alcança sozinho")
                         .ganhaItem(Item.MEDALHA)
-                        .ligaFlag(Flag.PEGOU_MEDALHA)
                         .comAtributo(Atributo.FOLEGO, -10));
 
         // Unico caminho pra medalha com folego baixo -- e so existe pra quem
@@ -698,7 +735,6 @@ public class Historia {
                         .exigeFlag(Flag.DAVI_JUNTO, "Davi não está com você")
                         .exigeConfianca(davi, 60, "ele não confia em você o bastante")
                         .ganhaItem(Item.MEDALHA)
-                        .ligaFlag(Flag.PEGOU_MEDALHA)
                         .comConfianca(davi, 15));
 
         alpendre.getOpcoes().add(
@@ -716,7 +752,7 @@ public class Historia {
         Npc zulmira = partida.getZulmira();
         Protagonista vicente = partida.getProtagonista();
 
-        falar(cena, antonio, "São três e vinte. Falta uma hora e quarenta.");
+        falar(cena, antonio, "-- e são três e vinte. Falta uma hora e quarenta.");
         falar(cena, antonio, "Se você ta com uma vela no bolso que você não acendeu, joga fora. Joga longe.");
         falar(cena, antonio, "Meu filho guardou a dele no bolso do paletó. Eu achei depois, e ela ainda tava quente.");
 
@@ -762,7 +798,6 @@ public class Historia {
         meioFio.getOpcoes().add(
                 new Escolha("ESC0806", "Prometer que volta pra buscar ela.", getCena("CAP09"))
                         .exigeConfianca(zulmira, 70, "ela não ia acreditar")
-                        .ligaFlag(Flag.PROMETEU_VOLTAR)
                         .comConfianca(zulmira, 15)
                         .comAtributo(Atributo.CORAGEM, 10));
 

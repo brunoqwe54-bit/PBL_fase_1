@@ -48,7 +48,4 @@ public class Protagonista extends PersonagemBase {
         return valor;
     }
 
-    public int getFolego()  { return folego; }
-    public int getCoragem() { return coragem; }
-    public int getLucidez() { return lucidez; }
 }

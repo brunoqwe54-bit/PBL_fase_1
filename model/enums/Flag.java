@@ -5,20 +5,26 @@ package model.enums;
  *
  * Uma flag e LIGADA por uma escolha e LIDA por outra, capitulos depois.
  * E esse par que produz o requisito "consequencias posteriores".
+ *
+ * Toda flag desta lista tem os dois lados. Se voce criar uma nova,
+ * escreva quem liga e quem le na mesma sentada: flag ligada e nunca lida
+ * e uma decisao que o jogo prometeu lembrar e nunca cobrou.
  */
 public enum Flag {
-    PORTA_ABERTA,       // CAP01 -- libera voltar pra casa em CAP05 e CAP08
-    DEU_TERCO,          // CAP02
-    SALVOU_DAVI,        // CAP02 -- Davi passa a seguir voce
-    ABANDONOU_DAVI,     // CAP02
-    DAVI_JUNTO,         // CAP05 -- Davi segue ate o cemiterio
-    DAVI_NA_PONTE,      // CAP05 -- Davi fica em seguranca perto da agua
-    AJOELHOU,           // CAP03
-    GRITOU_NOME,        // CAP03 -- quebrou a regra: derruba a confianca de todos
-    OUVIU_RADIO,        // CAP04 -- aprendeu as regras 1 e 4
-    AVISOU_ANTONIO,     // CAP04 -- Antonio nao abre a janela e continua no ar
-    PEGOU_MEDALHA,      // CAP07
-    PROMETEU_VOLTAR,    // CAP08
-    FALOU_DA_VOZ,       // CAP10 -- ja disse que a voz nao e da mae
-    FALOU_DA_PORTA      // CAP10 -- ja contou do pedido ao Otavio
+
+    // ligada no CAP01 -- lida no CAP05, no CAP08 e no CAP10
+    PORTA_ABERTA,
+
+    // ligada no CAP02 -- lida no CAP05
+    SALVOU_DAVI,
+
+    // ligada no CAP05 -- lida no CAP07
+    DAVI_JUNTO,
+
+    // ligada no CAP04 -- lida no CAP04
+    OUVIU_RADIO,
+
+    // ligadas e lidas no CAP10, pra nao repetir a mesma fala duas vezes
+    FALOU_DA_VOZ,
+    FALOU_DA_PORTA
 }

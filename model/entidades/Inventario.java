@@ -12,7 +12,6 @@ import model.enums.Item;
 public class Inventario {
 
     private boolean temTercoDaMae = false;
-    private boolean temRadioDePilha = false;
     private boolean temMedalhaSaoJorge = false;
     private boolean temChaveCemiterio = false;
     private boolean temCasacoVinho = false;
@@ -26,7 +25,6 @@ public class Inventario {
     public boolean possui(Item item) {
         switch (item) {
             case TERCO:   return temTercoDaMae;
-            case RADIO:   return temRadioDePilha;
             case MEDALHA: return temMedalhaSaoJorge;
             case CHAVE:   return temChaveCemiterio;
             case CASACO:  return temCasacoVinho;
@@ -47,7 +45,6 @@ public class Inventario {
     private void definir(Item item, boolean valor) {
         switch (item) {
             case TERCO:   temTercoDaMae = valor;      break;
-            case RADIO:   temRadioDePilha = valor;    break;
             case MEDALHA: temMedalhaSaoJorge = valor; break;
             case CHAVE:   temChaveCemiterio = valor;  break;
             case CASACO:  temCasacoVinho = valor;     break;
@@ -67,23 +64,4 @@ public class Inventario {
         }
         return lista.isEmpty() ? "(vazia)" : lista.trim();
     }
-
-    // ================================================================
-    // GETTERS E SETTERS individuais (mantidos)
-    // ================================================================
-
-    public boolean isTemTercoDaMae() { return temTercoDaMae; }
-    public void setTemTercoDaMae(boolean v) { this.temTercoDaMae = v; }
-
-    public boolean isTemRadioDePilha() { return temRadioDePilha; }
-    public void setTemRadioDePilha(boolean v) { this.temRadioDePilha = v; }
-
-    public boolean isTemMedalhaSaoJorge() { return temMedalhaSaoJorge; }
-    public void setTemMedalhaSaoJorge(boolean v) { this.temMedalhaSaoJorge = v; }
-
-    public boolean isTemChaveCemiterio() { return temChaveCemiterio; }
-    public void setTemChaveCemiterio(boolean v) { this.temChaveCemiterio = v; }
-
-    public boolean isTemCasacoVinho() { return temCasacoVinho; }
-    public void setTemCasacoVinho(boolean v) { this.temCasacoVinho = v; }
 }
