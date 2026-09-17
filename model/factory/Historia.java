@@ -15,19 +15,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A HISTORIA COMPLETA -- "A Noite Longa", dez capitulos.
+ * A HISTORIA COMPLETA, "A Noite Longa", dez capitulos.
  *
  * Esta classe e uma MONTADORA: ela cria todas as cenas, falas e escolhas e
  * devolve a primeira cena. Ela nao guarda estado de partida nenhum.
  *
  * COMO ELA E ORGANIZADA (montagem em duas passadas):
  *
- *   1a passada -- criarCenas(): cria todas as cenas VAZIAS (id, titulo e
+ *   1a passada, criarCenas(): cria todas as cenas VAZIAS (id, titulo e
  *      narracao). Nenhuma conhece nenhuma ainda.
  *
- *   2a passada -- montarCap01(), montarCap02()...: agora que todas as cenas
+ *   2a passada, montarCap01(), montarCap02()...: agora que todas as cenas
  *      ja existem no mapa, cada capitulo recebe suas falas e suas escolhas, e
- *      pode apontar pra qualquer outra cena -- inclusive pra si mesma.
+ *      pode apontar pra qualquer outra cena, inclusive pra si mesma.
  *
  * Sem as duas passadas seria preciso escrever a historia de tras pra frente
  * (o capitulo 10 primeiro), porque o construtor de Escolha exige a cena de
@@ -45,7 +45,7 @@ public class Historia {
             "A chave ainda está na fechadura. Otávio não tirou.\n\n" +
             "Ele está com a mão nela há dois minutos, do jeito de quem espera você\n" +
             "dizer alguma coisa que resolva. Você não tem essa coisa.\n\n" +
-            "Do lado de fora, um canto. Distante, sem letra reconhecível -- nunca teve.";
+            "Do lado de fora, um canto. Distante, sem letra reconhecível, nunca teve.";
 
     private static final String T_CAP02 =
             "Vinte casas até a esquina. Você conhece todas, e todas estão escuras do\n" +
@@ -64,7 +64,7 @@ public class Historia {
             "O canto deixa de ser distante.\n\n" +
             "Você chega na Praça da Matriz e ela já vem pela rua da igreja: uma fila\n" +
             "de gente, dois a dois, cada um com uma vela na mão. Cinquenta, talvez\n" +
-            "cem -- a conta se perde onde a rua faz a curva.\n\n" +
+            "cem, a conta se perde onde a rua faz a curva.\n\n" +
             "No terceiro lugar da fila você reconhece Seu Nilton, do armazém, que\n" +
             "morreu no ano passado.\n\n" +
             "Do outro lado da praça, agachada atrás de um banco, uma mulher de uns\n" +
@@ -149,7 +149,7 @@ public class Historia {
             "no fundo, da família Peixoto.\n\n" +
             "Encostada no muro leste tem a capela: um cômodo só, cal descascando,\n" +
             "duas telhas quebradas. É onde se rezava o corpo antes de enterrar,\n" +
-            "quando ainda tinha padre na cidade. Ela tem duas portas -- a da frente,\n" +
+            "quando ainda tinha padre na cidade. Ela tem duas portas, a da frente,\n" +
             "que abre pro pátio onde eles estão, e a lateral, que abre pra fora do\n" +
             "muro. A lateral vive trancada desde que o padre velho morreu, e a chave\n" +
             "ficou com quem varria a capela todo sábado por trinta e um anos.\n\n" +
@@ -166,7 +166,7 @@ public class Historia {
             "cidade a ler e morreu quando você tinha nove anos. Do lado dela, o Seu\n" +
             "Nilton do armazém, com a mesma vela da praça, na mesma posição da mão.\n" +
             "Três cabeças adiante tem um rapaz de dezenove anos que você nunca\n" +
-            "conheceu -- mas o pai dele você conheceu hoje, numa sala com uma luz\n" +
+            "conheceu, mas o pai dele você conheceu hoje, numa sala com uma luz\n" +
             "vermelha escrito NO AR.\n\n" +
             "E em algum ponto do círculo tem uma voz que você conhece desde antes de\n" +
             "saber andar. Você procura a cara e não acha. Mas a voz está ali.\n\n" +
@@ -176,13 +176,11 @@ public class Historia {
 
     private static final String T_CAP10 =
             "No centro do círculo, Manuela está de pé, sem vela na mão, ao lado de um\n" +
-            "homem de terno que segura duas -- uma acesa, uma apagada.\n\n" +
+            "homem de terno que segura duas, uma acesa, uma apagada.\n\n" +
             "Ela ainda não aceitou nenhuma das duas.\n\n" +
             "Cinco horas de espera, e a Procissão tem a noite toda.\n" +
             "Mas a noite está, agora, a quarenta minutos do fim.";
-
-    // ---------------- desfechos ----------------
-
+// ---------------- desfechos ----------------
     private static final String T_FIM_A_TEMPO =
             "FINAL 1 - CHEGA A TEMPO\n\n" +
             "Ela solta a mão do homem de terno.\n\n" +
@@ -228,9 +226,7 @@ public class Historia {
             "toda vez que a Procissão passa, os dois ficam parados no meio da sala,\n" +
             "tentando escutar se tem uma voz de dezessete anos naquele canto.\n\n" +
             "Tem. Sempre tem.";
-
     // ---------------- mortes ----------------
-
     private static final String T_MORTE_NOME =
             "Você vira.\n\n" +
             "Não tem nada. Tem a rua, tem o poste queimado, tem a casa dos Pereira\n" +
@@ -243,7 +239,7 @@ public class Historia {
     private static final String T_MORTE_FILA =
             "Você entra na fila achando que da pra passar entre duas pessoas.\n" +
             "Da. Você passa.\n\n" +
-            "Do outro lado, você continua andando. Bem devagar. Cantando baixo -- e a\n" +
+            "Do outro lado, você continua andando. Bem devagar. Cantando baixo, e a\n" +
             "letra agora você entende perfeitamente, e ela é simples, e você já\n" +
             "sabia.\n\n" +
             "Alguém põe uma vela acesa na sua mão. Você agradece.";
@@ -252,7 +248,7 @@ public class Historia {
             "A janela é de vidro canelado, daquelas que deixam ver vulto e não deixam\n" +
             "ver cara.\n\n" +
             "Tem um vulto. Da altura de uma pessoa de dezenove anos.\n\n" +
-            "Você entende, tarde, que essa janela não é pra você -- e abre, porque\n" +
+            "Você entende, tarde, que essa janela não é pra você, e abre, porque\n" +
             "abrir é o que a mão faz.";
 
     private static final String T_MORTE_PATIO =
@@ -261,7 +257,7 @@ public class Historia {
             "Estão olhando pra você.\n\n" +
             "Dezesseis. Dezessete.\n\n" +
             "Você percebe que parou de contar as janelas há um tempo e começou a\n" +
-            "contar outra coisa -- e essa outra coisa está contando também, e chega\n" +
+            "contar outra coisa, e essa outra coisa está contando também, e chega\n" +
             "em você primeiro.";
 
     private static final String T_MORTE_CASARAO =
@@ -282,7 +278,7 @@ public class Historia {
             "que estava só sendo educado.";
 
     private static final String T_MORTE_CHAMOU =
-            "-- MANUELA!\n\n" +
+            "MANUELA!\n\n" +
             "O canto para. E então, muito devagar, todos eles respondem.\n\n" +
             "Duzentas vozes dizem o nome da sua irmã ao mesmo tempo, e a última voz a\n" +
             "dizer é uma que você conhece, e vem do meio do círculo.\n\n" +
@@ -308,7 +304,7 @@ public class Historia {
      * Monta a historia inteira e devolve a primeira cena.
      *
      * Recebe a Partida porque as escolhas precisam apontar pros objetos Npc
-     * daquela partida especifica -- sao eles que tem a confianca.
+     * daquela partida especifica, sao eles que tem a confianca.
      */
     public Cena montarHistoria(Partida partida) {
         cenas.clear();
@@ -368,11 +364,11 @@ public class Historia {
     }
 
     // ================================================================
-    // 2a PASSADA -- um metodo por capitulo
+    // 2a PASSADA, um metodo por capitulo
     // ================================================================
 
     /**
-     * CAPITULO 1 -- A Porta.
+     * CAPITULO 1, A Porta.
      * Aqui nasce a decisao mais importante do jogo, e o jogador nao tem como
      * saber disso: pedir a porta destrancada e o que permite desistir depois,
      * nos capitulos 5 e 8, e e uma das falas do capitulo 10.
@@ -410,7 +406,7 @@ public class Historia {
     }
 
     /**
-     * CAPITULO 2 -- A voz da mae (primeira regra) e o encontro com Davi.
+     * CAPITULO 2, A voz da mae (primeira regra) e o encontro com Davi.
      * Dar o terco troca protecao propria por confianca -- e essa confianca e
      * o que abre a medalha la no capitulo 7.
      */
@@ -438,7 +434,6 @@ public class Historia {
                         .exigeAtributo(Atributo.CORAGEM, 55, "sua voz não sai")
                         .comAtributo(Atributo.CORAGEM, 10)
                         .comAtributo(Atributo.LUCIDEZ, -5));
-
         // ---- a esquina, com o Davi ----
         Cena esquina = getCena("CAP02B");
 
@@ -446,7 +441,7 @@ public class Historia {
         falar(esquina, davi, "Aí eu virei e a minha casa ficou longe.");
         falar(esquina, davi, "Eu bati na porta da minha mãe. Bati bastante. Ela não abriu.");
         falar(esquina, vicente, "Davi, você viu minha irmã passar?");
-        falar(esquina, davi, "Vi. Faz tempo. Ela não tava correndo, não -- ela falou oi pra mim.");
+        falar(esquina, davi, "Vi. Faz tempo. Ela não tava correndo, não, ela falou oi pra mim.");
         falar(esquina, davi, "Ela subiu pro lado da praça.");
 
         esquina.getOpcoes().add(
@@ -471,7 +466,7 @@ public class Historia {
     }
 
     /**
-     * CAPITULO 3 -- A Procissao passa (segunda regra) e Zulmira ensina o resto.
+     * CAPITULO 3, A Procissao passa (segunda regra) e Zulmira ensina o resto.
      * Gritar o nome nao mata agora: derruba a lucidez e a confianca da
      * Zulmira, e fecha as melhores escolhas do capitulo 4.
      */
@@ -499,7 +494,6 @@ public class Historia {
 
         cena.getOpcoes().add(
                 new Escolha("ESC0304", "Atravessar a fila.", getCena("MORTE_FILA")));
-
         // ---- a conversa com Zulmira ----
         Cena conversa = getCena("CAP03B");
 
@@ -542,7 +536,7 @@ public class Historia {
         falar(cena, antonio, "Nogueira. Sua mãe trabalhou aqui. Dois anos. Lia o boletim das seis.");
         falar(cena, antonio, "Você tem a voz dela.");
         falar(cena, antonio, "Escuta uma coisa antes de sair daqui.");
-        falar(cena, antonio, "Se te oferecerem qualquer coisa hoje -- vela, carona, lugar na fila -- não aceita.");
+        falar(cena, antonio, "Se te oferecerem qualquer coisa hoje, vela, carona, lugar na fila, não aceita.");
         falar(cena, antonio, "Aceitar é responder. E responder é dizer sim, mesmo que você ache que tá só sendo educado.");
         falar(cena, antonio, "E olha: passou uma menina aqui na frente faz umas duas horas.");
         falar(cena, antonio, "Miúda, cabelo preso, casaco vinho. Subindo a rua, no passo de quem sabe onde vai.");
@@ -564,7 +558,6 @@ public class Historia {
         cena.getOpcoes().add(
                 new Escolha("ESC0403", "Sair rápido, sem conversa.", getCena("CAP04B"))
                         .comConfianca(antonio, -15));
-
         // ---- a janela dos fundos ----
         Cena janela = getCena("CAP04B");
 
@@ -588,7 +581,7 @@ public class Historia {
     }
 
     /**
-     * CAPITULO 5 -- A ponte.
+     * CAPITULO 5, A ponte.
      * Primeiro ponto de desistencia (so pra quem pediu a porta no capitulo 1)
      * e a decisao sobre o Davi.
      */
@@ -598,7 +591,7 @@ public class Historia {
         Npc antonio = partida.getAntonio();
 
         falar(cena, antonio, "Aqui é a Serra, três e dez da manhã, e eu vou repetir porque é importante.");
-        falar(cena, antonio, "Pra quem estiver perto de água corrente: fiquem. É o único lugar que eles não pisam.");
+        falar(cena, antonio, "Quem estiver perto de água corrente deve ficar por aí. É o único lugar que eles não pisam.");
 
         cena.getOpcoes().add(
                 new Escolha("ESC0501", "Levar Davi junto.", getCena("CAP06"))
@@ -607,7 +600,7 @@ public class Historia {
                         .comConfianca(davi, 20)
                         .comAtributo(Atributo.FOLEGO, -10));
 
-        // A escolha CERTA segundo a regra da agua corrente -- e a que mais
+        // A escolha CERTA segundo a regra da agua corrente, e a que mais
         // parece abandono. O jogo nao avisa qual e qual.
         cena.getOpcoes().add(
                 new Escolha("ESC0502", "Deixar Davi na ponte, perto da água.", getCena("CAP06"))
@@ -630,7 +623,7 @@ public class Historia {
     }
 
     /**
-     * CAPITULO 6 -- O patio do hospital.
+     * CAPITULO 6, O patio do hospital.
      * A escolha que mata aqui e bloqueada por lucidez BAIXA: quem esta lucido
      * demais acha que consegue contar as figuras, e e justamente quem morre.
      */
@@ -678,7 +671,7 @@ public class Historia {
     }
 
     /**
-     * CAPITULO 7 -- A vela (terceira regra) e a medalha.
+     * CAPITULO 7, A vela (terceira regra) e a medalha.
      * Aceitar a vela NAO mata aqui. Ela fica no bolso e cobra no capitulo 8.
      */
     private void montarCap07(Partida partida) {
@@ -720,7 +713,7 @@ public class Historia {
                         .ganhaItem(Item.MEDALHA)
                         .comAtributo(Atributo.FOLEGO, -10));
 
-        // Unico caminho pra medalha com folego baixo -- e so existe pra quem
+        // Unico caminho pra medalha com folego baixo, e so existe pra quem
         // tratou bem o menino cinco capitulos atras.
         alpendre.getOpcoes().add(
                 new Escolha("ESC0706", "Pedir pro Davi subir nos seus ombros.", getCena("CAP08"))
@@ -735,7 +728,7 @@ public class Historia {
     }
 
     /**
-     * CAPITULO 8 -- A armadilha da vela fecha aqui.
+     * CAPITULO 8, A armadilha da vela fecha aqui.
      * Segundo ponto de desistencia, e onde Zulmira entrega a chave.
      */
     private void montarCap08(Partida partida) {
@@ -744,7 +737,7 @@ public class Historia {
         Npc zulmira = partida.getZulmira();
         Protagonista vicente = partida.getProtagonista();
 
-        falar(cena, antonio, "-- e são três e vinte. Falta uma hora e quarenta.");
+        falar(cena, antonio, "São três e vinte. Falta uma hora e quarenta.");
         falar(cena, antonio, "Se você ta com uma vela no bolso que você não acendeu, joga fora. Joga longe.");
         falar(cena, antonio, "Meu filho guardou a dele no bolso do paletó. Eu achei depois, e ela ainda tava quente.");
 
@@ -849,10 +842,10 @@ public class Historia {
     }
 
     /**
-     * CAPITULO 10 -- O amanhecer.
+     * CAPITULO 10, O amanhecer.
      * As tres primeiras escolhas sao FALAS: apontam pra propria cena e
      * aumentam a confianca da Manuela. So com a confianca em 75 a escolha do
-     * final bom aparece -- e chegar la depende do casaco (capitulo 9), da
+     * final bom aparece e chegar la depende do casaco (capitulo 9), da
      * lucidez acumulada e do pedido feito no capitulo 1.
      */
     private void montarCap10(Partida partida) {
@@ -923,7 +916,7 @@ public class Historia {
         return cena;
     }
 
-    /** Quantidade de cenas montadas -- util pra provar os dez capitulos. */
+    /** Quantidade de cenas montadas, util pra provar os dez capitulos. */
     public int totalDeCenas() {
         return cenas.size();
     }
