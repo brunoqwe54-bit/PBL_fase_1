@@ -199,6 +199,7 @@ public class Historia {
     // ---------------- mortes ----------------
 
     private static final String T_MORTE_NOME =
+            "GAME OVER\n\n" +
             "Você vira.\n\n" +
             "Não tem nada. Tem a rua, tem o poste queimado, tem a casa dos Pereira\n" +
             "com a janela fechada.\n\n" +
@@ -208,6 +209,7 @@ public class Historia {
             "é a última coisa que você faz.";
 
     private static final String T_MORTE_FILA =
+            "GAME OVER\n\n" +
             "Você entra na fila achando que da pra passar entre duas pessoas.\n" +
             "Da. Você passa.\n\n" +
             "Do outro lado, você continua andando. Bem devagar. Cantando baixo -- e a\n" +
@@ -216,6 +218,7 @@ public class Historia {
             "Alguém põe uma vela acesa na sua mão. Você agradece.";
 
     private static final String T_MORTE_JANELA =
+            "GAME OVER\n\n" +
             "A janela é de vidro canelado, daquelas que deixam ver vulto e não deixam\n" +
             "ver cara.\n\n" +
             "Tem um vulto. Da altura de uma pessoa de dezenove anos.\n\n" +
@@ -223,6 +226,7 @@ public class Historia {
             "abrir é o que a mão faz.";
 
     private static final String T_MORTE_PATIO =
+            "GAME OVER\n\n" +
             "Um. Dois. Três. Quatro.\n\n" +
             "Na quinta janela você percebe que eles não estão mais olhando pro pátio.\n" +
             "Estão olhando pra você.\n\n" +
@@ -232,6 +236,7 @@ public class Historia {
             "em você primeiro.";
 
     private static final String T_MORTE_CASARAO =
+            "GAME OVER\n\n" +
             "A sala é grande e tem gente sentada em todas as cadeiras. Ninguém come.\n" +
             "Tem prato, tem talher, tem toalha de renda, mas ninguém come.\n\n" +
             "Eles abrem um lugar pra você na ponta da mesa. A cadeira já está puxada,\n" +
@@ -240,6 +245,7 @@ public class Historia {
             "Você senta, porque seria falta de educação não sentar.";
 
     private static final String T_MORTE_VELA =
+            "GAME OVER\n\n" +
             "Você acende. A chama é pequena, amarela e comum, e por um segundo você\n" +
             "se sente ridículo.\n\n" +
             "Depois o canto para. Duzentas pessoas viram a cabeça ao mesmo tempo, e\n" +
@@ -249,6 +255,7 @@ public class Historia {
             "que estava só sendo educado.";
 
     private static final String T_MORTE_CHAMOU =
+            "GAME OVER\n\n" +
             "-- MANUELA!\n\n" +
             "O canto para. E então, muito devagar, todos eles respondem.\n\n" +
             "Duzentas vozes dizem o nome da sua irmã ao mesmo tempo, e a última voz a\n" +
@@ -257,11 +264,13 @@ public class Historia {
             "E depois ela diz o seu.";
 
     private static final String T_MORTE_CIRCULO =
+            "GAME OVER\n\n" +
             "Você entra. Alguém põe uma vela na sua mão e você agradece, porque foi\n" +
             "gentileza.\n\n" +
             "Manuela olha pra você e sorri, e é o sorriso mais aliviado que você já\n" +
-            "viu na cara dela, e é agora que você entende: ela não queria ser salva.\n\n" +
-            "Ela queria companhia.\n\n" +
+            "viu na cara dela, e é agora que você entende.\n\n" +
+            "O chamado era de verdade. Ela ouviu mesmo, e ela ia de qualquer jeito.\n\n" +
+            "Ela só não queria ir sozinha.\n\n" +
             "O canto recomeça. Você sabe a letra.";
 
     // ================================================================
@@ -323,14 +332,14 @@ public class Historia {
         criar("FIM_A_TEMPO",   "FIM",       T_FIM_A_TEMPO);
         criar("FIM_TARDE",     "FIM",       T_FIM_TARDE);
         criar("FIM_DESISTE",   "FIM",       T_FIM_DESISTE);
-        criar("MORTE_NOME",    "O Sorriso", T_MORTE_NOME);
-        criar("MORTE_FILA",    "A Procissão", T_MORTE_FILA);
-        criar("MORTE_JANELA",  "Do Outro Lado", T_MORTE_JANELA);
-        criar("MORTE_PÁTIO",   "A Contagem", T_MORTE_PATIO);
-        criar("MORTE_CASARÃO", "Lugar à Mesa", T_MORTE_CASARAO);
-        criar("MORTE_VELA",    "O Convite", T_MORTE_VELA);
-        criar("MORTE_CHAMOU",  "A Chamada", T_MORTE_CHAMOU);
-        criar("MORTE_CÍRCULO", "Companhia", T_MORTE_CIRCULO);
+        criar("MORTE_NOME",    "GAME OVER", T_MORTE_NOME);
+        criar("MORTE_FILA",    "GAME OVER", T_MORTE_FILA);
+        criar("MORTE_JANELA",  "GAME OVER", T_MORTE_JANELA);
+        criar("MORTE_PÁTIO",   "GAME OVER", T_MORTE_PATIO);
+        criar("MORTE_CASARÃO", "GAME OVER", T_MORTE_CASARAO);
+        criar("MORTE_VELA",    "GAME OVER", T_MORTE_VELA);
+        criar("MORTE_CHAMOU",  "GAME OVER", T_MORTE_CHAMOU);
+        criar("MORTE_CÍRCULO", "GAME OVER", T_MORTE_CIRCULO);
     }
 
     // ================================================================
@@ -352,6 +361,8 @@ public class Historia {
         falar(cena, otavio,  "Ela sabia. Sabe desde os seis anos, igual a gente. Ninguém sai na Noite Longa.");
         falar(cena, vicente, "Ela tem dezessete.");
         falar(cena, otavio,  "E você tem vinte e dois e tá com a mão na maçaneta.");
+        falar(cena, otavio,  "Todo ano ela pede pra ficar acordada nessa noite. Todo ano eu mando ela dormir.");
+        falar(cena, otavio,  "Hoje ela não pediu. E ela não saiu correndo, não. Saiu andando.");
         falar(cena, otavio,  "Se você sair, eu tranco. Não é ameaça, é o que se faz. A mãe fazia.");
         falar(cena, otavio,  "E se você bater, eu não abro. Você sabe que eu não abro.");
 
@@ -468,6 +479,10 @@ public class Historia {
         falar(conversa, zulmira, "Zulmira. Você é o do meio dos Nogueira. O da oficina.");
         falar(conversa, vicente, "A senhora ta na rua.");
         falar(conversa, zulmira, "Todo ano, meu filho. Faz trinta e um.");
+        falar(conversa, vicente, "A senhora não tem medo deles?");
+        falar(conversa, zulmira, "Eles não pegam ninguém. Nunca pegaram. Eles convidam.");
+        falar(conversa, zulmira, "E convidam com a voz de quem faz falta. É por isso que funciona.");
+        falar(conversa, zulmira, "Ninguém diz sim de primeira. Ninguém quer ir sozinho.");
 
         conversa.getOpcoes().add(
                 new Escolha("ESC0305", "Perguntar as regras.", getCena("CAP04"))
@@ -499,6 +514,9 @@ public class Historia {
         falar(cena, antonio, "Fecha a porta. Fecha e senta.");
         falar(cena, antonio, "Nogueira. Sua mãe trabalhou aqui. Dois anos. Lia o boletim das seis.");
         falar(cena, antonio, "Você tem a voz dela.");
+        falar(cena, antonio, "Escuta uma coisa antes de sair daqui.");
+        falar(cena, antonio, "Se te oferecerem qualquer coisa hoje -- vela, carona, lugar na fila -- não aceita.");
+        falar(cena, antonio, "Aceitar é responder. E responder é dizer sim, mesmo que você ache que tá só sendo educado.");
 
         cena.getOpcoes().add(
                 new Escolha("ESC0401", "Ouvir a transmissão inteira.", getCena("CAP04B"))
@@ -522,6 +540,8 @@ public class Historia {
 
         falar(janela, antonio, "Em 1994 eu tinha um filho de dezenove anos.");
         falar(janela, antonio, "Ele saiu numa Noite Longa e não teve ninguém dizendo pra ele não olhar pra trás.");
+        falar(janela, antonio, "Toda Noite Longa ele bate ali atrás. Três vezes, para, três vezes.");
+        falar(janela, antonio, "Eu não abro.");
 
         janela.getOpcoes().add(
                 new Escolha("ESC0404", "Ir olhar a janela dos fundos.", getCena("MORTE_JANELA")));
@@ -814,6 +834,7 @@ public class Historia {
         Protagonista vicente = partida.getProtagonista();
 
         falar(cena, manuela, "Eu sabia que era você. Eu falei pra eles que ia ser você.");
+        falar(cena, manuela, "Eu não peguei a vela ainda. Eu tava esperando você chegar.");
         falar(cena, vicente, "Por que você saiu?");
         falar(cena, manuela, "Porque a mãe ta aqui.");
         falar(cena, manuela, "Todo ano ela passa na nossa rua e todo ano vocês dois fecham a janela.");

@@ -5,8 +5,16 @@ target/
 *.class
 
 # IntelliJ IDEA
-.idea/
-*.iml
+# A configuracao do projeto (.iml, misc.xml, modules.xml) E versionada,
+# pra que o projeto abra pronto em qualquer maquina -- com a biblioteca
+# do JUnit apontando pra pasta lib/ daqui mesmo.
+# Ja o workspace.xml guarda coisas de cada maquina (janelas abertas,
+# historico) e so serviria pra dar conflito.
+.idea/workspace.xml
+.idea/usage.statistics.xml
+.idea/shelf/
+.idea/httpRequests/
+.idea/dictionaries/
 
 # Sistema operacional
 Thumbs.db
