@@ -232,7 +232,6 @@ public class Historia {
     // ---------------- mortes ----------------
 
     private static final String T_MORTE_NOME =
-            "GAME OVER\n\n" +
             "Você vira.\n\n" +
             "Não tem nada. Tem a rua, tem o poste queimado, tem a casa dos Pereira\n" +
             "com a janela fechada.\n\n" +
@@ -242,7 +241,6 @@ public class Historia {
             "é a última coisa que você faz.";
 
     private static final String T_MORTE_FILA =
-            "GAME OVER\n\n" +
             "Você entra na fila achando que da pra passar entre duas pessoas.\n" +
             "Da. Você passa.\n\n" +
             "Do outro lado, você continua andando. Bem devagar. Cantando baixo -- e a\n" +
@@ -251,7 +249,6 @@ public class Historia {
             "Alguém põe uma vela acesa na sua mão. Você agradece.";
 
     private static final String T_MORTE_JANELA =
-            "GAME OVER\n\n" +
             "A janela é de vidro canelado, daquelas que deixam ver vulto e não deixam\n" +
             "ver cara.\n\n" +
             "Tem um vulto. Da altura de uma pessoa de dezenove anos.\n\n" +
@@ -259,7 +256,6 @@ public class Historia {
             "abrir é o que a mão faz.";
 
     private static final String T_MORTE_PATIO =
-            "GAME OVER\n\n" +
             "Um. Dois. Três. Quatro.\n\n" +
             "Na quinta janela você percebe que eles não estão mais olhando pro pátio.\n" +
             "Estão olhando pra você.\n\n" +
@@ -269,7 +265,6 @@ public class Historia {
             "em você primeiro.";
 
     private static final String T_MORTE_CASARAO =
-            "GAME OVER\n\n" +
             "A sala é grande e tem gente sentada em todas as cadeiras. Ninguém come.\n" +
             "Tem prato, tem talher, tem toalha de renda, mas ninguém come.\n\n" +
             "Eles abrem um lugar pra você na ponta da mesa. A cadeira já está puxada,\n" +
@@ -278,7 +273,6 @@ public class Historia {
             "Você senta, porque seria falta de educação não sentar.";
 
     private static final String T_MORTE_VELA =
-            "GAME OVER\n\n" +
             "Você acende. A chama é pequena, amarela e comum, e por um segundo você\n" +
             "se sente ridículo.\n\n" +
             "Depois o canto para. Duzentas pessoas viram a cabeça ao mesmo tempo, e\n" +
@@ -288,7 +282,6 @@ public class Historia {
             "que estava só sendo educado.";
 
     private static final String T_MORTE_CHAMOU =
-            "GAME OVER\n\n" +
             "-- MANUELA!\n\n" +
             "O canto para. E então, muito devagar, todos eles respondem.\n\n" +
             "Duzentas vozes dizem o nome da sua irmã ao mesmo tempo, e a última voz a\n" +
@@ -297,7 +290,6 @@ public class Historia {
             "E depois ela diz o seu.";
 
     private static final String T_MORTE_CIRCULO =
-            "GAME OVER\n\n" +
             "Você entra. Alguém põe uma vela na sua mão e você agradece, porque foi\n" +
             "gentileza.\n\n" +
             "Manuela olha pra você e sorri, e é o sorriso mais aliviado que você já\n" +
@@ -365,14 +357,14 @@ public class Historia {
         criar("FIM_A_TEMPO",   "FIM",       T_FIM_A_TEMPO);
         criar("FIM_TARDE",     "FIM",       T_FIM_TARDE);
         criar("FIM_DESISTE",   "FIM",       T_FIM_DESISTE);
-        criar("MORTE_NOME",    "GAME OVER", T_MORTE_NOME);
-        criar("MORTE_FILA",    "GAME OVER", T_MORTE_FILA);
-        criar("MORTE_JANELA",  "GAME OVER", T_MORTE_JANELA);
-        criar("MORTE_PÁTIO",   "GAME OVER", T_MORTE_PATIO);
-        criar("MORTE_CASARÃO", "GAME OVER", T_MORTE_CASARAO);
-        criar("MORTE_VELA",    "GAME OVER", T_MORTE_VELA);
-        criar("MORTE_CHAMOU",  "GAME OVER", T_MORTE_CHAMOU);
-        criar("MORTE_CÍRCULO", "GAME OVER", T_MORTE_CIRCULO);
+        criar("MORTE_NOME",    "O Sorriso", T_MORTE_NOME);
+        criar("MORTE_FILA",    "A Procissão", T_MORTE_FILA);
+        criar("MORTE_JANELA",  "Do Outro Lado", T_MORTE_JANELA);
+        criar("MORTE_PÁTIO",   "A Contagem", T_MORTE_PATIO);
+        criar("MORTE_CASARÃO", "Lugar à Mesa", T_MORTE_CASARAO);
+        criar("MORTE_VELA",    "O Convite", T_MORTE_VELA);
+        criar("MORTE_CHAMOU",  "A Chamada", T_MORTE_CHAMOU);
+        criar("MORTE_CÍRCULO", "Companhia", T_MORTE_CIRCULO);
     }
 
     // ================================================================
