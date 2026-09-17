@@ -85,10 +85,8 @@ public class MenuInicial {
         System.out.println();
         System.out.println("Mas lá fora, ninguém te ajuda de graça. Cada passo consome um fôlego");
         System.out.println("que não se recupera. O que você escolher dizer para as pessoas nesta");
-        System.out.println("noite, elas vão lembrar depois. E o seu primeiro teste de");
-        System.out.println("sobrevivência começa agora: se a porta da sua casa estará trancada");
-        System.out.println("ou destrancada na sua volta, depende de uma única escolha que você");
-        System.out.println("fará nos próximos dois minutos.");
+        System.out.println("noite, elas vão lembrar depois.");
+        System.out.println("Seu primeiro teste de sobrevivência começa agora.");
         aguardarEnter();
     }
     public void exibirInstrucoes() {
