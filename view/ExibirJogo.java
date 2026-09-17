@@ -75,7 +75,11 @@ public class ExibirJogo {
     /** Mostra o que a escolha mudou. Se nao mudou nada, nao mostra nada. */
     public void exibirConsequencia(String aviso) {
         if (aviso != null) {
-            System.out.println("\n  > " + aviso);
+            System.out.println();
+            // O aviso vem com uma linha por efeito.
+            for (String linha : aviso.split("\n")) {
+                System.out.println("  > " + linha);
+            }
             aguardarEnter();
         }
     }

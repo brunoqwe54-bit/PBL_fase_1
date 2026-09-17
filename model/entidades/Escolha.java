@@ -154,23 +154,28 @@ public class Escolha {
      * pra View poder mostrar. Devolve null quando nao houve efeito visivel.
      */
     public String aplicar(Partida partida) {
+        // Cada efeito vira UMA LINHA. A view imprime uma embaixo da outra,
+        // pra ninguem confundir o que mudou no NPC com o que mudou no jogador.
         String aviso = "";
 
         if (npc != null && consequencia != 0) {
             npc.alterarConfianca(consequencia);
-            aviso += npc.getNome() + (consequencia > 0 ? " confia mais em você. " : " confia menos em você. ");
+            aviso += npc.getNome()
+                   + (consequencia > 0 ? " confia mais em você" : " confia menos em você")
+                   + " (confiança " + comSinal(consequencia) + ", agora " + npc.getConfianca() + ")\n";
         }
         if (atributoAfetado != null && deltaAtributo != 0) {
             partida.getProtagonista().alterarAtributo(atributoAfetado, deltaAtributo);
-            aviso += atributoAfetado.getNomeExibicao() + " " + (deltaAtributo > 0 ? "+" : "") + deltaAtributo + ". ";
+            aviso += atributoAfetado.getNomeExibicao() + " " + comSinal(deltaAtributo)
+                   + " (agora " + partida.getProtagonista().getAtributo(atributoAfetado) + ")\n";
         }
         if (itemGanho != null) {
             partida.getInventario().adicionar(itemGanho);
-            aviso += "Você guardou: " + itemGanho.getNomeExibicao() + ". ";
+            aviso += "Você guardou: " + itemGanho.getNomeExibicao() + "\n";
         }
         if (itemPerdido != null) {
             partida.getInventario().remover(itemPerdido);
-            aviso += "Você não tem mais: " + itemPerdido.getNomeExibicao() + ". ";
+            aviso += "Você não tem mais: " + itemPerdido.getNomeExibicao() + "\n";
         }
         if (flagLigada != null) {
             partida.ligarFlag(flagLigada);
@@ -178,6 +183,11 @@ public class Escolha {
         }
 
         return aviso.isEmpty() ? null : aviso.trim();
+    }
+
+    /** Escreve o numero com o sinal na frente: +10, -5. */
+    private String comSinal(int valor) {
+        return valor > 0 ? "+" + valor : "" + valor;
     }
 
     // ================================================================

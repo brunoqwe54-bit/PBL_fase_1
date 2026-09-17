@@ -360,7 +360,7 @@ public class Historia {
         falar(cena, otavio,  "Ela sabia. Sabe desde os seis anos, igual a gente. Ninguém sai na Noite Longa.");
         falar(cena, vicente, "Ela tem dezessete.");
         falar(cena, otavio,  "E você tem vinte e dois e tá com a mão na maçaneta.");
-        falar(cena, otavio,  "Se você sair, eu tranco. Não é ameaça, é o que se faz. Mãe fazia.");
+        falar(cena, otavio,  "Se você sair, eu tranco. Não é ameaça, é o que se faz. A mãe fazia.");
         falar(cena, otavio,  "E se você bater, eu não abro. Você sabe que eu não abro.");
 
         cena.getOpcoes().add(
@@ -391,8 +391,11 @@ public class Historia {
         Npc mae = partida.getMae();
         Npc davi = partida.getDavi();
 
-        falar(cena, mae, "Vicente.");
-        falar(cena, mae, "Vicente. Olha pra mim, meu filho.");
+        // O nome vem do que o jogador digitou no menu.
+        String nome = partida.getProtagonista().getNome();
+
+        falar(cena, mae, nome + ".");
+        falar(cena, mae, nome + ". Olha pra mim, meu filho.");
 
         cena.getOpcoes().add(
                 new Escolha("ESC0201", "Olhar.", getCena("MORTE_NOME")));
@@ -820,7 +823,7 @@ public class Historia {
 
         falar(cena, manuela, "Eu sabia que era você. Eu falei pra eles que ia ser você.");
         falar(cena, vicente, "Por que você saiu?");
-        falar(cena, manuela, "Porque mãe ta aqui.");
+        falar(cena, manuela, "Porque a mãe ta aqui.");
         falar(cena, manuela, "Todo ano ela passa na nossa rua e todo ano vocês dois fecham a janela.");
         falar(cena, manuela, "Eu só queria ver. Aí eu vi.");
 
@@ -831,7 +834,7 @@ public class Historia {
                         .comConfianca(manuela, 20));
 
         cena.getOpcoes().add(
-                new Escolha("ESC1002", "Dizer que mãe não está ali.", cena)
+                new Escolha("ESC1002", "Dizer que a mãe não está ali.", cena)
                         .exigeAtributo(Atributo.LUCIDEZ, 55, "você mesmo não tem certeza disso")
                         .proibeFlag(Flag.FALOU_DA_VOZ, "você já disse isso")
                         .ligaFlag(Flag.FALOU_DA_VOZ)

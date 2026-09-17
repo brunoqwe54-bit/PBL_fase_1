@@ -34,7 +34,7 @@ public class JogoController {
                 case 1:
                     String nomeProtagonista = menuInicial.pedirNome();
                     Preset preset = menuInicial.pedirPreset();
-                    menuInicial.exibirMensagem("O jogo está sendo iniciado...");
+                    menuInicial.exibirSinopse();
                     jogar(nomeProtagonista, preset);
                     break;
                 case 2:
