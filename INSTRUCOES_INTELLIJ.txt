@@ -1,0 +1,61 @@
+A NOITE LONGA - COMO ABRIR E RODAR PELO INTELLIJ
+Bruno Gabriel Santos Pinto e Caio Cerqueira Francisco Batista
+EXA863, MI Programacao, 2026.2 - Prof. Roberto Almeida Bittencourt
+
+
+1. DESCOMPACTAR O ZIP
+
+Descompacte o arquivo mantendo a estrutura de pastas. Atencao: a pasta
+.idea (com ponto na frente) e o arquivo Pbl_Fase_1.iml precisam estar
+juntos do lado de fora, na pasta raiz do projeto. Alguns programas de
+descompactar escondem pastas que comecam com ponto, entao confira se
+ela realmente foi extraida antes do proximo passo.
+
+Depois de extrair, a pasta raiz deve conter, entre outras coisas:
+Pbl_Fase_1.iml, a pasta .idea, a pasta lib, Main.java e as pastas
+controller, model, view e test.
+
+
+2. ABRIR NO INTELLIJ
+
+Abra o IntelliJ, va em File > Open e selecione a pasta raiz do projeto
+(a que tem o arquivo Pbl_Fase_1.iml dentro). Se aparecer um aviso
+perguntando se confia no projeto, escolha "Trust Project".
+
+O IntelliJ vai indexar os arquivos por alguns segundos (barra de
+progresso no rodape). E so esperar terminar.
+
+
+3. SE O INTELLIJ RECLAMAR DO JDK
+
+O projeto foi configurado com o JDK do nosso computador, entao o
+IntelliJ pode avisar que nao encontrou o SDK do projeto. Se isso
+acontecer, va em File > Project Structure (ou Ctrl+Alt+Shift+S),
+em Project escolha, no campo SDK, algum JDK que ja esteja instalado
+na sua maquina (o projeto usa recursos do JDK 21, entao precisa ser
+21 ou mais novo). Se nao tiver nenhum listado, o proprio IntelliJ
+tem a opcao "Download JDK" na mesma tela.
+
+A biblioteca do JUnit ja vem configurada apontando para a pasta lib/
+que esta dentro do zip, entao nao precisa adicionar nada de Maven
+ou Gradle.
+
+
+4. RODAR O JOGO
+
+Abra o arquivo Main.java (pasta raiz do projeto) e clique com o botao
+direito em qualquer lugar do codigo. Escolha a opcao "Run Main.main()".
+O jogo roda no console que abre na parte de baixo do IntelliJ; as
+respostas do jogador sao digitadas ali mesmo.
+
+Se algum acento aparecer errado no console (tipo "?" no lugar de "a"),
+va em Run > Edit Configurations, selecione a configuracao Main, e no
+campo VM options adicione:
+-Dstdout.encoding=UTF-8
+
+
+5. RODAR OS TESTES (OPCIONAL)
+
+Para rodar os testes automatizados, clique com o botao direito na
+pasta test (no menu lateral de arquivos) e escolha "Run 'Tests in
+test'". O IntelliJ ja sabe usar o JUnit que esta na pasta lib.
