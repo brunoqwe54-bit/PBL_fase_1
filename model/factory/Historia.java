@@ -37,9 +37,11 @@ import java.util.Map;
  */
 public class Historia {
 
-    // ================================================================
-    // NARRAÇÃO
-    // ================================================================
+    /*
+     * ================================================================
+     * NARRAÇÃO
+     * ================================================================
+     */
 
     private static final String T_CAP01 =
             "A chave ainda está na fechadura. Otávio não tirou.\n\n" +
@@ -180,7 +182,7 @@ public class Historia {
             "Ela ainda não aceitou nenhuma das duas.\n\n" +
             "Cinco horas de espera, e a Procissão tem a noite toda.\n" +
             "Mas a noite está, agora, a quarenta minutos do fim.";
-// ---------------- desfechos ----------------
+// Desfechos
     private static final String T_FIM_A_TEMPO =
             "FINAL 1 - CHEGA A TEMPO\n\n" +
             "Ela solta a mão do homem de terno.\n\n" +
@@ -226,7 +228,7 @@ public class Historia {
             "toda vez que a Procissão passa, os dois ficam parados no meio da sala,\n" +
             "tentando escutar se tem uma voz de dezessete anos naquele canto.\n\n" +
             "Tem. Sempre tem.";
-    // ---------------- mortes ----------------
+    // Mortes
     private static final String T_MORTE_NOME =
             "Você vira.\n\n" +
             "Não tem nada. Tem a rua, tem o poste queimado, tem a casa dos Pereira\n" +
@@ -294,9 +296,11 @@ public class Historia {
             "Ela só não queria ir sozinha.\n\n" +
             "O canto recomeça. Você sabe a letra.";
 
-    // ================================================================
-    // O MAPA DAS CENAS
-    // ================================================================
+    /*
+     * ================================================================
+     * O MAPA DAS CENAS
+     * ================================================================
+     */
 
     private Map<String, Cena> cenas = new HashMap<>();
 
@@ -325,9 +329,11 @@ public class Historia {
         return getCena("CAP01");
     }
 
-    // ================================================================
-    // 1ª PASSADA -- todas as cenas nascem vazias
-    // ================================================================
+    /*
+     * ================================================================
+     * 1ª PASSADA, todas as cenas nascem vazias
+     * ================================================================
+     */
 
     private void criarCenas() {
         criar("CAP01",  "Capítulo 1 - A Porta",               T_CAP01);
@@ -348,8 +354,10 @@ public class Historia {
         criar("CAP09B", "Capítulo 9 - As Três Entradas",      T_CAP09B);
         criar("CAP10",  "Capítulo 10 - O Amanhecer",          T_CAP10);
 
-        // Desfechos e mortes: cenas SEM escolhas. O laço do controller já
-        // encerra o jogo quando a cena não tem opções.
+        /*
+         * Desfechos e mortes: cenas SEM escolhas. O laço do controller já
+         * encerra o jogo quando a cena não tem opções.
+         */
         criar("FIM_A_TEMPO",   "FIM",       T_FIM_A_TEMPO);
         criar("FIM_TARDE",     "FIM",       T_FIM_TARDE);
         criar("FIM_DESISTE",   "FIM",       T_FIM_DESISTE);
@@ -363,9 +371,11 @@ public class Historia {
         criar("MORTE_CÍRCULO", "Companhia", T_MORTE_CIRCULO);
     }
 
-    // ================================================================
-    // 2ª PASSADA, um método por capítulo
-    // ================================================================
+    /*
+     * ================================================================
+     * 2ª PASSADA, um método por capítulo
+     * ================================================================
+     */
 
     /**
      * CAPÍTULO 1, A Porta.
@@ -433,7 +443,7 @@ public class Historia {
                         .exigeAtributo(Atributo.CORAGEM, 55, "sua voz não sai")
                         .comAtributo(Atributo.CORAGEM, 10)
                         .comAtributo(Atributo.LUCIDEZ, -5));
-        // ---- a esquina, com o Davi ----
+        // A esquina, com o Davi
         Cena esquina = getCena("CAP02B");
 
         falar(esquina, davi, "O Tico fugiu. Eu só vim pegar o Tico.");
@@ -493,7 +503,7 @@ public class Historia {
 
         cena.getOpcoes().add(
                 new Escolha("ESC0304", "Atravessar a fila.", getCena("MORTE_FILA")));
-        // ---- a conversa com Zulmira ----
+        // A conversa com Zulmira
         Cena conversa = getCena("CAP03B");
 
         falar(conversa, zulmira, "Zulmira. Você é o do meio dos Nogueira. O da oficina.");
@@ -557,7 +567,7 @@ public class Historia {
         cena.getOpcoes().add(
                 new Escolha("ESC0403", "Sair rápido, sem conversa.", getCena("CAP04B"))
                         .comConfianca(antonio, -15));
-        // ---- a janela dos fundos ----
+        // A janela dos fundos
         Cena janela = getCena("CAP04B");
 
         falar(janela, antonio, "Em 1994 eu tinha um filho de dezenove anos.");
@@ -599,8 +609,7 @@ public class Historia {
                         .comConfianca(davi, 20)
                         .comAtributo(Atributo.FOLEGO, -10));
 
-        // A escolha CERTA segundo a regra da água corrente, e a que mais
-        // parece abandono. O jogo não avisa qual é qual.
+
         cena.getOpcoes().add(
                 new Escolha("ESC0502", "Deixar Davi na ponte, perto da água.", getCena("CAP06"))
                         .exigeFlag(Flag.SALVOU_DAVI, "não tem ninguém com você")
@@ -648,7 +657,7 @@ public class Historia {
                 new Escolha("ESC0603", "Parar no meio do pátio e contar quantos são.", getCena("MORTE_PÁTIO"))
                         .exigeAtributo(Atributo.LUCIDEZ, 70, "você nem pensaria nisso"));
 
-        // ---- o muro, com Zulmira ----
+        // O muro, com Zulmira
         Cena muro = getCena("CAP06B");
 
         falar(muro, zulmira, "Demorou.");
@@ -703,7 +712,7 @@ public class Historia {
         cena.getOpcoes().add(
                 new Escolha("ESC0704", "Entrar na casa com ele.", getCena("MORTE_CASARÃO")));
 
-        // ---- o alpendre e a medalha ----
+        // O alpendre e a medalha
         Cena alpendre = getCena("CAP07B");
 
         alpendre.getOpcoes().add(
@@ -712,8 +721,10 @@ public class Historia {
                         .ganhaItem(Item.MEDALHA)
                         .comAtributo(Atributo.FOLEGO, -10));
 
-        // Único caminho pra medalha com fôlego baixo, e só existe pra quem
-        // tratou bem o menino cinco capítulos atrás.
+        /*
+         * Único caminho pra medalha com fôlego baixo, e só existe pra quem
+         * tratou bem o menino cinco capítulos atrás.
+         */
         alpendre.getOpcoes().add(
                 new Escolha("ESC0706", "Pedir pro Davi subir nos seus ombros.", getCena("CAP08"))
                         .exigeFlag(Flag.DAVI_JUNTO, "Davi não está com você")
@@ -766,7 +777,7 @@ public class Historia {
                 new Escolha("ESC0804", "Voltar. Ir embora. Não vale.", getCena("FIM_DESISTE"))
                         .exigeFlag(Flag.PORTA_ABERTA, "a porta está trancada"));
 
-        // ---- o meio-fio, com Zulmira ----
+        // O meio-fio, com Zulmira
         Cena meioFio = getCena("CAP08B");
 
         falar(meioFio, zulmira, "Senta um pouco.");
@@ -810,7 +821,7 @@ public class Historia {
                         .exigeAtributo(Atributo.LUCIDEZ, 70, "você não consegue desconfiar disso agora")
                         .comAtributo(Atributo.LUCIDEZ, 5));
 
-        // ---- as três entradas ----
+        // As três entradas
         Cena entradas = getCena("CAP09B");
 
         entradas.getOpcoes().add(
@@ -829,9 +840,11 @@ public class Historia {
                         .comAtributo(Atributo.FOLEGO, -25)
                         .comAtributo(Atributo.CORAGEM, -5));
 
-        // SAÍDA DE SEGURANÇA: sem ela, um jogador sem chave, sem medalha e com
-        // fôlego baixo só teria a escolha que mata. Toda cena precisa de pelo
-        // menos uma saída que não seja a morte.
+        /*
+         * SAÍDA DE SEGURANÇA: sem ela, um jogador sem chave, sem medalha e
+         * com fôlego baixo só teria a escolha que mata. Toda cena precisa
+         * de pelo menos uma saída que não seja a morte.
+         */
         entradas.getOpcoes().add(
                 new Escolha("ESC0907", "Ficar no portão e esperar o sol nascer.", getCena("FIM_TARDE"))
                         .comAtributo(Atributo.CORAGEM, -15));
@@ -891,9 +904,11 @@ public class Historia {
                 new Escolha("ESC1006", "Entrar no círculo com ela.", getCena("MORTE_CÍRCULO")));
     }
 
-    // ================================================================
-    // AUXILIARES
-    // ================================================================
+    /*
+     * ================================================================
+     * AUXILIARES
+     * ================================================================
+     */
 
     private void criar(String id, String titulo, String texto) {
         cenas.put(id, new Cena(id, titulo, texto));
@@ -915,7 +930,7 @@ public class Historia {
         return cena;
     }
 
-    /** Quantidade de cenas montadas, útil pra provar os dez capítulos. */
+
     public int totalDeCenas() {
         return cenas.size();
     }
