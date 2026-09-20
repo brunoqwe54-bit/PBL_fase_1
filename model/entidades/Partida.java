@@ -10,12 +10,8 @@ import java.util.Set;
 /**
  * O estado de um jogo em andamento: tudo que muda enquanto se joga.
  *
- * A separação vale a pena entender: a classe Historia é o livro, igual
- * para todo mundo; a Partida é o marcador de página e a mochila de um
- * jogador.
- *
- * Ela guarda quatro coisas, e nenhuma outra parte do programa guarda
- * estado que mude: o Protagonista, com os três atributos, o Inventario,
+ * Ela guarda quatro coisas, e nenhuma outra parte do programa guarda:
+ * o Protagonista, com os três atributos, o Inventario,
  * com os itens, os sete NPCs, cada um com sua confiança, e o conjunto de
  * flags ligadas, as decisões que o jogo memoriza.
  *
@@ -34,9 +30,10 @@ public class Partida {
     // 2. ONDE O JOGADOR ESTÁ
     private Cena cenaAtual;
 
-    // 3. DECISÕES ANTERIORES
-    // Um conjunto guarda as flags que já foram ligadas. O enum Flag lista
-    // as possíveis; este Set guarda as que aconteceram nesta partida.
+    /* 3. DECISÕES ANTERIORES
+    * Um conjunto guarda as flags que já foram ligadas. O enum Flag lista
+    * as possíveis; este Set guarda as que aconteceram nesta partida.
+    */
     private Set<Flag> flags;
 
     // 4. O ELENCO desta rodada
@@ -53,8 +50,7 @@ public class Partida {
         this.inventario = new Inventario();
         this.flags = new HashSet<>();
 
-        // Confianças iniciais diferentes: o irmão confia mais, o menino
-        // ainda não te conhece.
+        // Confianças iniciais diferentes
         this.otavio       = new Npc(Personagens.OTAVIO.getNomeExibicao(), 50);
         this.mae          = new Npc(Personagens.MAE.getNomeExibicao(), 50);
         this.davi         = new Npc(Personagens.DAVI.getNomeExibicao(), 30);
@@ -67,7 +63,7 @@ public class Partida {
         this.inventario.adicionar(model.enums.Item.TERCO);
     }
 
-    // ---------- flags ----------
+    // flags
 
     /**
      * Marca que uma decisão aconteceu nesta partida.
@@ -94,7 +90,6 @@ public class Partida {
         return flags.contains(flag);
     }
 
-    // ---------- getters ----------
 
     public Protagonista getProtagonista() { return protagonista; }
     public Inventario getInventario() { return inventario; }
