@@ -1,12 +1,8 @@
 package model.enums;
 
 /**
- * Os tipos de menino que o jogador pode escolher no comeco da partida.
- * Cada um comeca com valores diferentes nos tres atributos.
- *
- * Um atributo alto abre escolhas; um atributo baixo fecha. Como o FOLEGO
- * so desce durante o jogo, o valor inicial dele e o que o jogador tem pra
- * gastar a noite inteira.
+ * Os tipos de preset que o jogador pode escolher.
+ * Cada um começa com valores diferentes nos três atributos.
  */
 public enum Preset {
 

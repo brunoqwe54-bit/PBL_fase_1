@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class MenuInicial {
 
-    // O Scanner vem de fora (do controller). Assim existe um so no programa.
+    // O Scanner vem de fora (do controller). Assim existe um só no programa.
     private Scanner teclado;
 
     public MenuInicial(Scanner teclado) {
@@ -60,7 +60,7 @@ public class MenuInicial {
         }
     }
 
-    /** A sinopse, mostrada depois da escolha do preset e antes do capitulo 1. */
+    /** A sinopse, mostrada depois da escolha do preset e antes do capítulo 1. */
     public void exibirSinopse() {
         System.out.println();
         System.out.println("========================================");
@@ -136,7 +136,7 @@ public class MenuInicial {
                 teclado.nextLine(); // consome o \n que o nextInt deixou
                 return valor;
             } catch (java.util.InputMismatchException e) {
-                teclado.nextLine(); // descarta o que nao era numero
+                teclado.nextLine(); // descarta o que não era número
                 System.out.print("Digite um número: ");
             } catch (java.util.NoSuchElementException e) {
                 return 4; // entrada acabou: sai do jogo
@@ -149,7 +149,7 @@ public class MenuInicial {
         try {
             teclado.nextLine();
         } catch (java.util.NoSuchElementException e) {
-            // entrada acabou, segue
+
         }
     }
 }

@@ -14,9 +14,7 @@ import java.util.Scanner;
 
 public class JogoController {
 
-    // Um unico Scanner no programa inteiro, criado aqui e emprestado pras
-    // duas views. Com dois Scanners lendo System.in, um "rouba" a entrada do
-    // outro quando o texto chega rapido -- e e assim que um teste alimenta.
+    // Um único Scanner no programa inteiro.
     private Scanner teclado = new Scanner(System.in);
 
     private MenuInicial menuInicial = new MenuInicial(teclado);
@@ -26,7 +24,7 @@ public class JogoController {
     public void iniciarPartida() {
         boolean rodando = true;
 
-        // O menu roda em laco: quando a partida acaba, volta pra ca.
+        // O menu roda em laço: quando a partida acaba, volta pra cá.
         while (rodando) {
             int escolha = menuInicial.exibir();
 
@@ -86,7 +84,7 @@ public class JogoController {
             int numero = exibirJogo.pedirEscolhaJogador(disponiveis.size());
             Escolha escolhida = disponiveis.get(numero - 1);
 
-            // A escolha aplica os proprios efeitos e devolve o que contar.
+            // A escolha aplica os próprios efeitos e devolve o que contar.
             exibirJogo.exibirConsequencia(escolhida.aplicar(partida));
 
             partida.setCenaAtual(escolhida.getCenaDestino());

@@ -3,6 +3,18 @@ package model.entidades;
 import model.enums.Atributo;
 import model.enums.Preset;
 
+/**
+ * O personagem que o jogador controla: Vicente, irmão da Manuela.
+ *
+ * Guarda os três atributos (do enum Atributo), que vão de 0 a 100. Os
+ * valores iniciais não são fixos: vêm do Preset escolhido no menu, e é
+ * isso que faz um Atleta e um Observador terem caminhos diferentes pela
+ * mesma história.
+ *
+ * Os atributos são privados e só podem ser mudados pelo método
+ * alterarAtributo. Ter um caminho só é o que garante que nenhum valor
+ * fora de 0..100 entre no jogo.
+ */
 public class Protagonista extends PersonagemBase {
 
     // Limites: nenhum atributo passa disso
@@ -13,7 +25,12 @@ public class Protagonista extends PersonagemBase {
     private int coragem;
     private int lucidez;
 
-    // Os valores iniciais vem do Preset que o jogador escolheu no menu.
+    /**
+     * Cria o protagonista com os valores iniciais do preset escolhido.
+     *
+     * @param nome   o nome digitado pelo jogador no menu
+     * @param preset define os atributos iniciais da partida
+     */
     public Protagonista(String nome, Preset preset) {
         super(nome);
         this.folego  = preset.getFolego();
@@ -22,8 +39,10 @@ public class Protagonista extends PersonagemBase {
     }
 
     /**
-     * Um unico caminho para alterar atributo, recebendo a VARIACAO.
-     * O limite 0..100 mora aqui dentro, entao nao tem como esquecer dele.
+     * Soma uma variação a um dos três atributos, respeitando 0 e 100.
+     *
+     * @param atributo qual dos três mudar
+     * @param variacao quanto alterar
      */
     public void alterarAtributo(Atributo atributo, int variacao) {
         switch (atributo) {
@@ -33,6 +52,12 @@ public class Protagonista extends PersonagemBase {
         }
     }
 
+    /**
+     * Lê o valor atual de um dos três atributos.
+     *
+     * @param atributo qual dos três ler
+     * @return o valor, entre 0 e 100
+     */
     public int getAtributo(Atributo atributo) {
         switch (atributo) {
             case FOLEGO:  return folego;

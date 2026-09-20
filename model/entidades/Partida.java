@@ -8,12 +8,22 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * O ESTADO da partida atual.
+ * O estado de um jogo em andamento: tudo que muda enquanto se joga.
  *
- * A Historia guarda os capitulos (iguais em toda partida).
- * A Partida guarda onde o jogador esta e o que aconteceu com ele.
+ * A separação vale a pena entender: a classe Historia é o livro, igual
+ * para todo mundo; a Partida é o marcador de página e a mochila de um
+ * jogador.
  *
- * Comecar uma partida nova = criar uma Partida nova = tudo zerado.
+ * Ela guarda quatro coisas, e nenhuma outra parte do programa guarda
+ * estado que mude: o Protagonista, com os três atributos, o Inventario,
+ * com os itens, os sete NPCs, cada um com sua confiança, e o conjunto de
+ * flags ligadas, as decisões que o jogo memoriza.
+ *
+ * Mais a cena atual, que é onde o jogador está.
+ *
+ * Começar de novo é criar uma Partida nova: o construtor fabrica tudo do
+ * zero, então nada da partida anterior sobrevive e não é preciso nenhum
+ * método de "resetar".
  */
 public class Partida {
 
@@ -21,12 +31,12 @@ public class Partida {
     private Protagonista protagonista;
     private Inventario inventario;
 
-    // 2. ONDE O JOGADOR ESTA
+    // 2. ONDE O JOGADOR ESTÁ
     private Cena cenaAtual;
 
-    // 3. DECISOES ANTERIORES
-    // Um conjunto guarda as flags que ja foram ligadas. O enum Flag lista
-    // as possiveis; este Set guarda as que aconteceram nesta partida.
+    // 3. DECISÕES ANTERIORES
+    // Um conjunto guarda as flags que já foram ligadas. O enum Flag lista
+    // as possíveis; este Set guarda as que aconteceram nesta partida.
     private Set<Flag> flags;
 
     // 4. O ELENCO desta rodada
@@ -43,8 +53,8 @@ public class Partida {
         this.inventario = new Inventario();
         this.flags = new HashSet<>();
 
-        // Confiancas iniciais diferentes: o irmao confia mais, o menino
-        // ainda nao te conhece.
+        // Confianças iniciais diferentes: o irmão confia mais, o menino
+        // ainda não te conhece.
         this.otavio       = new Npc(Personagens.OTAVIO.getNomeExibicao(), 50);
         this.mae          = new Npc(Personagens.MAE.getNomeExibicao(), 50);
         this.davi         = new Npc(Personagens.DAVI.getNomeExibicao(), 30);
@@ -53,16 +63,33 @@ public class Partida {
         this.homemDeTerno = new Npc(Personagens.HOMEM_DE_TERNO.getNomeExibicao(), 0);
         this.manuela      = new Npc(Personagens.MANUELA.getNomeExibicao(), 30);
 
-        // Item inicial: o terco da mae, a unica coisa que ele leva de casa.
+        // Item inicial: o terço da mãe, a única coisa que ele leva de casa.
         this.inventario.adicionar(model.enums.Item.TERCO);
     }
 
     // ---------- flags ----------
 
+    /**
+     * Marca que uma decisão aconteceu nesta partida.
+     *
+     * Flag não desliga: uma decisão tomada não volta atrás. Ligar a mesma
+     * flag duas vezes é o mesmo que ligar uma — é o conjunto que garante isso.
+     *
+     * @param flag a decisão a memorizar
+     */
     public void ligarFlag(Flag flag) {
         flags.add(flag);
     }
 
+    /**
+     * Pergunta se uma decisão já aconteceu nesta partida.
+     *
+     * É o que a classe Escolha consulta para decidir se aparece ou fica
+     * bloqueada, muitas vezes capítulos depois de a flag ter sido ligada.
+     *
+     * @param flag a decisão a consultar
+     * @return true se a flag já foi ligada
+     */
     public boolean temFlag(Flag flag) {
         return flags.contains(flag);
     }

@@ -2,8 +2,8 @@ package model.entidades;
 
 /**
  * O que todo personagem tem: um nome.
- * E abstrata porque "personagem generico" nao existe no jogo: ou e o
- * protagonista, ou e um NPC.
+ * É abstrata porque "personagem genérico" não existe no jogo: ou é o
+ * protagonista, ou é um NPC.
  */
 public abstract class PersonagemBase {
 

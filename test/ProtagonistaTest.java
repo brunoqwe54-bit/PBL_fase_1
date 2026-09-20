@@ -12,19 +12,20 @@ import static org.junit.Assert.assertEquals;
 /**
  * Testes da classe Protagonista.
  *
- * O metodo alterarAtributo e o unico caminho para mudar um atributo, e e
+ * O método alterarAtributo é o único caminho para mudar um atributo, e é
  * dentro dele que mora o limite de 0 a 100. Se esse limite falhar, o jogo
- * inteiro fica errado -- por isso ele e o que mais precisa de teste.
+ * inteiro fica errado, por isso ele é o que mais precisa de teste.
  */
 public class ProtagonistaTest {
 
-    // Este objeto e recriado antes de CADA teste, pelo metodo com @Before.
-    // Assim um teste nunca comeca com o estrago que o anterior deixou.
+    /* Este objeto é recriado antes de CADA teste, pelo método com @Before.
+    * Assim, um teste nunca começa com os resquicios do anterior.
+    */
     private Protagonista vicente;
 
     @Before
     public void criarProtagonista() {
-        // O preset COMUM comeca com 50 em tudo.
+        // O preset COMUM começa com 50 em tudo.
         vicente = new Protagonista("Vicente", Preset.COMUM);
     }
 

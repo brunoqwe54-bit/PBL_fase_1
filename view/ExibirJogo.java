@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class ExibirJogo {
 
-    // O Scanner vem de fora (do controller), o mesmo do MenuInicial.
+
     private Scanner teclado;
 
     public ExibirJogo(Scanner teclado) {
@@ -19,8 +19,8 @@ public class ExibirJogo {
     }
 
     /**
-     * Mostra a cena inteira: titulo, narracao, falas, status e as opcoes.
-     * Recebe as listas ja separadas pelo controller.
+     * Mostra a cena inteira: título, narração, falas, status e as opções.
+     * Recebe as listas já separadas pelo controller.
      */
     public void exibirCena(Cena cena, Partida partida,
                            List<Escolha> disponiveis, List<Escolha> bloqueadas) {
@@ -30,9 +30,10 @@ public class ExibirJogo {
         System.out.println("  " + cena.getTitulo());
         System.out.println("========================================");
 
-        // A narracao ja vem escrita com uma linha em branco entre os
-        // paragrafos. Aqui ela e quebrada nesse ponto e mostrada um
-        // paragrafo por vez, pra nao despejar a tela inteira de uma vez.
+        /* A narração já vem escrita com uma linha em branco entre os
+        * parágrafos. Aqui ela é quebrada nesse ponto e mostrada um
+        * parágrafo por vez, pra não aparecer no terminal todo de vez.
+        */
         String[] paragrafos = cena.getTextoPrincipal().split("\n\n");
         for (int i = 0; i < paragrafos.length; i++) {
             System.out.println();
@@ -40,7 +41,7 @@ public class ExibirJogo {
             aguardarEnter();
         }
 
-        // Cada fala tambem espera o ENTER, como numa conversa.
+        // Cada fala também espera o ENTER, como em uma conversa.
         for (Dialogo fala : cena.getDialogos()) {
             System.out.println();
             System.out.println(fala.getPersonagem().getNome() + ": " + fala.getTexto());
@@ -56,8 +57,10 @@ public class ExibirJogo {
             numero++;
         }
 
-        // Mostrar o que esta bloqueado e de proposito: o jogador precisa
-        // perceber que existia outro caminho e que ele mesmo o fechou.
+        /* Mostrar o que está bloqueado é de propósito: o jogador precisa
+        * perceber que existia outro caminho e que ele mesmo o fechou.
+        */
+
         for (Escolha opcao : bloqueadas) {
             System.out.println("  [-] " + opcao.getTextoExibido()
                     + "  (" + opcao.getMotivoDoBloqueio() + ")");
@@ -72,7 +75,7 @@ public class ExibirJogo {
                         + " ]  Mochila: " + partida.getInventario().listar());
     }
 
-    /** Mostra o que a escolha mudou. Se nao mudou nada, nao mostra nada. */
+    /** Mostra o que a escolha mudou. Se não mudou nada, não mostra nada. */
     public void exibirConsequencia(String aviso) {
         if (aviso != null) {
             System.out.println();
@@ -84,7 +87,7 @@ public class ExibirJogo {
         }
     }
 
-    /** Le a escolha e so aceita um numero valido. */
+    /** Lê a escolha e só aceita um número válido. */
     public int pedirEscolhaJogador(int quantidadeDeOpcoes) {
         while (true) {
             System.out.print("\nO que você faz? ");
@@ -109,7 +112,7 @@ public class ExibirJogo {
         aguardarEnter();
     }
 
-    /** Empurra o texto antigo pra cima pra cada cena comecar com a tela limpa. */
+    /** Empurra o texto antigo pra cima pra cada cena começar com a tela limpa. */
     private void limparTela() {
         for (int i = 0; i < 40; i++) {
             System.out.println();
@@ -121,7 +124,7 @@ public class ExibirJogo {
         try {
             teclado.nextLine();
         } catch (java.util.NoSuchElementException e) {
-            // entrada acabou, segue
+
         }
     }
 }

@@ -5,9 +5,9 @@ import model.enums.Item;
 /**
  * A mochila do protagonista.
  *
- * Cada item e um booleano: tem ou nao tem. Os metodos possui() e adicionar()
- * traduzem o enum Item para o booleano certo, entao o resto do jogo nunca
- * precisa saber que por baixo sao campos separados.
+ * Cada item é um booleano: tem ou não tem. Os métodos públicos traduzem
+ * o enum Item para o campo certo, então o resto do jogo nunca precisa
+ * saber que por baixo são variáveis separadas.
  */
 public class Inventario {
 
@@ -19,9 +19,15 @@ public class Inventario {
     private boolean temCantil = false;
 
     // ================================================================
-    // ACESSO PELO ENUM -- e o que a Escolha usa
+    // ACESSO PELO ENUM, é o que a Escolha usa
     // ================================================================
 
+    /**
+     * Diz se o item está na mochila.
+     *
+     * @param item o item procurado
+     * @return true se o jogador está com ele
+     */
     public boolean possui(Item item) {
         switch (item) {
             case TERCO:   return temTercoDaMae;
@@ -34,10 +40,20 @@ public class Inventario {
         }
     }
 
+    /**
+     * Põe um item na mochila. Adicionar duas vezes é o mesmo que uma.
+     *
+     * @param item o item a guardar
+     */
     public void adicionar(Item item) {
         definir(item, true);
     }
 
+    /**
+     * Tira um item da mochila. Remover o que não está lá não faz nada.
+     *
+     * @param item o item a retirar
+     */
     public void remover(Item item) {
         definir(item, false);
     }
@@ -55,6 +71,12 @@ public class Inventario {
     }
 
     /** Lista o que o jogador carrega, pra View mostrar. */
+    /**
+     * Monta o texto da mochila para a view mostrar na barra de status.
+     *
+     * @return os nomes dos itens separados por ponto e vírgula,
+     *         ou "(vazia)" quando o jogador não carrega nada
+     */
     public String listar() {
         String lista = "";
         for (Item item : Item.values()) {
