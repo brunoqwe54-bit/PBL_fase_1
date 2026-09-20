@@ -16,10 +16,7 @@ public enum Personagens {
     DAVI("Davi"),
     ZULMIRA("Dona Zulmira"),
     ANTONIO("Seu Antônio"),
-    HOMEM_DE_TERNO("Homem de Terno"),
-    ROSANGELA("Rosângela"),
-    NILTON("Seu Nilton"),
-    NARRADOR("Narrador");
+    HOMEM_DE_TERNO("Homem de Terno");
 
 
     private String nomeExibicao;

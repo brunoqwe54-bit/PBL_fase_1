@@ -1,5 +1,6 @@
 package view;
 
+import model.enums.Personagens;
 import model.enums.Preset;
 
 import java.util.Scanner;
@@ -32,9 +33,9 @@ public class MenuInicial {
 
     public String pedirNome() {
         System.out.println("\nComo você se chama?");
-        System.out.print("(ENTER para usar \"Vicente\") > ");
+        System.out.print("(ENTER para usar \"" + Personagens.VICENTE.getNomeExibicao() + "\") > ");
         String nome = teclado.nextLine().trim();
-        return nome.isEmpty() ? "Vicente" : nome;
+        return nome.isEmpty() ? Personagens.VICENTE.getNomeExibicao() : nome;
     }
 
     public Preset pedirPreset() {
