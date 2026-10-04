@@ -4,6 +4,7 @@ import model.enums.Flag;
 import model.enums.Personagens;
 import model.enums.Preset;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,14 +22,20 @@ import java.util.Set;
  * zero, então nada da partida anterior sobrevive e não é preciso nenhum
  * método de "resetar".
  */
-public class Partida {
+public class Partida implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     // 1. O JOGADOR E SEUS ITENS
     private Protagonista protagonista;
     private Inventario inventario;
 
     // 2. ONDE O JOGADOR ESTÁ
-    private Cena cenaAtual;
+    /* transient: a Cena não vai pro arquivo de save, porque ela arrastaria
+     * a história inteira junto. Depois de carregar, este campo volta null e
+     * o controller coloca a cena de volta pelo id guardado no Save.
+     */
+    private transient Cena cenaAtual;
 
     /* 3. DECISÕES ANTERIORES
     * Um conjunto guarda as flags que já foram ligadas. O enum Flag lista

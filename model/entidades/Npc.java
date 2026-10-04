@@ -12,6 +12,8 @@ package model.entidades;
  */
 public class Npc extends PersonagemBase {
 
+    private static final long serialVersionUID = 1L;
+
     public static final int MINIMO = 0;
     public static final int MAXIMO = 100;
 

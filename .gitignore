@@ -19,3 +19,6 @@ target/
 # Sistema operacional
 Thumbs.db
 .DS_Store
+
+# Temporarios do Word/Office (arquivo de trava criado ao abrir o .docx)
+~$*

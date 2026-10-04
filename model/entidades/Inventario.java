@@ -2,6 +2,8 @@ package model.entidades;
 
 import model.enums.Item;
 
+import java.io.Serializable;
+
 /**
  * A mochila do protagonista.
  *
@@ -9,7 +11,9 @@ import model.enums.Item;
  * o enum Item para o campo certo, então o resto do jogo nunca precisa
  * saber que por baixo são variáveis separadas.
  */
-public class Inventario {
+public class Inventario implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private boolean temTercoDaMae = false;
     private boolean temMedalhaSaoJorge = false;

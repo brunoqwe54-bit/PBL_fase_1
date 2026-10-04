@@ -7,11 +7,29 @@ import model.enums.Preset;
 import model.factory.Historia;
 import view.ExibirJogo;
 import view.MenuInicial;
+import view.MenuPausa;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Quem coordena o jogo: liga o modelo com a visão.
+ *
+ * Cria o único Scanner do programa e empresta para as duas classes de
+ * visão, roda o laço do menu e, quando começa uma partida, roda o laço
+ * principal do jogo.
+ *
+ * Esse laço faz sempre os mesmos sete passos: pega a cena atual, separa
+ * as escolhas disponíveis das bloqueadas perguntando estaDisponivel(),
+ * manda exibir, encerra se não sobrou nenhuma opção, lê o número
+ * escolhido, manda a escolha aplicar os próprios efeitos e vai para a
+ * cena de destino.
+ *
+ * O controller não sabe o que cada escolha exige nem o que ela provoca:
+ * só pergunta e manda aplicar. É por isso que capítulo novo não mexe
+ * aqui.
+ */
 public class JogoController {
 
     // Um único Scanner no programa inteiro.
@@ -19,6 +37,7 @@ public class JogoController {
 
     private MenuInicial menuInicial = new MenuInicial(teclado);
     private ExibirJogo exibirJogo = new ExibirJogo(teclado);
+    private MenuPausa menuPausa = new MenuPausa(teclado);
     private Historia historia = new Historia();
 
     public void iniciarPartida() {
@@ -82,6 +101,18 @@ public class JogoController {
             }
 
             int numero = exibirJogo.pedirEscolhaJogador(disponiveis.size());
+
+            /* 0 abre o menu de pausa. Depois dele, pergunta de novo,
+             * sem mostrar a cena outra vez.
+             */
+            while (numero == 0) {
+                int opcaoMenu = menuPausa.exibir();
+                if (opcaoMenu == 2) {
+                    return; // encerra o jogar() e volta pro menu inicial
+                }
+                numero = exibirJogo.pedirEscolhaJogador(disponiveis.size());
+            }
+
             Escolha escolhida = disponiveis.get(numero - 1);
 
             // A escolha aplica os próprios efeitos e devolve o que contar.

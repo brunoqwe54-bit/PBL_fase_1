@@ -9,6 +9,16 @@ import model.enums.Atributo;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * A tela do jogo: tudo que o jogador lê durante uma partida.
+ *
+ * Mostra a cena, as falas, o estado atual e a lista de escolhas, com as
+ * bloqueadas aparecendo junto com o motivo. Também lê o número que o
+ * jogador digita.
+ *
+ * Só lê o modelo para mostrar na tela, nunca muda nada: quem altera a
+ * partida é a própria Escolha, chamada pelo JogoController.
+ */
 public class ExibirJogo {
 
 
@@ -51,6 +61,7 @@ public class ExibirJogo {
         exibirStatus(partida);
 
         System.out.println();
+        System.out.println("  [0] Menu");
         int numero = 1;
         for (Escolha opcao : disponiveis) {
             System.out.println("  [" + numero + "] " + opcao.getTextoExibido());
@@ -94,10 +105,10 @@ public class ExibirJogo {
             try {
                 int opcao = teclado.nextInt();
                 teclado.nextLine();
-                if (opcao >= 1 && opcao <= quantidadeDeOpcoes) {
+                if (opcao >= 0 && opcao <= quantidadeDeOpcoes) {
                     return opcao;
                 }
-                System.out.println("Digite um número entre 1 e " + quantidadeDeOpcoes + ".");
+                System.out.println("Digite um número entre 0 e " + quantidadeDeOpcoes + ".");
             } catch (java.util.InputMismatchException e) {
                 teclado.nextLine();
                 System.out.println("Isso não é um número.");
