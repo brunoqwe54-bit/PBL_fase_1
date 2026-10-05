@@ -65,8 +65,13 @@ public class GerenciadorDeSaves {
             throw new FalhaAoSalvarException("Não foi possível criar a pasta de saves");
         }
 
-        try (ObjectOutputStream saida =
-                     new ObjectOutputStream(new FileOutputStream(arquivoDoSlot(slot)))) {
+        /* Cada recurso em uma linha do try: assim o Java fecha os dois no fim,
+         * mesmo se der erro no meio. Se o FileOutputStream ficasse escondido
+         * dentro do ObjectOutputStream e o segundo falhasse ao ser criado,
+         * o arquivo ficaria aberto e o Windows não deixaria apagá-lo depois.
+         */
+        try (FileOutputStream arquivoAberto = new FileOutputStream(arquivoDoSlot(slot));
+             ObjectOutputStream saida = new ObjectOutputStream(arquivoAberto)) {
             saida.writeObject(save);
         } catch (IOException e) {
             throw new FalhaAoSalvarException("Não foi possível salvar " + descricao(slot), e);
@@ -91,7 +96,9 @@ public class GerenciadorDeSaves {
             throw new FalhaAoCarregarException("Não existe save para " + descricao(slot));
         }
 
-        try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream(arquivo))) {
+        // mesmo esquema do salvar: os dois recursos são fechados no fim
+        try (FileInputStream arquivoAberto = new FileInputStream(arquivo);
+             ObjectInputStream entrada = new ObjectInputStream(arquivoAberto)) {
             Object lido = entrada.readObject();
 
             if (!(lido instanceof Save)) {
@@ -110,6 +117,12 @@ public class GerenciadorDeSaves {
             throw new FalhaAoCarregarException("Não foi possível carregar " + descricao(slot), e);
         } catch (ClassNotFoundException e) {
             throw new FalhaAoCarregarException("Não foi possível carregar " + descricao(slot), e);
+        } catch (RuntimeException e) {
+            /* Um arquivo estragado no meio também pode dar erros que não são
+             * IOException, como ClassCastException. Eles viram a exceção do
+             * jogo, para um slot ruim nunca derrubar o Continuar.
+             */
+            throw new FalhaAoCarregarException("O save de " + descricao(slot) + " está corrompido", e);
         }
     }
 
