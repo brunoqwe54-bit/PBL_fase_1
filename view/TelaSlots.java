@@ -72,6 +72,32 @@ public class TelaSlots {
         }
     }
 
+    /**
+     * Faz uma pergunta de sim ou não.
+     *
+     * Só "s" (ou "S") conta como sim. Qualquer outra resposta, inclusive
+     * ENTER sozinho, conta como não: na dúvida, não se sobrescreve nem
+     * se apaga nada.
+     *
+     * @param pergunta o texto da pergunta
+     * @return true se o jogador respondeu "s"
+     */
+    public boolean confirmar(String pergunta) {
+        System.out.print("\n" + pergunta + " (s/n): ");
+        try {
+            String resposta = teclado.nextLine().trim();
+            return resposta.equalsIgnoreCase("s");
+        } catch (java.util.NoSuchElementException e) {
+            return false; // entrada acabou: na dúvida, não
+        }
+    }
+
+    /** Mostra uma mensagem avulsa, como "Jogo salvo no slot 1.". */
+    public void exibirMensagem(String texto) {
+        System.out.println();
+        System.out.println(texto);
+    }
+
     // O texto de uma linha: o resumo do save, ou "vazio", ou "corrompido".
     private String descrever(int slot, Save[] saves, boolean[] corrompidos) {
         if (corrompidos[slot]) {
