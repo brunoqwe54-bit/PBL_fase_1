@@ -29,9 +29,14 @@ public class MenuInicial {
         System.out.println("         A  N O I T E  L O N G A        ");
         System.out.println("========================================");
         System.out.println("1 - Nova partida");
-        System.out.println("2 - Instruções");
-        System.out.println("3 - Créditos");
-        System.out.println("4 - Sair do jogo");
+        System.out.println("2 - Continuar");
+        System.out.println("3 - Carregar jogo");
+        System.out.println("4 - Excluir save");
+        System.out.println("5 - Preferências");
+        System.out.println("6 - Galeria de finais");
+        System.out.println("7 - Instruções");
+        System.out.println("8 - Créditos");
+        System.out.println("9 - Sair do jogo");
         System.out.print("\nEscolha: ");
         return lerNumero();
     }
@@ -47,7 +52,8 @@ public class MenuInicial {
         return nome.isEmpty() ? Personagens.VICENTE.getNomeExibicao() : nome;
     }
 
-    public Preset pedirPreset() {
+    /** Mostra os presets. ENTER escolhe o padrão (o das preferências). */
+    public Preset pedirPreset(Preset padrao) {
         Preset[] opcoes = Preset.values();
 
         System.out.println("\nEscolha seu preset:");
@@ -61,10 +67,23 @@ public class MenuInicial {
         }
 
         while (true) {
-            System.out.print("\nEscolha: ");
-            int numero = lerNumero();
-            if (numero >= 1 && numero <= opcoes.length) {
-                return opcoes[numero - 1];
+            System.out.print("\n(ENTER para usar \"" + padrao.getNome() + "\") Escolha: ");
+            String texto;
+            try {
+                texto = teclado.nextLine().trim();
+            } catch (java.util.NoSuchElementException e) {
+                return padrao; // entrada acabou
+            }
+            if (texto.isEmpty()) {
+                return padrao;
+            }
+            try {
+                int numero = Integer.parseInt(texto);
+                if (numero >= 1 && numero <= opcoes.length) {
+                    return opcoes[numero - 1];
+                }
+            } catch (NumberFormatException e) {
+                // não era número: cai na mensagem de baixo
             }
             System.out.println("Escolha um número de 1 a " + opcoes.length + ".");
         }
@@ -149,7 +168,7 @@ public class MenuInicial {
                 teclado.nextLine(); // descarta o que não era número
                 System.out.print("Digite um número: ");
             } catch (java.util.NoSuchElementException e) {
-                return 4; // entrada acabou: sai do jogo
+                return 9; // entrada acabou: sai do jogo
             }
         }
     }

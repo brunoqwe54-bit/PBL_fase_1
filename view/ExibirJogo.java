@@ -24,6 +24,13 @@ public class ExibirJogo {
 
     private Scanner teclado;
 
+    // Se true, a narração e as falas aparecem sem esperar ENTER.
+    private boolean pularEnter = false;
+
+    public void setPularEnter(boolean pularEnter) {
+        this.pularEnter = pularEnter;
+    }
+
     public ExibirJogo(Scanner teclado) {
         this.teclado = teclado;
     }
@@ -48,14 +55,18 @@ public class ExibirJogo {
         for (int i = 0; i < paragrafos.length; i++) {
             System.out.println();
             System.out.println(paragrafos[i]);
-            aguardarEnter();
+            if (!pularEnter) {
+                aguardarEnter();
+            }
         }
 
         // Cada fala também espera o ENTER, como em uma conversa.
         for (Dialogo fala : cena.getDialogos()) {
             System.out.println();
             System.out.println(fala.getPersonagem().getNome() + ": " + fala.getTexto());
-            aguardarEnter();
+            if (!pularEnter) {
+                aguardarEnter();
+            }
         }
 
         exibirStatus(partida);
