@@ -152,8 +152,8 @@ public class JogoController {
 
             int numero = exibirJogo.pedirEscolhaJogador(disponiveis.size());
 
-            /* 0 abre o menu de pausa. Depois dele, pergunta de novo,
-             * sem mostrar a cena outra vez.
+            /* 0 abre o menu de pausa. Depois dele, mostra as opções de
+             * novo (sem repetir a cena inteira) e pergunta outra vez.
              */
             while (numero == 0) {
                 int opcaoMenu = menuPausa.exibir();
@@ -162,6 +162,7 @@ public class JogoController {
                 } else if (opcaoMenu == 3) {
                     return; // encerra o jogar() e volta pro menu inicial
                 }
+                exibirJogo.exibirOpcoes(disponiveis, bloqueadas);
                 numero = exibirJogo.pedirEscolhaJogador(disponiveis.size());
             }
 

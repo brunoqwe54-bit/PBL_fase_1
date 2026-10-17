@@ -75,20 +75,28 @@ public class TelaSlots {
     /**
      * Faz uma pergunta de sim ou não.
      *
-     * Só "s" (ou "S") conta como sim. Qualquer outra resposta, inclusive
-     * ENTER sozinho, conta como não: na dúvida, não se sobrescreve nem
-     * se apaga nada.
+     * Só aceita "s" ou "n" (maiúsculo ou minúsculo). Qualquer outra coisa,
+     * inclusive ENTER sozinho, faz a pergunta de novo.
      *
      * @param pergunta o texto da pergunta
-     * @return true se o jogador respondeu "s"
+     * @return true se o jogador respondeu "s", false se respondeu "n"
      */
     public boolean confirmar(String pergunta) {
-        System.out.print("\n" + pergunta + " (s/n): ");
-        try {
-            String resposta = teclado.nextLine().trim();
-            return resposta.equalsIgnoreCase("s");
-        } catch (java.util.NoSuchElementException e) {
-            return false; // entrada acabou: na dúvida, não
+        while (true) {
+            System.out.print("\n" + pergunta + " (s/n): ");
+            String resposta;
+            try {
+                resposta = teclado.nextLine().trim();
+            } catch (java.util.NoSuchElementException e) {
+                return false; // entrada acabou: na dúvida, não
+            }
+            if (resposta.equalsIgnoreCase("s")) {
+                return true;
+            }
+            if (resposta.equalsIgnoreCase("n")) {
+                return false;
+            }
+            System.out.println("Digite s para sim ou n para não.");
         }
     }
 

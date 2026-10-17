@@ -70,7 +70,13 @@ public class ExibirJogo {
         }
 
         exibirStatus(partida);
+        exibirOpcoes(disponiveis, bloqueadas);
+    }
 
+    /* Mostra só a lista de opções. Também é chamado depois do menu de
+     * pausa, para o jogador ver de novo o que pode escolher.
+     */
+    public void exibirOpcoes(List<Escolha> disponiveis, List<Escolha> bloqueadas) {
         System.out.println();
         System.out.println("  [0] Menu");
         int numero = 1;
