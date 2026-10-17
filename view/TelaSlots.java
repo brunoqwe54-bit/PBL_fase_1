@@ -16,7 +16,6 @@ public class TelaSlots {
 
     private Scanner teclado;
 
-    // O Scanner vem de fora (do controller). Assim existe um só no programa.
     public TelaSlots(Scanner teclado) {
         this.teclado = teclado;
     }

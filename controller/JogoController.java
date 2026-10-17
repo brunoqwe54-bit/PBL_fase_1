@@ -29,15 +29,16 @@ import java.util.Scanner;
 /**
  * Quem coordena o jogo: liga o modelo com a visão.
  *
- * Cria o único Scanner do programa e empresta para as duas classes de
- * visão, roda o laço do menu e, quando começa uma partida, roda o laço
- * principal do jogo.
+ * Cria o único Scanner do programa e empresta para todas as telas, roda
+ * o laço do menu e, quando começa uma partida, roda o laço principal do
+ * jogo.
  *
- * Esse laço faz sempre os mesmos sete passos: pega a cena atual, separa
- * as escolhas disponíveis das bloqueadas perguntando estaDisponivel(),
- * manda exibir, encerra se não sobrou nenhuma opção, lê o número
- * escolhido, manda a escolha aplicar os próprios efeitos e vai para a
- * cena de destino.
+ * A cada volta, esse laço pega a cena atual, separa as escolhas
+ * disponíveis das bloqueadas perguntando estaDisponivel(), manda exibir,
+ * grava o autosave se o jogador entrou num capítulo novo, encerra (e
+ * registra o final) se não sobrou nenhuma opção, lê o número escolhido
+ * (0 abre o menu de pausa), manda a escolha aplicar os próprios efeitos e
+ * vai para a cena de destino.
  *
  * O controller não sabe o que cada escolha exige nem o que ela provoca:
  * só pergunta e manda aplicar. É por isso que capítulo novo não mexe
@@ -121,15 +122,6 @@ public class JogoController {
 
             Cena cena = partida.getCenaAtual();
 
-            // Entrou num capítulo novo? Salva sozinho no slot 0.
-            String capituloDaCena = capituloDe(cena.getId());
-            if (!capituloDaCena.isEmpty() && !capituloDaCena.equals(capituloAtual)) {
-                capituloAtual = capituloDaCena;
-                if (preferencias.isAutosaveLigado()) {
-                    autosalvar(partida);
-                }
-            }
-
             // Separa as escolhas que o jogador pode ver das bloqueadas.
             List<Escolha> disponiveis = new ArrayList<>();
             List<Escolha> bloqueadas = new ArrayList<>();
@@ -142,6 +134,18 @@ public class JogoController {
             }
 
             exibirJogo.exibirCena(cena, partida, disponiveis, bloqueadas);
+
+            /* Entrou num capítulo novo? Salva sozinho no autosave (slot 0).
+             * Fica depois do exibirCena porque ele limpa a tela: antes dele,
+             * o aviso de salvamento sumiria na mesma hora.
+             */
+            String capituloDaCena = capituloDe(cena.getId());
+            if (!capituloDaCena.isEmpty() && !capituloDaCena.equals(capituloAtual)) {
+                capituloAtual = capituloDaCena;
+                if (preferencias.isAutosaveLigado()) {
+                    autosalvar(partida);
+                }
+            }
 
             // Cena sem escolhas = fim (desfecho ou game over).
             if (disponiveis.isEmpty()) {
@@ -270,7 +274,7 @@ public class JogoController {
             return;
         }
         if (saves[slot] == null && !corrompidos[slot]) {
-            telaSlots.exibirMensagem("O slot " + slot + " está vazio.");
+            telaSlots.exibirMensagem("O " + nomeDoSlot(slot) + " está vazio.");
             return;
         }
         carregarSlot(slot);
@@ -287,16 +291,16 @@ public class JogoController {
             return;
         }
         if (saves[slot] == null && !corrompidos[slot]) {
-            telaSlots.exibirMensagem("O slot " + slot + " está vazio.");
+            telaSlots.exibirMensagem("O " + nomeDoSlot(slot) + " está vazio.");
             return;
         }
-        if (!telaSlots.confirmar("Excluir o slot " + slot + "? Isso não pode ser desfeito.")) {
+        if (!telaSlots.confirmar("Excluir o " + nomeDoSlot(slot) + "? Isso não pode ser desfeito.")) {
             return;
         }
         if (gerenciadorDeSaves.excluir(slot)) {
-            telaSlots.exibirMensagem("Slot " + slot + " excluído.");
+            telaSlots.exibirMensagem("Pronto, o " + nomeDoSlot(slot) + " foi excluído.");
         } else {
-            telaSlots.exibirMensagem("Não foi possível excluir o slot " + slot + ".");
+            telaSlots.exibirMensagem("Não foi possível excluir o " + nomeDoSlot(slot) + ".");
         }
     }
 
@@ -321,6 +325,16 @@ public class JogoController {
             return;
         }
         jogar(partida);
+    }
+
+    /* O nome do slot para as mensagens. O slot 0 é o autosave, que na tela
+     * aparece como opção 4, então aqui ele nunca é chamado de "slot 0".
+     */
+    private String nomeDoSlot(int slot) {
+        if (slot == GerenciadorDeSaves.AUTOSAVE) {
+            return "autosave";
+        }
+        return "slot " + slot;
     }
 
     /** Grava no slot 0 sem perguntar nada. Se falhar, avisa e o jogo continua. */

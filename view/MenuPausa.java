@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class MenuPausa {
 
-    // O Scanner vem de fora (do controller). Assim existe um só no programa.
     private Scanner teclado;
 
     public MenuPausa(Scanner teclado) {

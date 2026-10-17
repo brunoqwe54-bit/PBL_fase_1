@@ -10,13 +10,9 @@ import java.util.Scanner;
  *
  * É aqui que o jogador escolhe uma opção do menu, digita o nome do
  * protagonista e escolhe um dos quatro presets.
- *
- * O Scanner vem de fora, do JogoController, porque dois Scanner na
- * mesma entrada brigam pelo teclado.
  */
 public class MenuInicial {
 
-    // O Scanner vem de fora (do controller). Assim existe um só no programa.
     private Scanner teclado;
 
     public MenuInicial(Scanner teclado) {

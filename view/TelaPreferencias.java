@@ -12,7 +12,6 @@ import java.util.Scanner;
  */
 public class TelaPreferencias {
 
-    // O Scanner vem de fora (do controller). Assim existe um só no programa.
     private Scanner teclado;
 
     public TelaPreferencias(Scanner teclado) {

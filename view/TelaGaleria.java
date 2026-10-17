@@ -12,7 +12,6 @@ import java.util.Scanner;
  */
 public class TelaGaleria {
 
-    // O Scanner vem de fora (do controller). Assim existe um só no programa.
     private Scanner teclado;
 
     public TelaGaleria(Scanner teclado) {

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  *
  * É só um pacote de dados, sem lógica nenhuma. Quem monta o Save (com o
  * progresso já calculado) é o controller, e quem grava e lê o arquivo é
- * a classe de arquivo.
+ * o GerenciadorDeSaves.
  *
  * A cena atual da Partida não vai pro arquivo (é transient). Por isso o
  * Save guarda o id e o título da cena: ao carregar, o controller usa o id
@@ -33,7 +33,7 @@ public class Save implements Serializable {
      * @param dataHora    o momento em que o save foi feito
      * @param idCena      o id da cena atual, ex. "CAP03B"
      * @param tituloCena  o título da cena atual, mostrado no slot
-     * @param progresso   porcentagem de capítulos concluídos, de 0 a 100
+     * @param progresso   porcentagem de capítulos concluídos, de 0 a 90
      * @param partida     a partida em andamento
      */
     public Save(String nomeJogador, LocalDateTime dataHora, String idCena,
