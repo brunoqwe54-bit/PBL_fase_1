@@ -1,5 +1,6 @@
 package view;
 
+import controller.JogoController;
 import model.enums.Personagens;
 import model.enums.Preset;
 
@@ -9,7 +10,8 @@ import java.util.Scanner;
  * A tela de antes da partida: menu, sinopse, instruções e créditos.
  *
  * É aqui que o jogador escolhe uma opção do menu, digita o nome do
- * protagonista e escolhe um dos quatro presets.
+ * protagonista e escolhe um dos quatro presets. Como View, é esta classe
+ * que inicia o laço do menu e envia a opção escolhida ao controller.
  */
 public class MenuInicial {
 
@@ -17,6 +19,14 @@ public class MenuInicial {
 
     public MenuInicial(Scanner teclado) {
         this.teclado = teclado;
+    }
+
+    /** A View conduz o laço do menu e delega cada opção ao Controller. */
+    public void iniciar(JogoController jogoController) {
+        boolean rodando = true;
+        while (rodando) {
+            rodando = jogoController.processarOpcao(exibir());
+        }
     }
 
     public int exibir() {

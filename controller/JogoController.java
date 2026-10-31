@@ -29,9 +29,9 @@ import java.util.Scanner;
 /**
  * Quem coordena o jogo: liga o modelo com a visão.
  *
- * Cria o único Scanner do programa e empresta para todas as telas, roda
- * o laço do menu e, quando começa uma partida, roda o laço principal do
- * jogo.
+ * Cria o único Scanner do programa e empresta para todas as telas. O menu
+ * (View) conduz o laço e chama este controller para processar cada opção;
+ * quando começa uma partida, o controller roda o laço principal do jogo.
  *
  * A cada volta, esse laço pega a cena atual, separa as escolhas
  * disponíveis das bloqueadas perguntando estaDisponivel(), manda exibir,
@@ -63,51 +63,49 @@ public class JogoController {
     private Historia historia = new Historia();
 
     public void iniciarPartida() {
-        boolean rodando = true;
+        menuInicial.iniciar(this);
+    }
 
-        // O menu roda em laço: quando a partida acaba, volta pra cá.
-        while (rodando) {
-            int escolha = menuInicial.exibir();
-
-            switch (escolha) {
-                case 1:
-                    String nomeProtagonista = menuInicial.pedirNome();
-                    Preset preset = menuInicial.pedirPreset(preferencias.getPresetPadrao());
-                    menuInicial.exibirSinopse();
-                    Partida partidaNova = new Partida(nomeProtagonista, preset);
-                    partidaNova.setCenaAtual(historia.montarHistoria(partidaNova));
-                    jogar(partidaNova);
-                    break;
-                case 2:
-                    continuarPartida();
-                    break;
-                case 3:
-                    carregarPartida();
-                    break;
-                case 4:
-                    excluirSave();
-                    break;
-                case 5:
-                    editarPreferencias();
-                    break;
-                case 6:
-                    telaGaleria.exibir(registroDeFinais);
-                    break;
-                case 7:
-                    menuInicial.exibirInstrucoes();
-                    break;
-                case 8:
-                    menuInicial.exibirCreditos();
-                    break;
-                case 9:
-                    menuInicial.exibirMensagem("\nAté a próxima Noite Longa.");
-                    rodando = false;
-                    break;
-                default:
-                    menuInicial.exibirMensagem("Opção inválida! Tente novamente.");
-                    break;
-            }
+    /** Processa uma opção escolhida no menu. Devolve false quando o jogo deve sair. */
+    public boolean processarOpcao(int escolha) {
+        switch (escolha) {
+            case 1:
+                String nomeProtagonista = menuInicial.pedirNome();
+                Preset preset = menuInicial.pedirPreset(preferencias.getPresetPadrao());
+                menuInicial.exibirSinopse();
+                Partida partidaNova = new Partida(nomeProtagonista, preset);
+                partidaNova.setCenaAtual(historia.montarHistoria(partidaNova));
+                jogar(partidaNova);
+                break;
+            case 2:
+                continuarPartida();
+                break;
+            case 3:
+                carregarPartida();
+                break;
+            case 4:
+                excluirSave();
+                break;
+            case 5:
+                editarPreferencias();
+                break;
+            case 6:
+                telaGaleria.exibir(registroDeFinais);
+                break;
+            case 7:
+                menuInicial.exibirInstrucoes();
+                break;
+            case 8:
+                menuInicial.exibirCreditos();
+                break;
+            case 9:
+                menuInicial.exibirMensagem("\nAté a próxima Noite Longa.");
+                return false;
+            default:
+                menuInicial.exibirMensagem("Opção inválida! Tente novamente.");
+                break;
         }
+        return true;
     }
 
     /* Recebe a partida pronta, nova ou carregada, já com a cena atual. */
