@@ -225,6 +225,43 @@ public class EscolhaTest {
         assertEquals(50, otavio.getConfianca());
     }
 
+    // Vários efeitos na mesma escolha. Se algum destes falhar, é sinal de
+    // que voltaram a guardar um efeito só por tipo (bug do ESC0808).
+
+    @Test
+    public void aplicarDuasConfiancasAlteraOsDoisNpcs() {
+        // Caso real da Historia (ESC0306).
+        Npc zulmira = partida.getZulmira();
+        Npc manuela = partida.getManuela();
+
+        Escolha escolha = new Escolha("E1", "texto", null)
+                .comConfianca(zulmira, 10)
+                .comConfianca(manuela, 5);
+
+        escolha.aplicar(partida);
+
+        assertEquals(50, zulmira.getConfianca());  // 40 + 10
+        assertEquals(35, manuela.getConfianca());  // 30 + 5
+    }
+
+    @Test
+    public void aplicarItemEDoisAtributosJuntos() {
+        // Caso real da Historia (ESC0808): beber o cantil gasta o item e
+        // tem que devolver fôlego E lucidez.
+        partida.getInventario().adicionar(Item.CANTIL);
+
+        Escolha escolha = new Escolha("E1", "texto", null)
+                .perdeItem(Item.CANTIL)
+                .comAtributo(Atributo.FOLEGO, 20)
+                .comAtributo(Atributo.LUCIDEZ, 5);
+
+        escolha.aplicar(partida);
+
+        assertFalse(partida.getInventario().possui(Item.CANTIL));
+        assertEquals(70, partida.getProtagonista().getAtributo(Atributo.FOLEGO));
+        assertEquals(55, partida.getProtagonista().getAtributo(Atributo.LUCIDEZ));
+    }
+
     // Encadeamento: cada método de configuração devolve a própria escolha.
 
     @Test
