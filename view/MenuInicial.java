@@ -124,43 +124,17 @@ public class MenuInicial {
         System.out.println("Seu primeiro teste de sobrevivência começa agora.");
         aguardarEnter();
     }
+    /* Texto compartilhado com a versão em janela. */
     public void exibirInstrucoes() {
         System.out.println();
-        System.out.println("COMO SE JOGA");
-        System.out.println();
-        System.out.println("Você lê, você escolhe, você vive com isso.");
-        System.out.println("Digite o número da alternativa e pressione ENTER.");
-        System.out.println();
-        System.out.println("O protagonista tem três atributos: FÔLEGO, CORAGEM e LUCIDEZ.");
-        System.out.println("O FÔLEGO só desce, e a água do cantil é o único jeito de");
-        System.out.println("recuperar um pouco. Coragem e Lucidez sobem e descem");
-        System.out.println("conforme o que você faz, e algumas");
-        System.out.println("escolhas só aparecem se o atributo for alto o bastante.");
-        System.out.println();
-        System.out.println("As pessoas que você encontra confiam mais ou menos em você.");
-        System.out.println("Quem confia, ajuda. Quem não confia, fecha a porta.");
-        System.out.println();
-        System.out.println("Escolhas marcadas com [-] existem, mas estão bloqueadas:");
-        System.out.println("falta um item, um atributo ou uma decisão que você não tomou.");
+        System.out.println(Textos.INSTRUCOES);
         aguardarEnter();
     }
 
+    /* Texto compartilhado com a versão em janela. */
     public void exibirCreditos() {
         System.out.println();
-        System.out.println("A NOITE LONGA");
-        System.out.println();
-        System.out.println("Projeto acadêmico - EXA863 MI Programação");
-        System.out.println("Universidade Estadual de Feira de Santana");
-        System.out.println();
-        System.out.println("Docente:");
-        System.out.println("  Roberto Almeida Bittencourt");
-        System.out.println();
-        System.out.println("Discentes:");
-        System.out.println("  Bruno Gabriel Santos Pinto");
-        System.out.println("  Caio Cerqueira Francisco Batista");
-        System.out.println();
-        System.out.println("Jogo narrativo interativo em Java, arquitetura MVC.");
-        System.out.println("Nenhuma engine de jogo foi utilizada.");
+        System.out.println(Textos.CREDITOS);
         aguardarEnter();
     }
 

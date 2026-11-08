@@ -4,6 +4,10 @@ build/
 target/
 *.class
 
+# JavaFX SDK: 50 MB de binarios de plataforma, nao vai pro git.
+# Quem clonar baixa uma vez com o comando que esta na explicacao.
+lib/javafx-sdk-25/
+
 # IntelliJ IDEA
 # A configuracao do projeto (.iml, misc.xml, modules.xml) E versionada,
 # pra que o projeto abra pronto em qualquer maquina -- com a biblioteca

@@ -66,6 +66,15 @@ public class JogoController {
         menuInicial.iniciar(this);
     }
 
+    /**
+     * Registro dos finais alcançados, lido pela galeria em janela.
+     *
+     * @return o registro já carregado
+     */
+    public RegistroDeFinais getRegistroDeFinais() {
+        return registroDeFinais;
+    }
+
     /** Processa uma opção escolhida no menu. Devolve false quando o jogo deve sair. */
     public boolean processarOpcao(int escolha) {
         switch (escolha) {
