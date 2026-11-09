@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<!-- Menu inicial. Só a aparência fica aqui: o que cada botão faz está no MenuController. -->
+<VBox alignment="CENTER" spacing="8.0" prefHeight="560.0" prefWidth="420.0"
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="view.MenuController">
+    <padding>
+        <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
+    </padding>
+
+    <Label text="A  N O I T E  L O N G A" />
+    <Label text="Menu principal" />
+
+    <!-- Ainda sem tela em janela: ficam desabilitados até serem feitos. -->
+    <Button maxWidth="Infinity" disable="true" text="Nova partida" />
+    <Button maxWidth="Infinity" disable="true" text="Continuar" />
+    <Button maxWidth="Infinity" disable="true" text="Carregar jogo" />
+    <Button maxWidth="Infinity" disable="true" text="Excluir save" />
+    <Button maxWidth="Infinity" disable="true" text="Preferências" />
+
+    <Button maxWidth="Infinity" onAction="#onGaleriaClick" text="Galeria de finais" />
+    <Button maxWidth="Infinity" onAction="#onInstrucoesClick" text="Instruções" />
+    <Button maxWidth="Infinity" onAction="#onCreditosClick" text="Créditos" />
+    <Button maxWidth="Infinity" onAction="#onSairClick" text="Sair" />
+</VBox>
