@@ -8,7 +8,7 @@ import view.TelaMenuFX;
  * Este main não estende Application de propósito: com um main comum, o
  * JavaFX roda apenas com os jars no classpath, sem --module-path.
  */
-public class MainFX {
+public class    MainFX {
 
     public static void main(String[] args) {
         TelaMenuFX.setController(new JogoController());

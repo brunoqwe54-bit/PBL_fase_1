@@ -28,6 +28,13 @@
             <version>${javafx.version}</version>
         </dependency>
 
+        <!-- Tema visual Dracula (escuro), da biblioteca AtlantaFX. -->
+        <dependency>
+            <groupId>io.github.mkpaz</groupId>
+            <artifactId>atlantafx-base</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+
         <!-- Testes de unidade (os mesmos da Fase 1 e 2, em JUnit 4). -->
         <dependency>
             <groupId>junit</groupId>
