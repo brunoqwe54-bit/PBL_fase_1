@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<!--
+  Criação do protagonista, sobre o cenário do capítulo 1.
+  Só a aparência fica aqui; o que os botões fazem está no NovaPartidaController.
+-->
+<StackPane prefHeight="700.0" prefWidth="1000.0"
+           xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="view.NovaPartidaController">
+
+    <Region fx:id="cenario" style="-fx-background-position: center center; -fx-background-size: cover;" />
+
+    <!-- escurece o cenário o bastante para o formulário ficar legível -->
+    <Region style="-fx-background-color: rgba(6, 6, 12, 0.6);" />
+
+    <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="520.0" spacing="14.0"
+          style="-fx-background-color: #101018; -fx-padding: 28;">
+        <Label style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Nova partida" />
+
+        <Label text="Como você se chama?" />
+        <TextField fx:id="campoNome" promptText="vazio = Vicente" />
+
+        <Label text="Escolha seu preset" />
+        <ComboBox fx:id="comboPreset" maxWidth="Infinity" />
+
+        <Label fx:id="descricaoPreset" wrapText="true" />
+
+        <HBox alignment="CENTER" spacing="12.0">
+            <Button onAction="#onVoltarClick" text="Voltar" />
+            <Button defaultButton="true" onAction="#onComecarClick" text="Começar" />
+        </HBox>
+    </VBox>
+</StackPane>

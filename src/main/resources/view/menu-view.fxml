@@ -17,7 +17,7 @@
     <Label text="Menu principal" />
 
     <!-- Ainda sem tela em janela: ficam desabilitados até serem feitos. -->
-    <Button maxWidth="Infinity" disable="true" text="Nova partida" />
+    <Button maxWidth="Infinity" onAction="#onNovaPartidaClick" text="Nova partida" />
     <Button maxWidth="Infinity" disable="true" text="Continuar" />
     <Button maxWidth="Infinity" disable="true" text="Carregar jogo" />
     <Button maxWidth="Infinity" disable="true" text="Excluir save" />

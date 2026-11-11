@@ -43,5 +43,9 @@ public class Textos {
               Caio Cerqueira Francisco Batista
 
             Jogo narrativo interativo em Java, arquitetura MVC.
-            Nenhuma engine de jogo foi utilizada.""";
+            Nenhuma engine de jogo foi utilizada.
+
+            Cenários:
+              "Contemporary Visual Novel Backgrounds", por Spiral Atlas
+              https://spiralatlas.itch.io/contemporary-vn-backgrounds""";
 }

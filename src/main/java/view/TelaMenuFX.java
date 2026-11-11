@@ -2,6 +2,7 @@ package view;
 
 import atlantafx.base.theme.Dracula;
 import controller.JogoController;
+import controller.SessaoDeJogo;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -29,6 +30,15 @@ public class TelaMenuFX extends Application {
 
     public static JogoController getController() {
         return controller;
+    }
+
+    /* A partida em andamento, compartilhada entre as telas em janela.
+     * Fica aqui pelo mesmo motivo do controller: o JavaFX cria os
+     * controllers de FXML sozinho, então eles pegam por este getter. */
+    private static final SessaoDeJogo sessao = new SessaoDeJogo();
+
+    public static SessaoDeJogo getSessao() {
+        return sessao;
     }
 
     // A janela do jogo. Fica guardada para qualquer tela poder trocar o conteúdo.

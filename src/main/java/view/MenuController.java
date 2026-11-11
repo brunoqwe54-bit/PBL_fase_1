@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import model.entidades.RegistroDeFinais;
 
+import java.io.IOException;
+
 /**
  * O que acontece quando o jogador clica nos botões do menu inicial.
  *
@@ -12,6 +14,16 @@ import model.entidades.RegistroDeFinais;
  * um onAction="#nomeDoMetodo" que chama um dos métodos com @FXML daqui.
  */
 public class MenuController {
+
+    @FXML
+    private void onNovaPartidaClick() {
+        try {
+            TelaMenuFX.trocarTela("nova-partida-view.fxml");
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR, "Não foi possível abrir a criação de partida: " + e.getMessage())
+                    .showAndWait();
+        }
+    }
 
     @FXML
     private void onGaleriaClick() {

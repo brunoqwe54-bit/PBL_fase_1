@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<!--
+  Tela do jogo:
+    topo   -> capítulo e status
+    meio   -> cenário (e, quando for a hora, as escolhas por cima dele)
+    baixo  -> caixa de texto, um trecho por vez
+
+  O conteúdo é preenchido pelo JogoViewController, porque vem da Cena.
+-->
+<BorderPane fx:id="raiz" prefHeight="700.0" prefWidth="1000.0"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="view.JogoViewController">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="16.0" style="-fx-padding: 10 18 10 18;">
+            <Label fx:id="tituloCena" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+            <Label fx:id="status" maxWidth="Infinity" textAlignment="RIGHT" wrapText="true"
+                   HBox.hgrow="ALWAYS" />
+        </HBox>
+    </top>
+
+    <center>
+        <StackPane style="-fx-background-color: #05050a;">
+            <Region fx:id="cenario" style="-fx-background-position: center center; -fx-background-size: cover;" />
+            <VBox fx:id="opcoes" alignment="CENTER" maxWidth="620.0" spacing="8.0" visible="false" />
+        </StackPane>
+    </center>
+
+    <bottom>
+        <VBox spacing="6.0" style="-fx-background-color: #101018; -fx-padding: 14 18 14 18;">
+            <Label fx:id="texto" wrapText="true" />
+            <Label fx:id="dica" text="[ENTER] para continuar" />
+        </VBox>
+    </bottom>
+</BorderPane>
