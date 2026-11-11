@@ -54,3 +54,4 @@ public class TelaMenuFX extends Application {
         Parent tela = carregador.load();
         palco.setScene(new Scene(tela));
     }
+}
