@@ -6,7 +6,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
-import javafx.util.StringConverter;
 import model.enums.Personagens;
 import model.enums.Preset;
 
@@ -29,34 +28,26 @@ public class NovaPartidaController {
     @FXML private ComboBox<Preset> comboPreset;
     @FXML private Label descricaoPreset;
 
+    /** O JavaFX chama este método sozinho, logo depois de carregar o FXML. */
     @FXML
     private void initialize() {
-        URL recurso = TelaMenuFX.class.getResource(CENARIO);
-        if (recurso != null) {
-            cenario.setStyle("-fx-background-image: url('" + recurso.toExternalForm() + "');"
-                    + "-fx-background-size: cover; -fx-background-position: center center;");
-        }
+        colocarFundo();
 
-        comboPreset.getItems().setAll(Preset.values());
-        comboPreset.setConverter(new StringConverter<Preset>() {
-            @Override
-            public String toString(Preset preset) {
-                return preset == null ? "" : preset.getNome();
-            }
+        // O nome que aparece em cada opção vem do toString() do Preset.
+        comboPreset.getItems().addAll(Preset.values());
+        comboPreset.setValue(Preset.COMUM);
+        atualizarDescricao();
+    }
 
-            @Override
-            public Preset fromString(String texto) {
-                return null;   // o combo só é usado para escolher, nunca para digitar
-            }
-        });
-        comboPreset.getSelectionModel().selectedItemProperty().addListener(
-                (observado, antes, agora) -> descricaoPreset.setText(descricaoDe(agora)));
-        comboPreset.getSelectionModel().select(Preset.COMUM);
+    /** Chamado pelo onAction da caixa de preset, sempre que o jogador troca a opção. */
+    @FXML
+    private void onPresetEscolhido() {
+        atualizarDescricao();
     }
 
     @FXML
     private void onComecarClick() {
-        String nome = campoNome.getText() == null ? "" : campoNome.getText().trim();
+        String nome = campoNome.getText().trim();
         if (nome.isEmpty()) {
             nome = Personagens.VICENTE.getNomeExibicao();
         }
@@ -70,23 +61,34 @@ public class NovaPartidaController {
         trocarPara("menu-view.fxml");
     }
 
-    /** Descrição do preset com os três atributos iniciais. */
-    private String descricaoDe(Preset preset) {
+    /** Mostra a descrição do preset escolhido, com os três atributos iniciais. */
+    private void atualizarDescricao() {
+        Preset preset = comboPreset.getValue();
         if (preset == null) {
-            return "";
+            descricaoPreset.setText("");
+            return;
         }
-        return preset.getDescricao()
+        descricaoPreset.setText(preset.getDescricao()
                 + "\nFôlego " + preset.getFolego()
                 + " | Coragem " + preset.getCoragem()
-                + " | Lucidez " + preset.getLucidez();
+                + " | Lucidez " + preset.getLucidez());
+    }
+
+    private void colocarFundo() {
+        URL recurso = TelaMenuFX.class.getResource(CENARIO);
+        if (recurso != null) {
+            cenario.setStyle("-fx-background-image: url('" + recurso.toExternalForm() + "');"
+                    + "-fx-background-size: cover; -fx-background-position: center center;");
+        }
     }
 
     private void trocarPara(String arquivoFxml) {
         try {
             TelaMenuFX.trocarTela(arquivoFxml);
         } catch (IOException e) {
-            new Alert(Alert.AlertType.ERROR, "Não foi possível abrir " + arquivoFxml + ": " + e.getMessage())
-                    .showAndWait();
+            Alert erro = new Alert(Alert.AlertType.ERROR);
+            erro.setContentText("Não foi possível abrir " + arquivoFxml + ": " + e.getMessage());
+            erro.showAndWait();
         }
     }
 }

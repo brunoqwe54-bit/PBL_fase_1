@@ -55,4 +55,16 @@ public enum Preset {
     public int getLucidez() {
         return lucidez;
     }
+
+    /**
+     * O texto que aparece quando o preset é mostrado na tela.
+     *
+     * A caixa de escolha do JavaFX (ComboBox) usa o toString() de cada
+     * item para escrever a opção. Sem isto, ela mostraria "ATLETA" em vez
+     * de "Atleta".
+     */
+    @Override
+    public String toString() {
+        return nome;
+    }
 }

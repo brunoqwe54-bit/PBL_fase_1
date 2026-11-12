@@ -30,7 +30,7 @@
         <TextField fx:id="campoNome" promptText="vazio = Vicente" />
 
         <Label text="Escolha seu preset" />
-        <ComboBox fx:id="comboPreset" maxWidth="Infinity" />
+        <ComboBox fx:id="comboPreset" maxWidth="Infinity" onAction="#onPresetEscolhido" />
 
         <Label fx:id="descricaoPreset" wrapText="true" />
 

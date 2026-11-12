@@ -6,8 +6,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import model.entidades.Cena;
@@ -19,71 +17,40 @@ import model.enums.Atributo;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A tela do jogo.
  *
  * Funciona para qualquer cena da história. Mostra um trecho de texto por
- * vez e espera ENTER, igual ao jogo em console: um trecho para cada
- * parágrafo da narração e um para cada fala. Terminados os textos, as
- * escolhas aparecem por cima do cenário.
+ * vez: um para cada parágrafo da narração e um para cada fala. O jogador
+ * avança com o botão Continuar (ou com ENTER, que aperta esse botão).
+ * Terminados os textos, as escolhas aparecem por cima do cenário.
  *
  * Ao escolher, a SessaoDeJogo aplica os efeitos e devolve o resumo do que
- * mudou; esse resumo também espera ENTER antes da próxima cena.
- *
- * A tabela CENARIOS liga o id da cena ao arquivo de fundo: é decisão de
- * aparência, por isso fica aqui na view.
+ * mudou; esse resumo também espera o Continuar antes da próxima cena.
  */
 public class JogoViewController {
 
-    private static final Map<String, String> CENARIOS = new LinkedHashMap<>();
-
-    static {
-        CENARIOS.put("CAP01", "casa/entrance-noite.jpg");
-        CENARIOS.put("CAP02", "rua/street-noite.jpg");
-        CENARIOS.put("CAP02B", "rua/street-noite.jpg");
-        CENARIOS.put("CAP03", "praca/park-noite.jpg");
-        CENARIOS.put("CAP03B", "praca/smallpark-noite.jpg");
-        CENARIOS.put("CAP04", "armazem/warehouse_control-noite.jpg");
-        CENARIOS.put("CAP04B", "armazem/warehouse_floor-noite.jpg");
-        CENARIOS.put("CAP05", "rua/alley-noite.jpg");
-        CENARIOS.put("CAP06", "diversos/cell-noite.jpg");
-        CENARIOS.put("CAP06B", "diversos/cell-noite.jpg");
-        CENARIOS.put("CAP07", "casa/lounge-noite.jpg");
-        CENARIOS.put("CAP07B", "casa/hallway-noite.jpg");
-    }
-
-    @FXML private BorderPane raiz;
     @FXML private Region cenario;
     @FXML private Label tituloCena;
     @FXML private Label status;
     @FXML private Label texto;
-    @FXML private Label dica;
+    @FXML private Button botaoContinuar;
     @FXML private VBox opcoes;
 
-    private final SessaoDeJogo sessao = TelaMenuFX.getSessao();
+    private SessaoDeJogo sessao = TelaMenuFX.getSessao();
 
-    // Trechos de texto da cena atual (parágrafos e falas) e em qual está.
-    private final List<String> trechos = new ArrayList<>();
+    // Trechos de texto da cena atual (parágrafos e falas) e qual está na tela.
+    private List<String> trechos = new ArrayList<>();
     private int posicao;
 
     // true quando a tela está mostrando a consequência de uma escolha.
     private boolean esperandoProximaCena;
 
+    /** O JavaFX chama este método sozinho, logo depois de carregar o FXML. */
     @FXML
     private void initialize() {
-        raiz.sceneProperty().addListener((observado, antes, cena) -> {
-            if (cena != null) {
-                cena.setOnKeyPressed(evento -> {
-                    if (evento.getCode() == KeyCode.ENTER) {
-                        avancar();
-                    }
-                });
-            }
-        });
         exibirCena();
     }
 
@@ -97,7 +64,8 @@ public class JogoViewController {
         esconderOpcoes();
 
         trechos.clear();
-        for (String paragrafo : cena.getTextoPrincipal().split("\n\n")) {
+        String[] paragrafos = cena.getTextoPrincipal().split("\n\n");
+        for (String paragrafo : paragrafos) {
             trechos.add(paragrafo);
         }
         for (Dialogo fala : cena.getDialogos()) {
@@ -114,17 +82,15 @@ public class JogoViewController {
 
     private void mostrarTrecho() {
         texto.setText(trechos.get(posicao));
-        dica.setVisible(true);
+        mostrarBotaoContinuar(true);
     }
 
-    /** ENTER: próximo trecho, escolhas ou volta ao menu. */
-    private void avancar() {
+    /** Botão Continuar (ou ENTER): próximo trecho, escolhas ou volta ao menu. */
+    @FXML
+    private void onContinuarClick() {
         if (esperandoProximaCena) {
             exibirCena();
             return;
-        }
-        if (opcoes.isVisible()) {
-            return;   // com as escolhas na tela, quem decide é o clique
         }
         if (posicao < trechos.size() - 1) {
             posicao++;
@@ -141,11 +107,14 @@ public class JogoViewController {
     /** Escolhas por cima do cenário, com as bloqueadas desabilitadas. */
     private void mostrarOpcoes() {
         opcoes.getChildren().clear();
-        dica.setVisible(false);
+        mostrarBotaoContinuar(false);   // agora quem decide é o clique numa escolha
 
         for (Escolha escolha : sessao.disponiveis()) {
             Button botao = new Button(escolha.getTextoExibido());
             botao.setMaxWidth(Double.MAX_VALUE);
+            // Os botões das escolhas mudam a cada cena, por isso são criados
+            // aqui e não no FXML. Lendo a linha: "quando clicar neste botão,
+            // chama escolher() com esta escolha".
             botao.setOnAction(evento -> escolher(escolha));
             opcoes.getChildren().add(botao);
         }
@@ -153,6 +122,7 @@ public class JogoViewController {
             Button botao = new Button("[-] " + escolha.getTextoExibido());
             botao.setMaxWidth(Double.MAX_VALUE);
             botao.setDisable(true);
+            // Passando o mouse por cima, aparece o motivo do bloqueio.
             botao.setTooltip(new Tooltip(escolha.getMotivoDoBloqueio()));
             opcoes.getChildren().add(botao);
         }
@@ -168,15 +138,25 @@ public class JogoViewController {
             exibirCena();
             return;
         }
-        // O console mostra o que mudou e só segue depois do ENTER.
+        // Mostra o que mudou e só segue para a próxima cena depois do Continuar.
         texto.setText(aviso);
-        dica.setVisible(true);
+        mostrarBotaoContinuar(true);
         esperandoProximaCena = true;
     }
 
     private void esconderOpcoes() {
         opcoes.setVisible(false);
         opcoes.getChildren().clear();
+    }
+
+    /**
+     * Mostra ou esconde o botão Continuar. Quando escondido, ele também fica
+     * desabilitado, para o ENTER não apertar o botão enquanto as escolhas
+     * estão na tela.
+     */
+    private void mostrarBotaoContinuar(boolean mostrar) {
+        botaoContinuar.setVisible(mostrar);
+        botaoContinuar.setDisable(!mostrar);
     }
 
     private void atualizarStatus() {
@@ -189,7 +169,7 @@ public class JogoViewController {
 
     /** Troca o cenário quando a cena tem imagem; cena sem imagem mantém a anterior. */
     private void trocarFundo(String idCena) {
-        String arquivo = CENARIOS.get(idCena);
+        String arquivo = arquivoDoCenario(idCena);
         if (arquivo == null) {
             return;
         }
@@ -200,11 +180,46 @@ public class JogoViewController {
         }
     }
 
+    /**
+     * Qual imagem de fundo usar em cada cena. É decisão de aparência, por
+     * isso fica aqui na view. Cena que não está na lista devolve null.
+     */
+    private String arquivoDoCenario(String idCena) {
+        switch (idCena) {
+            case "CAP01":
+                return "casa/entrance-noite.jpg";
+            case "CAP02":
+            case "CAP02B":
+                return "rua/street-noite.jpg";
+            case "CAP03":
+                return "praca/park-noite.jpg";
+            case "CAP03B":
+                return "praca/smallpark-noite.jpg";
+            case "CAP04":
+                return "armazem/warehouse_control-noite.jpg";
+            case "CAP04B":
+                return "armazem/warehouse_floor-noite.jpg";
+            case "CAP05":
+                return "rua/alley-noite.jpg";
+            case "CAP06":
+            case "CAP06B":
+                return "diversos/cell-noite.jpg";
+            case "CAP07":
+                return "casa/lounge-noite.jpg";
+            case "CAP07B":
+                return "casa/hallway-noite.jpg";
+            default:
+                return null;
+        }
+    }
+
     private void voltarAoMenu() {
         try {
             TelaMenuFX.trocarTela("menu-view.fxml");
         } catch (IOException e) {
-            new Alert(Alert.AlertType.ERROR, "Não foi possível voltar ao menu: " + e.getMessage()).showAndWait();
+            Alert erro = new Alert(Alert.AlertType.ERROR);
+            erro.setContentText("Não foi possível voltar ao menu: " + e.getMessage());
+            erro.showAndWait();
         }
     }
 }
