@@ -560,7 +560,7 @@ public class Historia {
 
         cena.getOpcoes().add(
                 new Escolha("ESC0402", "Perguntar por que ele fica.", getCena("CAP04B"))
-                        .exigeConfianca(antonio, 55, "ele não vai te contar isso ainda")
+                        .exigeAtributo(Atributo.LUCIDEZ, 55, "você está agitado demais pra ouvir a resposta")
                         .comConfianca(antonio, 20)
                         .comAtributo(Atributo.CORAGEM, 10));
 

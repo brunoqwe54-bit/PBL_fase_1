@@ -1,225 +1,201 @@
 package view;
 
+import controller.ObservadorDeJogo;
 import controller.SessaoDeJogo;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import model.entidades.Cena;
-import model.entidades.Dialogo;
-import model.entidades.Escolha;
-import model.entidades.Partida;
+import model.entidades.*;
 import model.enums.Atributo;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A tela do jogo.
- *
- * Funciona para qualquer cena da história. Mostra um trecho de texto por
- * vez: um para cada parágrafo da narração e um para cada fala. O jogador
- * avança com o botão Continuar (ou com ENTER, que aperta esse botão).
- * Terminados os textos, as escolhas aparecem por cima do cenário.
- *
- * Ao escolher, a SessaoDeJogo aplica os efeitos e devolve o resumo do que
- * mudou; esse resumo também espera o Continuar antes da próxima cena.
- */
-public class JogoViewController {
-
+/** Apresentação da partida. As decisões e os saves pertencem à sessão. */
+public class JogoViewController implements ObservadorDeJogo {
     @FXML private Region cenario;
-    @FXML private Label tituloCena;
-    @FXML private Label status;
-    @FXML private Label texto;
+    @FXML private Label tituloCena, status, texto, avisos, nomePersonagem, progressoTexto;
+    @FXML private ProgressBar progresso;
     @FXML private Button botaoContinuar;
-    @FXML private VBox opcoes;
+    @FXML private VBox opcoes, personagemVisual;
+    @FXML private ScrollPane leitura, listaOpcoes;
 
-    private SessaoDeJogo sessao = TelaMenuFX.getSessao();
-
-    // Trechos de texto da cena atual (parágrafos e falas) e qual está na tela.
-    private List<String> trechos = new ArrayList<>();
+    private final SessaoDeJogo sessao = TelaMenuFX.getSessao();
+    private final List<Trecho> trechos = new ArrayList<>();
     private int posicao;
-
-    // true quando a tela está mostrando a consequência de uma escolha.
     private boolean esperandoProximaCena;
+    private boolean leituraRapida;
 
-    /** O JavaFX chama este método sozinho, logo depois de carregar o FXML. */
-    @FXML
-    private void initialize() {
-        exibirCena();
-    }
+    /** Um trecho de narração tem personagem null; uma fala tem seu autor. */
+    private record Trecho(String texto, PersonagemBase personagem) { }
 
-    /** Monta os trechos da cena atual e mostra o primeiro. */
+    @FXML private void initialize() { exibirCena(); }
+
     private void exibirCena() {
+        leituraRapida = sessao.getPreferencias().isPularEnter();
         Cena cena = sessao.getCenaAtual();
-
         tituloCena.setText(cena.getTitulo());
         trocarFundo(cena.getId());
-        atualizarStatus();
+        atualizar(sessao.getUltimaMensagem());
         esconderOpcoes();
-
         trechos.clear();
-        String[] paragrafos = cena.getTextoPrincipal().split("\n\n");
-        for (String paragrafo : paragrafos) {
-            trechos.add(paragrafo);
+        for (String paragrafo : cena.getTextoPrincipal().split("\n\n")) {
+            String narrativa = paragrafo.replace('\n', ' ').replace("VICENTE:",
+                    sessao.getPartida().getProtagonista().getNome() + ":");
+            trechos.add(new Trecho(narrativa, null));
         }
         for (Dialogo fala : cena.getDialogos()) {
-            trechos.add(fala.getPersonagem().getNome() + ": " + fala.getTexto());
+            trechos.add(new Trecho(fala.getTexto(), fala.getPersonagem()));
         }
-        if (sessao.cenaFinal()) {
-            trechos.add("FIM DE JOGO");
-        }
-
+        if (sessao.cenaFinal()) trechos.add(new Trecho("FIM DE JOGO · Outras escolhas revelam novos desfechos.", null));
         posicao = 0;
         esperandoProximaCena = false;
-        mostrarTrecho();
+        if (leituraRapida) {
+            StringBuilder tudo = new StringBuilder();
+            for (Trecho trecho : trechos) {
+                if (trecho.personagem() != null) tudo.append(trecho.personagem().getNome()).append(": ");
+                tudo.append(trecho.texto()).append("\n\n");
+            }
+            texto.setText(tudo.toString().trim());
+            personagemVisual.setVisible(false);
+            leitura.setVvalue(0);
+            mostrarOpcoes();
+            mostrarBotaoContinuar(sessao.cenaFinal());
+            botaoContinuar.setText("Voltar ao menu");
+        } else {
+            mostrarTrecho();
+        }
     }
 
     private void mostrarTrecho() {
-        texto.setText(trechos.get(posicao));
+        Trecho trecho = trechos.get(posicao);
+        texto.setText(trecho.texto());
+        leitura.setVvalue(0);
+        PersonagemBase pessoa = trecho.personagem();
+        personagemVisual.setVisible(pessoa != null);
+        if (pessoa != null) nomePersonagem.setText(pessoa.getNome());
         mostrarBotaoContinuar(true);
+        botaoContinuar.setText(sessao.cenaFinal() && posicao == trechos.size() - 1
+                ? "Voltar ao menu" : "Continuar  [ENTER]");
     }
 
-    /** Botão Continuar (ou ENTER): próximo trecho, escolhas ou volta ao menu. */
-    @FXML
-    private void onContinuarClick() {
-        if (esperandoProximaCena) {
-            exibirCena();
-            return;
-        }
-        if (posicao < trechos.size() - 1) {
-            posicao++;
-            mostrarTrecho();
-            return;
-        }
-        if (sessao.cenaFinal()) {
-            voltarAoMenu();
-            return;
-        }
-        mostrarOpcoes();
+    @FXML private void onContinuarClick() {
+        if (esperandoProximaCena) exibirCena();
+        else if (sessao.getPreferencias().isPularEnter() && sessao.cenaFinal()) onMenuInicialClick();
+        else if (posicao < trechos.size() - 1) { posicao++; mostrarTrecho(); }
+        else if (sessao.cenaFinal()) onMenuInicialClick();
+        else mostrarOpcoes();
     }
 
-    /** Escolhas por cima do cenário, com as bloqueadas desabilitadas. */
     private void mostrarOpcoes() {
         opcoes.getChildren().clear();
-        mostrarBotaoContinuar(false);   // agora quem decide é o clique numa escolha
-
-        for (Escolha escolha : sessao.disponiveis()) {
+        mostrarBotaoContinuar(false);
+        for (Escolha escolha : sessao.getCenaAtual().getOpcoes()) {
+            boolean disponivel = escolha.estaDisponivel(sessao.getPartida());
             Button botao = new Button(escolha.getTextoExibido());
             botao.setMaxWidth(Double.MAX_VALUE);
-            // Os botões das escolhas mudam a cada cena, por isso são criados
-            // aqui e não no FXML. Lendo a linha: "quando clicar neste botão,
-            // chama escolher() com esta escolha".
+            botao.setWrapText(true);
+            botao.setDisable(!disponivel);
             botao.setOnAction(evento -> escolher(escolha));
             opcoes.getChildren().add(botao);
+            if (!disponivel) {
+                Label motivo = new Label("Bloqueada: " + escolha.getMotivoDoBloqueio(sessao.getPartida()));
+                motivo.getStyleClass().add("motivo");
+                motivo.setWrapText(true);
+                opcoes.getChildren().add(motivo);
+            }
         }
-        for (Escolha escolha : sessao.bloqueadas()) {
-            Button botao = new Button("[-] " + escolha.getTextoExibido());
-            botao.setMaxWidth(Double.MAX_VALUE);
-            botao.setDisable(true);
-            // Passando o mouse por cima, aparece o motivo do bloqueio.
-            botao.setTooltip(new Tooltip(escolha.getMotivoDoBloqueio()));
-            opcoes.getChildren().add(botao);
-        }
-
-        opcoes.setVisible(true);
+        listaOpcoes.setVisible(!sessao.cenaFinal());
+        listaOpcoes.setVvalue(0);
     }
 
     private void escolher(Escolha escolha) {
         String aviso = sessao.escolher(escolha);
         esconderOpcoes();
-
-        if (aviso == null) {
-            exibirCena();
-            return;
-        }
-        // Mostra o que mudou e só segue para a próxima cena depois do Continuar.
+        personagemVisual.setVisible(false);
+        if (aviso == null) { exibirCena(); return; }
         texto.setText(aviso);
+        leitura.setVvalue(0);
         mostrarBotaoContinuar(true);
+        botaoContinuar.setText("Continuar  [ENTER]");
         esperandoProximaCena = true;
     }
 
     private void esconderOpcoes() {
-        opcoes.setVisible(false);
+        listaOpcoes.setVisible(false);
         opcoes.getChildren().clear();
     }
 
-    /**
-     * Mostra ou esconde o botão Continuar. Quando escondido, ele também fica
-     * desabilitado, para o ENTER não apertar o botão enquanto as escolhas
-     * estão na tela.
-     */
     private void mostrarBotaoContinuar(boolean mostrar) {
         botaoContinuar.setVisible(mostrar);
+        botaoContinuar.setManaged(mostrar);
         botaoContinuar.setDisable(!mostrar);
+        if (mostrar) Platform.runLater(botaoContinuar::requestFocus);
     }
 
-    private void atualizarStatus() {
+    /** Volta de um painel mantendo o trecho lido e as escolhas na tela. */
+    public void retomar() {
+        if (leituraRapida != sessao.getPreferencias().isPularEnter()) exibirCena();
+        else {
+            atualizar(sessao.getUltimaMensagem());
+            if (botaoContinuar.isVisible()) Platform.runLater(botaoContinuar::requestFocus);
+        }
+    }
+
+    /** Observer: o HUD muda ao escolher ou salvar, sem repetir a narração. */
+    @Override public void atualizar(String mensagem) {
+        if (sessao.getPartida() == null) return;
         Partida partida = sessao.getPartida();
         status.setText("Fôlego " + partida.getProtagonista().getAtributo(Atributo.FOLEGO)
-                + "  |  Coragem " + partida.getProtagonista().getAtributo(Atributo.CORAGEM)
-                + "  |  Lucidez " + partida.getProtagonista().getAtributo(Atributo.LUCIDEZ)
-                + "   Mochila: " + partida.getInventario().listar());
+                + "   ·   Coragem " + partida.getProtagonista().getAtributo(Atributo.CORAGEM)
+                + "   ·   Lucidez " + partida.getProtagonista().getAtributo(Atributo.LUCIDEZ));
+        progresso.setProgress(sessao.getProgresso() / 100.0);
+        progressoTexto.setText(sessao.getProgresso() + "%");
+        avisos.setText(mensagem == null ? "" : mensagem);
     }
 
-    /** Troca o cenário quando a cena tem imagem; cena sem imagem mantém a anterior. */
-    private void trocarFundo(String idCena) {
-        String arquivo = arquivoDoCenario(idCena);
-        if (arquivo == null) {
-            return;
-        }
+    private void trocarFundo(String id) {
+        String arquivo = switch (id) {
+            case "CAP01" -> "casa/entrance-noite.jpg";
+            case "CAP02", "CAP02B", "MORTE_NOME" -> "rua/street-noite.jpg";
+            case "CAP03", "MORTE_FILA" -> "praca/park-noite.jpg";
+            case "CAP03B" -> "praca/smallpark-noite.jpg";
+            case "CAP04" -> "armazem/warehouse_control-noite.jpg";
+            case "CAP04B", "MORTE_JANELA" -> "armazem/warehouse_floor-noite.jpg";
+            case "CAP05" -> "rua/alley-noite.jpg";
+            case "CAP06", "CAP06B", "MORTE_PÁTIO" -> "diversos/cell-noite.jpg";
+            case "CAP07", "MORTE_CASARÃO" -> "casa/lounge-noite.jpg";
+            case "CAP07B" -> "casa/hallway-noite.jpg";
+            case "CAP08", "CAP08B", "MORTE_VELA" -> "rua/alley-noite.jpg";
+            case "FIM_A_TEMPO", "FIM_TARDE" -> "praca/park.jpg";
+            case "FIM_DESISTE" -> "casa/kitchen.jpg";
+            default -> "praca/park-noite.jpg";
+        };
         URL recurso = TelaMenuFX.class.getResource("img/cenario/" + arquivo);
-        if (recurso != null) {
-            cenario.setStyle("-fx-background-image: url('" + recurso.toExternalForm() + "');"
-                    + "-fx-background-size: cover; -fx-background-position: center center;");
+        cenario.setStyle("-fx-background-image: url('" + recurso.toExternalForm()
+                + "'); -fx-background-size: cover; -fx-background-position: center;");
+    }
+
+    @FXML private void onSalvarClick() { TelaMenuFX.abrirSlots(true); }
+    @FXML private void onCarregarClick() { TelaMenuFX.abrirSlots(false); }
+    @FXML private void onStatusClick() { TelaMenuFX.abrirPainel("status-view.fxml"); }
+    @FXML private void onPreferenciasClick() { TelaMenuFX.abrirPainel("preferencias-view.fxml"); }
+    @FXML private void onSairClick() { TelaMenuFX.sair(); }
+
+    @FXML private void onReiniciarClick() {
+        if (TelaMenuFX.confirmar("Reiniciar a partida? Você voltará à criação do protagonista.")) {
+            sessao.encerrarPartida();
+            TelaMenuFX.mostrar("nova-partida-view.fxml");
         }
     }
 
-    /**
-     * Qual imagem de fundo usar em cada cena. É decisão de aparência, por
-     * isso fica aqui na view. Cena que não está na lista devolve null.
-     */
-    private String arquivoDoCenario(String idCena) {
-        switch (idCena) {
-            case "CAP01":
-                return "casa/entrance-noite.jpg";
-            case "CAP02":
-            case "CAP02B":
-                return "rua/street-noite.jpg";
-            case "CAP03":
-                return "praca/park-noite.jpg";
-            case "CAP03B":
-                return "praca/smallpark-noite.jpg";
-            case "CAP04":
-                return "armazem/warehouse_control-noite.jpg";
-            case "CAP04B":
-                return "armazem/warehouse_floor-noite.jpg";
-            case "CAP05":
-                return "rua/alley-noite.jpg";
-            case "CAP06":
-            case "CAP06B":
-                return "diversos/cell-noite.jpg";
-            case "CAP07":
-                return "casa/lounge-noite.jpg";
-            case "CAP07B":
-                return "casa/hallway-noite.jpg";
-            default:
-                return null;
-        }
-    }
-
-    private void voltarAoMenu() {
-        try {
-            TelaMenuFX.trocarTela("menu-view.fxml");
-        } catch (IOException e) {
-            Alert erro = new Alert(Alert.AlertType.ERROR);
-            erro.setContentText("Não foi possível voltar ao menu: " + e.getMessage());
-            erro.showAndWait();
+    @FXML private void onMenuInicialClick() {
+        if (TelaMenuFX.confirmarPerda()) {
+            sessao.encerrarPartida();
+            TelaMenuFX.mostrar("menu-view.fxml");
         }
     }
 }

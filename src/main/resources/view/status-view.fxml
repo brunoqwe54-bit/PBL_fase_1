@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="view.StatusController" styleClass="pagina">
+    <top><VBox spacing="8" styleClass="cabecalho">
+        <Label fx:id="titulo" styleClass="titulo" />
+        <Label text="O que você carrega, quem confia em você e o que a noite ainda exige." wrapText="true" />
+    </VBox></top>
+    <center><TabPane tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+            <Tab text="Atributos"><content><Label fx:id="atributos" wrapText="true" styleClass="conteudo" /></content></Tab>
+            <Tab text="Inventário"><content><Label fx:id="inventario" wrapText="true" styleClass="conteudo" /></content></Tab>
+            <Tab text="Relacionamentos"><content><ScrollPane fitToWidth="true">
+                <content><VBox fx:id="relacionamentos" spacing="18" styleClass="conteudo" /></content>
+            </ScrollPane></content></Tab>
+            <Tab text="Objetivos"><content><Label fx:id="objetivos" wrapText="true" styleClass="conteudo" /></content></Tab>
+            <Tab text="Decisões"><content><ScrollPane fitToWidth="true">
+                <content><Label fx:id="decisoes" wrapText="true" styleClass="conteudo" /></content>
+            </ScrollPane></content></Tab>
+        </tabs>
+    </TabPane></center>
+    <bottom><HBox styleClass="rodape"><Button text="Voltar ao jogo" onAction="#onVoltarClick" /></HBox></bottom>
+</BorderPane>

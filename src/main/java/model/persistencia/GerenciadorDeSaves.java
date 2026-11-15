@@ -6,10 +6,8 @@ import model.excecoes.FalhaAoSalvarException;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 /**
  * Quem sabe mexer nos arquivos de save: grava, lê, exclui e descobre qual
@@ -65,14 +63,8 @@ public class GerenciadorDeSaves {
             throw new FalhaAoSalvarException("Não foi possível criar a pasta de saves");
         }
 
-        /* Cada recurso em uma linha do try: assim o Java fecha os dois no fim,
-         * mesmo se der erro no meio. Se o FileOutputStream ficasse escondido
-         * dentro do ObjectOutputStream e o segundo falhasse ao ser criado,
-         * o arquivo ficaria aberto e o Windows não deixaria apagá-lo depois.
-         */
-        try (FileOutputStream arquivoAberto = new FileOutputStream(arquivoDoSlot(slot));
-             ObjectOutputStream saida = new ObjectOutputStream(arquivoAberto)) {
-            saida.writeObject(save);
+        try {
+            ArquivoSerializado.gravar(arquivoDoSlot(slot), save);
         } catch (IOException e) {
             throw new FalhaAoSalvarException("Não foi possível salvar " + descricao(slot), e);
         }

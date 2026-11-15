@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="view.PreferenciasController" styleClass="pagina">
+    <top><VBox spacing="8" styleClass="cabecalho">
+        <Label text="Configurações" styleClass="titulo" />
+        <Label text="Estas preferências continuam valendo quando você abrir o jogo novamente." wrapText="true" />
+    </VBox></top>
+    <center><VBox spacing="22" maxWidth="650" styleClass="conteudo">
+        <Label text="Preset padrão de novas partidas" styleClass="subtitulo" />
+        <ComboBox fx:id="preset" maxWidth="Infinity" />
+        <CheckBox fx:id="leituraRapida" text="Leitura rápida: mostrar todo o texto da cena de uma vez" wrapText="true" />
+        <CheckBox fx:id="autosave" text="Salvar automaticamente no início da partida e de cada capítulo" wrapText="true" />
+        <Label text="As mudanças de preset valem para partidas novas. A leitura rápida e o autosave valem assim que você salvar as preferências." wrapText="true" styleClass="muted" />
+    </VBox></center>
+    <bottom><HBox spacing="12" styleClass="rodape">
+        <Button text="Cancelar" onAction="#onVoltarClick" />
+        <Button text="Salvar preferências" onAction="#onSalvarClick" styleClass="principal" />
+    </HBox></bottom>
+</BorderPane>

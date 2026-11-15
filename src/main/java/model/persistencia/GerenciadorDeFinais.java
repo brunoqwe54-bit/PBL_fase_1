@@ -5,10 +5,8 @@ import model.excecoes.FalhaAoSalvarException;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 /**
  * Quem grava e lê o arquivo dos finais já vistos (finais.dat), na mesma
@@ -41,7 +39,8 @@ public class GerenciadorDeFinais {
 
         try (FileInputStream arquivoAberto = new FileInputStream(arquivo);
              ObjectInputStream entrada = new ObjectInputStream(arquivoAberto)) {
-            return (RegistroDeFinais) entrada.readObject();
+            RegistroDeFinais registro = (RegistroDeFinais) entrada.readObject();
+            return registro == null ? new RegistroDeFinais() : registro;
         } catch (Exception e) {
             return new RegistroDeFinais(); // arquivo ruim: começa vazio
         }
@@ -58,9 +57,8 @@ public class GerenciadorDeFinais {
             throw new FalhaAoSalvarException("Não foi possível criar a pasta de saves");
         }
 
-        try (FileOutputStream arquivoAberto = new FileOutputStream(new File(pasta, "finais.dat"));
-             ObjectOutputStream saida = new ObjectOutputStream(arquivoAberto)) {
-            saida.writeObject(registro);
+        try {
+            ArquivoSerializado.gravar(new File(pasta, "finais.dat"), registro);
         } catch (IOException e) {
             throw new FalhaAoSalvarException("Não foi possível salvar os finais", e);
         }

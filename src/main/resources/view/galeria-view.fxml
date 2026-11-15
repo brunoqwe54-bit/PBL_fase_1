@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="view.GaleriaController" styleClass="pagina">
+    <top><VBox spacing="8" styleClass="cabecalho">
+        <Label text="Vestígios da noite" styleClass="titulo" />
+        <Label fx:id="resumo" styleClass="subtitulo" />
+        <Label text="Cada escolha pode deixar um desfecho diferente." />
+    </VBox></top>
+    <center><ScrollPane fitToWidth="true" hbarPolicy="NEVER">
+        <content><VBox fx:id="finais" spacing="12" styleClass="conteudo" /></content>
+    </ScrollPane></center>
+    <bottom><HBox styleClass="rodape"><Button text="Voltar" onAction="#onVoltarClick" /></HBox></bottom>
+</BorderPane>

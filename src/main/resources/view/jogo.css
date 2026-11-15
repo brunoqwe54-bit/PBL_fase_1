@@ -1,0 +1,45 @@
+.root {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 15px;
+    -fx-accent: #ae93d5;
+    -fx-focus-color: #ae93d5;
+    -fx-background-color: #11121b;
+}
+.fundo-menu {
+    -fx-background-image: url("img/cenario/rua/street-noite.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+.sombra-menu { -fx-background-color: rgba(8, 9, 17, 0.72); }
+.painel-menu {
+    -fx-background-color: rgba(17, 18, 29, 0.96);
+    -fx-padding: 30;
+    -fx-background-radius: 12;
+    -fx-border-color: #494053;
+    -fx-border-radius: 12;
+}
+.titulo-jogo { -fx-font-size: 29px; -fx-font-weight: bold; -fx-text-fill: #eee2ce; }
+.titulo { -fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #eee2ce; }
+.subtitulo { -fx-font-size: 17px; -fx-font-weight: bold; }
+.legenda { -fx-font-size: 11px; -fx-text-fill: #c1a7dd; }
+.muted { -fx-text-fill: #bcb8c9; }
+.button, .menu-button { -fx-padding: 9 15; -fx-background-radius: 6; }
+.button { -fx-cursor: hand; }
+.principal { -fx-background-color: #b49ad8; -fx-text-fill: #15121e; -fx-font-weight: bold; }
+.principal:hover { -fx-background-color: #c7afe6; }
+.pagina, .tela-jogo { -fx-background-color: #11121b; }
+.cabecalho { -fx-padding: 18 24; -fx-background-color: #191a25; }
+.conteudo { -fx-padding: 24; }
+.rodape { -fx-padding: 16 24; }
+.cartao, .cartao-bloqueado { -fx-padding: 18; -fx-background-radius: 8; -fx-background-color: #232330; }
+.cartao-bloqueado { -fx-opacity: 0.65; }
+.sombra-cenario { -fx-background-color: linear-gradient(to bottom, rgba(6,6,12,0.08), rgba(6,6,12,0.65)); }
+.caixa-dialogo { -fx-padding: 18 24; -fx-background-color: #181923; }
+.narrativa { -fx-font-size: 17px; -fx-line-spacing: 4px; -fx-padding: 4 10 10 2; }
+.aviso { -fx-font-size: 12px; -fx-text-fill: #d3bfed; }
+.nome-personagem { -fx-font-size: 19px; -fx-font-weight: bold; -fx-padding: 8 16; -fx-background-color: #14141f; -fx-background-radius: 5; }
+.escolhas, .escolhas > .viewport { -fx-background-color: rgba(17,18,28,0.95); -fx-background-radius: 8; }
+.lista-escolhas { -fx-padding: 16; }
+.motivo { -fx-font-size: 12px; -fx-text-fill: #c9b4a8; -fx-padding: 0 10 8 10; }
+.scroll-pane { -fx-background-color: transparent; }
+.scroll-pane > .viewport { -fx-background-color: transparent; }

@@ -16,13 +16,20 @@ public class Textos {
             COMO SE JOGA
 
             Você lê, você escolhe, você vive com isso.
-            Digite o número da alternativa e pressione ENTER.
+            Na janela, clique em Continuar ou pressione ENTER para ler.
+            Depois, clique na alternativa desejada.
+            No terminal, digite o número da alternativa e pressione ENTER.
+
+            Use Status para ver atributos, itens, relacionamentos,
+            objetivos e decisões. No Menu da partida você pode salvar,
+            carregar, configurar, reiniciar ou voltar ao início.
+            Há três slots manuais e um autosave por capítulo.
 
             O protagonista tem três atributos: FÔLEGO, CORAGEM e LUCIDEZ.
             O FÔLEGO só desce, e a água do cantil é o único jeito de
             recuperar um pouco. Coragem e Lucidez sobem e descem
             conforme o que você faz, e algumas
-            escolhas só aparecem se o atributo for alto o bastante.
+            escolhas só ficam disponíveis se o atributo for alto o bastante.
 
             As pessoas que você encontra confiam mais ou menos em você.
             Quem confia, ajuda. Quem não confia, fecha a porta.

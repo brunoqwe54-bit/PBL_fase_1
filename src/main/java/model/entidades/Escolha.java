@@ -57,6 +57,7 @@ public class Escolha {
     private Flag flagExigida;
     private Flag flagProibida;       // só aparece se a flag NÃO estiver ligada
     private String motivoDoBloqueio = "você não pode fazer isso agora";
+    private String motivoAtributo, motivoItem, motivoConfianca, motivoFlag, motivoProibida;
 
     /** Construtor simples: escolha sem efeito nenhum. */
     public Escolha(String id, String textoExibido, Cena cenaDestino) {
@@ -147,6 +148,7 @@ public class Escolha {
     public Escolha exigeAtributo(Atributo atributo, int minimo, String motivo) {
         this.atributoExigido = atributo;
         this.valorMinimoAtributo = minimo;
+        this.motivoAtributo = motivo;
         this.motivoDoBloqueio = motivo;
         return this;
     }
@@ -163,6 +165,7 @@ public class Escolha {
      */
     public Escolha exigeItem(Item item, String motivo) {
         this.itemExigido = item;
+        this.motivoItem = motivo;
         this.motivoDoBloqueio = motivo;
         return this;
     }
@@ -178,6 +181,7 @@ public class Escolha {
     public Escolha exigeConfianca(Npc npc, int minimo, String motivo) {
         this.npcConfianca = npc;
         this.confiancaMinima = minimo;
+        this.motivoConfianca = motivo;
         this.motivoDoBloqueio = motivo;
         return this;
     }
@@ -191,6 +195,7 @@ public class Escolha {
      */
     public Escolha exigeFlag(Flag flag, String motivo) {
         this.flagExigida = flag;
+        this.motivoFlag = motivo;
         this.motivoDoBloqueio = motivo;
         return this;
     }
@@ -207,6 +212,7 @@ public class Escolha {
      */
     public Escolha proibeFlag(Flag flag, String motivo) {
         this.flagProibida = flag;
+        this.motivoProibida = motivo;
         this.motivoDoBloqueio = motivo;
         return this;
     }
@@ -346,4 +352,17 @@ public class Escolha {
     }
 
     public String getMotivoDoBloqueio() { return motivoDoBloqueio; }
+
+    /** Explica a primeira condição que realmente falhou nesta partida. */
+    public String getMotivoDoBloqueio(Partida partida) {
+        if (atributoExigido != null
+                && partida.getProtagonista().getAtributo(atributoExigido) < valorMinimoAtributo) {
+            return motivoAtributo;
+        }
+        if (itemExigido != null && !partida.getInventario().possui(itemExigido)) return motivoItem;
+        if (npcConfianca != null && npcConfianca.getConfianca() < confiancaMinima) return motivoConfianca;
+        if (flagExigida != null && !partida.temFlag(flagExigida)) return motivoFlag;
+        if (flagProibida != null && partida.temFlag(flagProibida)) return motivoProibida;
+        return "";
+    }
 }

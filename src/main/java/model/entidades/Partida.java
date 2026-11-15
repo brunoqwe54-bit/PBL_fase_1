@@ -3,9 +3,12 @@ package model.entidades;
 import model.enums.Flag;
 import model.enums.Personagens;
 import model.enums.Preset;
+import model.factory.FabricaDeNpc;
+import model.factory.FabricaDeProtagonista;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -53,18 +56,19 @@ public class Partida implements Serializable {
     private Npc manuela;
 
     public Partida(String nomeJogador, Preset preset) {
-        this.protagonista = new Protagonista(nomeJogador, preset);
+        this.protagonista = new FabricaDeProtagonista(preset).criar(nomeJogador);
         this.inventario = new Inventario();
         this.flags = new HashSet<>();
 
         // Confianças iniciais diferentes
-        this.otavio       = new Npc(Personagens.OTAVIO.getNomeExibicao(), 50);
-        this.mae          = new Npc(Personagens.MAE.getNomeExibicao(), 50);
-        this.davi         = new Npc(Personagens.DAVI.getNomeExibicao(), 30);
-        this.zulmira      = new Npc(Personagens.ZULMIRA.getNomeExibicao(), 40);
-        this.antonio      = new Npc(Personagens.ANTONIO.getNomeExibicao(), 50);
-        this.homemDeTerno = new Npc(Personagens.HOMEM_DE_TERNO.getNomeExibicao(), 0);
-        this.manuela      = new Npc(Personagens.MANUELA.getNomeExibicao(), 30);
+        FabricaDeNpc neutro = new FabricaDeNpc(50);
+        this.otavio       = neutro.criar(Personagens.OTAVIO.getNomeExibicao());
+        this.mae          = neutro.criar(Personagens.MAE.getNomeExibicao());
+        this.antonio      = neutro.criar(Personagens.ANTONIO.getNomeExibicao());
+        this.davi         = new FabricaDeNpc(30).criar(Personagens.DAVI.getNomeExibicao());
+        this.zulmira      = new FabricaDeNpc(40).criar(Personagens.ZULMIRA.getNomeExibicao());
+        this.homemDeTerno = new FabricaDeNpc(0).criar(Personagens.HOMEM_DE_TERNO.getNomeExibicao());
+        this.manuela      = new FabricaDeNpc(30).criar(Personagens.MANUELA.getNomeExibicao());
 
         // Item inicial: o terço da mãe, a única coisa que ele leva de casa.
         this.inventario.adicionar(model.enums.Item.TERCO);
@@ -97,6 +101,41 @@ public class Partida implements Serializable {
         return flags.contains(flag);
     }
 
+
+    public Set<Flag> getFlags() { return Set.copyOf(flags); }
+
+    public List<Npc> getNpcs() {
+        return List.of(otavio, mae, davi, zulmira, antonio, homemDeTerno, manuela);
+    }
+
+    /** Memento: uma fotografia independente, sem expor os dados internos. */
+    public Memento criarMemento() {
+        try (ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+             ObjectOutputStream saida = new ObjectOutputStream(bytes)) {
+            saida.writeObject(this);
+            return new Memento(bytes.toByteArray());
+        } catch (IOException e) {
+            throw new IllegalStateException("Não foi possível copiar a partida", e);
+        }
+    }
+
+    /** Só a própria Partida sabe reconstruir o estado guardado no Memento. */
+    public static Partida restaurar(Memento memento) {
+        if (memento == null) throw new IllegalArgumentException("O estado da partida está vazio");
+        try (ObjectInputStream entrada = new ObjectInputStream(
+                new ByteArrayInputStream(memento.dados))) {
+            return (Partida) entrada.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new IllegalStateException("Não foi possível restaurar a partida", e);
+        }
+    }
+
+    public static final class Memento implements Serializable {
+        private static final long serialVersionUID = 1L;
+        private final byte[] dados;
+
+        private Memento(byte[] dados) { this.dados = dados; }
+    }
 
     public Protagonista getProtagonista() { return protagonista; }
     public Inventario getInventario() { return inventario; }

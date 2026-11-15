@@ -5,10 +5,8 @@ import model.excecoes.FalhaAoSalvarException;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 /**
  * Quem grava e lê o arquivo das preferências (preferencias.dat), na mesma
@@ -62,9 +60,8 @@ public class GerenciadorDePreferencias {
             throw new FalhaAoSalvarException("Não foi possível criar a pasta de saves");
         }
 
-        try (FileOutputStream arquivoAberto = new FileOutputStream(new File(pasta, "preferencias.dat"));
-             ObjectOutputStream saida = new ObjectOutputStream(arquivoAberto)) {
-            saida.writeObject(preferencias);
+        try {
+            ArquivoSerializado.gravar(new File(pasta, "preferencias.dat"), preferencias);
         } catch (IOException e) {
             throw new FalhaAoSalvarException("Não foi possível salvar as preferências", e);
         }

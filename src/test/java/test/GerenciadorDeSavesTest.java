@@ -57,8 +57,10 @@ public class GerenciadorDeSavesTest {
 
     @Test
     public void salvarECarregarDevolveOQueFoiGravado() throws Exception {
-        Save original = criarSave("Vicente", LocalDateTime.of(2026, 10, 3, 21, 30));
-        original.getPartida().getProtagonista().alterarAtributo(Atributo.FOLEGO, -20);
+        Partida partida = new Partida("Vicente", Preset.COMUM);
+        partida.getProtagonista().alterarAtributo(Atributo.FOLEGO, -20);
+        Save original = new Save("Vicente", LocalDateTime.of(2026, 10, 3, 21, 30),
+                "CAP03", "Capítulo 3 - A Praça", 20, partida);
 
         gerenciador.salvar(2, original);
         Save lido = gerenciador.carregar(2);

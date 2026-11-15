@@ -6,6 +6,8 @@ import model.enums.Atributo;
 import model.enums.Preset;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.Rule;
+import org.junit.rules.TemporaryFolder;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -18,11 +20,13 @@ import static org.junit.Assert.assertTrue;
  */
 public class SessaoDeJogoTest {
 
+    @Rule public TemporaryFolder pasta = new TemporaryFolder();
+
     private SessaoDeJogo sessao;
 
     @Before
     public void comecarPartida() {
-        sessao = new SessaoDeJogo();
+        sessao = new SessaoDeJogo(pasta.getRoot().getPath());
         sessao.novaPartida("Vicente", Preset.COMUM);
     }
 

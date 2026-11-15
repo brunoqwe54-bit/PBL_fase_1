@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
  * Um slot de salvamento: a Partida mais as informações que o menu mostra
  * na lista de slots.
  *
- * É só um pacote de dados, sem lógica nenhuma. Quem monta o Save (com o
+ * Guarda um Memento independente da partida. Quem monta o Save (com o
  * progresso já calculado) é o controller, e quem grava e lê o arquivo é
  * o GerenciadorDeSaves.
  *
@@ -25,6 +25,7 @@ public class Save implements Serializable {
     private String tituloCena;
     private int progresso;
     private Partida partida;
+    private Partida.Memento estado;
 
     /**
      * Cria o save com tudo já pronto.
@@ -43,7 +44,7 @@ public class Save implements Serializable {
         this.idCena = idCena;
         this.tituloCena = tituloCena;
         this.progresso = progresso;
-        this.partida = partida;
+        this.estado = partida == null ? null : partida.criarMemento();
     }
 
     public String getNomeJogador() { return nomeJogador; }
@@ -51,5 +52,9 @@ public class Save implements Serializable {
     public String getIdCena() { return idCena; }
     public String getTituloCena() { return tituloCena; }
     public int getProgresso() { return progresso; }
-    public Partida getPartida() { return partida; }
+    public Partida getPartida() {
+        // O campo antigo permite abrir os saves feitos antes da fase 3.
+        if (estado == null && partida != null) return Partida.restaurar(partida.criarMemento());
+        return estado == null ? null : Partida.restaurar(estado);
+    }
 }

@@ -70,13 +70,13 @@ public class ExibirJogo {
         }
 
         exibirStatus(partida);
-        exibirOpcoes(disponiveis, bloqueadas);
+        exibirOpcoes(disponiveis, bloqueadas, partida);
     }
 
     /* Mostra só a lista de opções. Também é chamado depois do menu de
      * pausa, para o jogador ver de novo o que pode escolher.
      */
-    public void exibirOpcoes(List<Escolha> disponiveis, List<Escolha> bloqueadas) {
+    public void exibirOpcoes(List<Escolha> disponiveis, List<Escolha> bloqueadas, Partida partida) {
         System.out.println();
         System.out.println("  [0] Menu");
         int numero = 1;
@@ -91,7 +91,7 @@ public class ExibirJogo {
 
         for (Escolha opcao : bloqueadas) {
             System.out.println("  [-] " + opcao.getTextoExibido()
-                    + "  (" + opcao.getMotivoDoBloqueio() + ")");
+                    + "  (" + opcao.getMotivoDoBloqueio(partida) + ")");
         }
     }
 
