@@ -1,7 +1,7 @@
 package test;
 
 import controller.ObservadorDeJogo;
-import controller.SessaoDeJogo;
+import controller.JogoController;
 import model.entidades.*;
 import model.enums.*;
 import model.excecoes.FalhaAoCarregarException;
@@ -21,14 +21,14 @@ import static org.junit.Assert.*;
 /** Integração dos três GoF, persistência e percursos completos da história. */
 public class Fase3Test {
     @Rule public TemporaryFolder pasta = new TemporaryFolder();
-    private SessaoDeJogo sessao;
+    private JogoController sessao;
     private static final String[] CAMINHO = {
             "ESC0102", "ESC0202", "ESC0204", "ESC0301", "ESC0305", "ESC0401", "ESC0406",
             "ESC0501", "ESC0601", "ESC0604", "ESC0702", "ESC0706", "ESC0803", "ESC0805", "ESC0901", "ESC0903"
     };
 
     @Before public void preparar() {
-        sessao = new SessaoDeJogo(pasta.getRoot().getPath());
+        sessao = new JogoController(pasta.getRoot().getPath());
         sessao.novaPartida("Bruno", Preset.COMUM);
     }
 
@@ -115,7 +115,7 @@ public class Fase3Test {
         verificarFinal("CAP09B", "FIM_TARDE", "ESC0907");
         verificarFinal("CAP10", "MORTE_CÍRCULO", "ESC1006");
         verificarFinal("CAP10", "FIM_A_TEMPO", "ESC1001", "ESC1002", "ESC1004");
-        assertEquals(11, new SessaoDeJogo(pasta.getRoot().getPath()).getRegistroDeFinais().quantosViu());
+        assertEquals(11, new JogoController(pasta.getRoot().getPath()).getRegistroDeFinais().quantosViu());
     }
 
     private void verificarFinal(String cena, String finalEsperado, String... escolhas) {
@@ -135,7 +135,7 @@ public class Fase3Test {
         escolher("ESC0102");
         assertFalse(sessao.existeSlot(0));
         assertTrue(sessao.temAlteracoesNaoSalvas());
-        SessaoDeJogo outra = new SessaoDeJogo(pasta.getRoot().getPath());
+        JogoController outra = new JogoController(pasta.getRoot().getPath());
         assertEquals(Preset.OBSERVADOR, outra.getPreferencias().getPresetPadrao());
         assertTrue(outra.getPreferencias().isPularEnter());
         assertFalse(outra.getPreferencias().isAutosaveLigado());
@@ -153,7 +153,7 @@ public class Fase3Test {
     }
 
     @Test public void falhaNoAutosaveAvisaSemImpedirOJogo() throws Exception {
-        sessao = new SessaoDeJogo(pasta.newFile("nao-e-pasta").getPath());
+        sessao = new JogoController(pasta.newFile("nao-e-pasta").getPath());
         sessao.novaPartida("Ana", Preset.COMUM);
         assertTrue(sessao.getUltimaMensagem().contains("Atenção"));
         assertTrue(sessao.temAlteracoesNaoSalvas());

@@ -3,7 +3,7 @@ package view;
 import atlantafx.base.theme.Dracula;
 import controller.ObservadorDeJogo;
 import controller.fx.JogoViewController;
-import controller.SessaoDeJogo;
+import controller.JogoController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -18,7 +18,7 @@ import java.io.IOException;
 
 /** Cria a janela e organiza a navegação. Não contém regras de jogo. */
 public class TelaMenuFX extends Application {
-    private static final SessaoDeJogo sessao = new SessaoDeJogo();
+    private static final JogoController sessao = new JogoController();
     private static Stage palco;
     private static Object controllerAtual;
     private static String telaAtual = "menu-view.fxml";
@@ -27,7 +27,7 @@ public class TelaMenuFX extends Application {
     private static Parent jogoEmPausa;
     private static Object controllerEmPausa;
 
-    public static SessaoDeJogo getSessao() { return sessao; }
+    public static JogoController getSessao() { return sessao; }
     public static boolean isModoSalvar() { return modoSalvar; }
 
     @Override

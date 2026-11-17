@@ -1,6 +1,6 @@
 package test;
 
-import controller.SessaoDeJogo;
+import controller.JogoController;
 import model.entidades.Escolha;
 import model.enums.Atributo;
 import model.enums.Preset;
@@ -16,17 +16,17 @@ import static org.junit.Assert.assertTrue;
 /**
  * Testes do fluxo da partida: começar, listar escolhas, escolher e terminar.
  *
- * Não precisam de JavaFX: a SessaoDeJogo não conhece interface nenhuma.
+ * Não precisam de JavaFX: a JogoController não conhece interface nenhuma.
  */
-public class SessaoDeJogoTest {
+public class JogoControllerTest {
 
     @Rule public TemporaryFolder pasta = new TemporaryFolder();
 
-    private SessaoDeJogo sessao;
+    private JogoController sessao;
 
     @Before
     public void comecarPartida() {
-        sessao = new SessaoDeJogo(pasta.getRoot().getPath());
+        sessao = new JogoController(pasta.getRoot().getPath());
         sessao.novaPartida("Vicente", Preset.COMUM);
     }
 

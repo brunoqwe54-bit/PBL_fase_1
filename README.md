@@ -27,7 +27,9 @@ No IntelliJ, abra o `pom.xml` como projeto Maven, selecione o JDK 21 e execute
 
 A antiga versão de terminal está arquivada em `backup/terminal-fase3.zip`,
 com os caminhos originais dos oito arquivos. Para restaurá-la, extraia o ZIP
-na raiz do projeto. O backup não participa da compilação.
+em uma pasta separada. O backup contém a antiga `JogoController` do terminal;
+não a sobrescreva sobre a atual `controller/JogoController.java`, que coordena
+o jogo JavaFX. O backup não participa da compilação.
 
 ## Testar e compilar
 
@@ -70,7 +72,7 @@ excluídos ou sobrescritos e são ignorados pelo botão Continuar.
 
 - **Originator:** `Partida`.
 - **Memento:** `Partida.Memento`, com o estado serializado e encapsulado.
-- **Caretaker:** `Save` e `GerenciadorDeSaves`, coordenados por `SessaoDeJogo`.
+- **Caretaker:** `Save` e `GerenciadorDeSaves`, coordenados por `JogoController`.
 
 `Partida.criarMemento()` captura uma cópia independente. `Partida.restaurar()`
 reconstrói essa cópia. Continuar jogando não altera um snapshot já criado.
@@ -80,7 +82,7 @@ Isso resolve salvar e recuperar atributos, confiança, itens e decisões juntos.
 
 ### Observer
 
-- **Subject:** `SessaoDeJogo`, que mantém a lista de observadores.
+- **Subject:** `JogoController`, que mantém a lista de observadores.
 - **Observer:** `ObservadorDeJogo`.
 - **Concrete Observer:** `JogoViewController`.
 
@@ -104,7 +106,7 @@ estar no pacote factory.
 ## Organização MVC
 
 ```text
-MainFX -> TelaMenuFX -> controllers FXML -> SessaoDeJogo -> Model
+MainFX -> TelaMenuFX -> controllers FXML -> JogoController -> Model
                                           |
                                           +-> ObservadorDeJogo -> HUD
 ```

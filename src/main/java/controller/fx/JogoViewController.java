@@ -3,7 +3,7 @@ package controller.fx;
 import view.TelaMenuFX;
 
 import controller.ObservadorDeJogo;
-import controller.SessaoDeJogo;
+import controller.JogoController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -25,7 +25,7 @@ public class JogoViewController implements ObservadorDeJogo {
     @FXML private VBox opcoes, personagemVisual;
     @FXML private ScrollPane leitura, listaOpcoes;
 
-    private final SessaoDeJogo sessao = TelaMenuFX.getSessao();
+    private final JogoController sessao = TelaMenuFX.getSessao();
     private final List<Trecho> trechos = new ArrayList<>();
     private int posicao;
     private boolean esperandoProximaCena;

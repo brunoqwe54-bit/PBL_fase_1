@@ -2,7 +2,7 @@ package controller.fx;
 
 import view.TelaMenuFX;
 
-import controller.SessaoDeJogo;
+import controller.JogoController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 public class SlotsController {
     @FXML private Label titulo, mensagem;
     @FXML private VBox slots;
-    private final SessaoDeJogo sessao = TelaMenuFX.getSessao();
+    private final JogoController sessao = TelaMenuFX.getSessao();
 
     @FXML private void initialize() {
         titulo.setText(TelaMenuFX.isModoSalvar() ? "Salvar partida" : "Carregar e gerenciar saves");

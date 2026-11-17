@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** Coordena a partida e a persistência sem conhecer JavaFX nem o terminal. */
-public class SessaoDeJogo {
+public class JogoController {
     private final Historia historia = new Historia();
     private final GerenciadorDeSaves saves;
     private final GerenciadorDePreferencias ajustes;
@@ -25,10 +25,10 @@ public class SessaoDeJogo {
     private boolean alteracoesNaoSalvas;
     private String ultimaMensagem = "";
 
-    public SessaoDeJogo() { this(System.getProperty("noite.saves", "saves")); }
+    public JogoController() { this(System.getProperty("noite.saves", "saves")); }
 
     /** Outra pasta permite testar sem tocar nos saves do jogador. */
-    public SessaoDeJogo(String pasta) {
+    public JogoController(String pasta) {
         saves = new GerenciadorDeSaves(pasta);
         ajustes = new GerenciadorDePreferencias(pasta);
         finais = new GerenciadorDeFinais(pasta);
