@@ -1,4 +1,6 @@
-package view;
+package controller.fx;
+
+import view.TelaMenuFX;
 
 import controller.ObservadorDeJogo;
 import controller.SessaoDeJogo;

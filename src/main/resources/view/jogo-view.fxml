@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="view.JogoViewController" styleClass="tela-jogo">
+            fx:controller="controller.fx.JogoViewController" styleClass="tela-jogo">
     <top>
         <VBox spacing="8" styleClass="cabecalho">
             <HBox alignment="CENTER_LEFT" spacing="16">

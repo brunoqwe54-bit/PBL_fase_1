@@ -2,7 +2,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="view.StatusController" styleClass="pagina">
+            fx:controller="controller.fx.StatusController" styleClass="pagina">
     <top><VBox spacing="8" styleClass="cabecalho">
         <Label fx:id="titulo" styleClass="titulo" />
         <Label text="O que você carrega, quem confia em você e o que a noite ainda exige." wrapText="true" />

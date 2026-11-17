@@ -2,6 +2,7 @@ package view;
 
 import atlantafx.base.theme.Dracula;
 import controller.ObservadorDeJogo;
+import controller.fx.JogoViewController;
 import controller.SessaoDeJogo;
 import javafx.application.Application;
 import javafx.application.Platform;

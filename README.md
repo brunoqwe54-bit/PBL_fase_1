@@ -110,6 +110,7 @@ Main   -> JogoController (terminal) -----> SessaoDeJogo -> Model
 - `model/factory`: criação dos personagens e montagem da história.
 - `model/persistencia`: arquivos, slots, preferências e registro de finais.
 - `controller`: coordenação da sessão e adaptador do terminal.
+- `controller/fx`: controllers das telas JavaFX, que recebem ações e delegam operações à sessão.
 - `view`: apresentação JavaFX e terminal, sem regras de persistência no FXML.
 - `src/main/resources/view`: sete telas FXML, CSS e cenários.
 - `src/test/java/test`: testes JUnit 4.

@@ -1,4 +1,6 @@
-package view;
+package controller.fx;
+
+import view.TelaMenuFX;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
