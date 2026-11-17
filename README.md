@@ -23,7 +23,11 @@ sh mvnw javafx:run
 ```
 
 No IntelliJ, abra o `pom.xml` como projeto Maven, selecione o JDK 21 e execute
-`MainFX` ou a tarefa Maven `javafx:run`. A versão de terminal usa `Main`.
+`MainFX` ou a tarefa Maven `javafx:run`.
+
+A antiga versão de terminal está arquivada em `backup/terminal-fase3.zip`,
+com os caminhos originais dos oito arquivos. Para restaurá-la, extraia o ZIP
+na raiz do projeto. O backup não participa da compilação.
 
 ## Testar e compilar
 
@@ -101,7 +105,6 @@ estar no pacote factory.
 
 ```text
 MainFX -> TelaMenuFX -> controllers FXML -> SessaoDeJogo -> Model
-Main   -> JogoController (terminal) -----> SessaoDeJogo -> Model
                                           |
                                           +-> ObservadorDeJogo -> HUD
 ```
@@ -109,9 +112,9 @@ Main   -> JogoController (terminal) -----> SessaoDeJogo -> Model
 - `model/entidades`: estado, Memento, cenas, diálogos e regras das escolhas.
 - `model/factory`: criação dos personagens e montagem da história.
 - `model/persistencia`: arquivos, slots, preferências e registro de finais.
-- `controller`: coordenação da sessão e adaptador do terminal.
+- `controller`: coordenação da sessão e contrato dos observadores.
 - `controller/fx`: controllers das telas JavaFX, que recebem ações e delegam operações à sessão.
-- `view`: apresentação JavaFX e terminal, sem regras de persistência no FXML.
+- `view`: janela JavaFX, navegação e textos da interface, sem regras de persistência no FXML.
 - `src/main/resources/view`: sete telas FXML, CSS e cenários.
 - `src/test/java/test`: testes JUnit 4.
 
