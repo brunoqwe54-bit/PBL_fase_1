@@ -86,8 +86,8 @@ Isso resolve salvar e recuperar atributos, confiança, itens e decisões juntos.
 - **Observer:** `ObservadorDeJogo`.
 - **Concrete Observer:** `JogoViewController`.
 
-A sessão notifica mudanças após escolhas, salvamentos e carregamentos. A tela
-atualiza atributos, progresso e avisos sem que a sessão conheça JavaFX.
+O `JogoController` notifica mudanças após escolhas, salvamentos e carregamentos.
+A tela atualiza atributos, progresso e avisos sem que ele conheça JavaFX.
 O observador é removido ao sair da tela e registrado novamente ao voltar.
 
 ### Factory Method
@@ -114,8 +114,8 @@ MainFX -> TelaMenuFX -> controllers FXML -> JogoController -> Model
 - `model/entidades`: estado, Memento, cenas, diálogos e regras das escolhas.
 - `model/factory`: criação dos personagens e montagem da história.
 - `model/persistencia`: arquivos, slots, preferências e registro de finais.
-- `controller`: coordenação da sessão e contrato dos observadores.
-- `controller/fx`: controllers das telas JavaFX, que recebem ações e delegam operações à sessão.
+- `controller`: coordenação do jogo pelo `JogoController` e contrato dos observadores.
+- `controller/fx`: controllers das telas JavaFX, que recebem ações e delegam operações ao `JogoController`.
 - `view`: janela JavaFX, navegação e textos da interface, sem regras de persistência no FXML.
 - `src/main/resources/view`: sete telas FXML, CSS e cenários.
 - `src/test/java/test`: testes JUnit 4.

@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 public class SlotsController {
     @FXML private Label titulo, mensagem;
     @FXML private VBox slots;
-    private final JogoController sessao = TelaMenuFX.getSessao();
+    private final JogoController jogoController = TelaMenuFX.getJogoController();
 
     @FXML private void initialize() {
         titulo.setText(TelaMenuFX.isModoSalvar() ? "Salvar partida" : "Carregar e gerenciar saves");
@@ -34,12 +34,12 @@ public class SlotsController {
     }
 
     private void adicionarSlot(int slot) {
-        boolean existe = sessao.existeSlot(slot);
+        boolean existe = jogoController.existeSlot(slot);
         Save save = null;
         String resumo = "Espaço vazio";
         if (existe) {
             try {
-                save = sessao.lerSlot(slot);
+                save = jogoController.lerSlot(slot);
                 resumo = save.getNomeJogador() + "  ·  "
                         + save.getDataHora().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
                         + "\n" + save.getTituloCena() + "  ·  " + save.getProgresso() + "%";
@@ -65,12 +65,12 @@ public class SlotsController {
     private void usar(int slot) {
         try {
             if (TelaMenuFX.isModoSalvar()) {
-                if (sessao.existeSlot(slot) && !TelaMenuFX.confirmar("Sobrescrever o save do slot " + slot + "?")) return;
-                sessao.salvar(slot);
+                if (jogoController.existeSlot(slot) && !TelaMenuFX.confirmar("Sobrescrever o save do slot " + slot + "?")) return;
+                jogoController.salvar(slot);
                 mensagem.setText("Partida salva no slot " + slot + ".");
                 listar();
             } else if (TelaMenuFX.confirmarPerda()) {
-                sessao.carregar(slot);
+                jogoController.carregar(slot);
                 TelaMenuFX.mostrar("jogo-view.fxml");
             }
         } catch (FalhaAoSalvarException | FalhaAoCarregarException e) {
@@ -82,7 +82,7 @@ public class SlotsController {
         if (!TelaMenuFX.confirmar("Excluir " + (slot == 0 ? "o autosave" : "o slot " + slot)
                 + "? Essa ação não pode ser desfeita.")) return;
         try {
-            sessao.excluir(slot);
+            jogoController.excluir(slot);
             mensagem.setText("Save excluído.");
             listar();
         } catch (FalhaAoSalvarException e) { TelaMenuFX.erro(e.getMessage()); }

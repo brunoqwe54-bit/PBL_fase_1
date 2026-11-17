@@ -15,7 +15,7 @@ public class PreferenciasController {
     @FXML private CheckBox leituraRapida, autosave;
 
     @FXML private void initialize() {
-        Preferencias preferencias = TelaMenuFX.getSessao().getPreferencias();
+        Preferencias preferencias = TelaMenuFX.getJogoController().getPreferencias();
         preset.getItems().addAll(Preset.values());
         preset.setValue(preferencias.getPresetPadrao());
         leituraRapida.setSelected(preferencias.isPularEnter());
@@ -24,7 +24,7 @@ public class PreferenciasController {
 
     @FXML private void onSalvarClick() {
         try {
-            TelaMenuFX.getSessao().alterarPreferencias(preset.getValue(), leituraRapida.isSelected(), autosave.isSelected());
+            TelaMenuFX.getJogoController().alterarPreferencias(preset.getValue(), leituraRapida.isSelected(), autosave.isSelected());
             TelaMenuFX.voltar();
         } catch (FalhaAoSalvarException e) { TelaMenuFX.erro(e.getMessage()); }
     }

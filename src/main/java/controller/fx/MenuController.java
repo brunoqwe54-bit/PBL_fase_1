@@ -7,12 +7,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import model.excecoes.FalhaAoCarregarException;
 
-/** Eventos do menu. A sessão coordena carregamento e persistência. */
+/** Eventos do menu. O JogoController coordena carregamento e persistência. */
 public class MenuController {
     @FXML private Button continuar;
 
     @FXML private void initialize() {
-        continuar.setDisable(!TelaMenuFX.getSessao().temSave());
+        continuar.setDisable(!TelaMenuFX.getJogoController().temSave());
     }
 
     @FXML private void onNovaPartidaClick() { TelaMenuFX.mostrar("nova-partida-view.fxml"); }
@@ -25,7 +25,7 @@ public class MenuController {
 
     @FXML private void onContinuarClick() {
         try {
-            TelaMenuFX.getSessao().continuar();
+            TelaMenuFX.getJogoController().continuar();
             TelaMenuFX.mostrar("jogo-view.fxml");
         } catch (FalhaAoCarregarException e) {
             TelaMenuFX.erro(e.getMessage());

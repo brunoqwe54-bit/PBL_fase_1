@@ -13,7 +13,7 @@ public class GaleriaController {
     @FXML private VBox finais;
 
     @FXML private void initialize() {
-        RegistroDeFinais registro = TelaMenuFX.getSessao().getRegistroDeFinais();
+        RegistroDeFinais registro = TelaMenuFX.getJogoController().getRegistroDeFinais();
         resumo.setText(registro.quantosViu() + " de " + RegistroDeFinais.IDS.length + " finais descobertos");
         for (int i = 0; i < RegistroDeFinais.IDS.length; i++) {
             boolean visto = registro.jaViu(RegistroDeFinais.IDS[i]);

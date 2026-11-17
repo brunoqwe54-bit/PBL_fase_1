@@ -18,7 +18,7 @@ public class StatusController {
     @FXML private VBox relacionamentos;
 
     @FXML private void initialize() {
-        Partida partida = TelaMenuFX.getSessao().getPartida();
+        Partida partida = TelaMenuFX.getJogoController().getPartida();
         titulo.setText("Status de " + partida.getProtagonista().getNome());
         StringBuilder texto = new StringBuilder();
         for (Atributo atributo : Atributo.values()) {
@@ -37,7 +37,7 @@ public class StatusController {
             barra.setMaxWidth(Double.MAX_VALUE);
             relacionamentos.getChildren().add(new VBox(5, nome, barra));
         }
-        objetivos.setText(TelaMenuFX.getSessao().getObjetivos());
+        objetivos.setText(TelaMenuFX.getJogoController().getObjetivos());
         texto.setLength(0);
         for (Flag flag : Flag.values()) {
             if (partida.temFlag(flag)) texto.append("• ").append(flag.getDescricao()).append("\n\n");
