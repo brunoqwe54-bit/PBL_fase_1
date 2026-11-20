@@ -30,7 +30,8 @@ public class JogoViewController implements ObservadorDeJogo {
     private static final Map<String, String> PERSONAGENS = Map.of(
             "Otávio", "otavio",
             "Dona Zulmira", "zulmira",
-            "Seu Antônio", "antonio");
+            "Seu Antônio", "antonio",
+            "Mãe", "mae");
 
     @FXML private Region cenario;
     @FXML private Label tituloCena, status, texto, avisos, nomePersonagem, progressoTexto;

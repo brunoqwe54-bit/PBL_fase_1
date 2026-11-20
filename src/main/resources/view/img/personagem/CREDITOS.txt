@@ -19,3 +19,4 @@ Elenco usado:
   otavio/    -> Erasmo (Village Elders Vol. 1)
   zulmira/   -> Miriam (Village Elders Vol. 1)
   antonio/   -> Cobb   (Village Elders Vol. 1)
+  mae/       -> Wren   (Faces of HOME)
