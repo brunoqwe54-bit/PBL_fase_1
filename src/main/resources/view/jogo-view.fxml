@@ -2,6 +2,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="view.JogoViewController" styleClass="tela-jogo">
     <top>
@@ -31,11 +34,22 @@
         <StackPane>
             <Region fx:id="cenario" />
             <Region styleClass="sombra-cenario" />
-            <VBox fx:id="personagemVisual" alignment="BOTTOM_CENTER" maxWidth="180" maxHeight="270"
-                  translateX="-330" spacing="6" mouseTransparent="true" visible="false">
-                <Circle radius="39" fill="#161721" stroke="#b7a4d9" strokeWidth="2" />
-                <SVGPath content="M 0 120 Q 0 12 80 12 Q 160 12 160 120 Z" fill="#161721" stroke="#b7a4d9" strokeWidth="2" />
-                <Label fx:id="nomePersonagem" styleClass="nome-personagem" wrapText="true" />
+            <!-- retrato do falante: maior e deslocado para o canto inferior esquerdo -->
+            <VBox fx:id="personagemVisual" alignment="BOTTOM_CENTER" maxWidth="300" spacing="4"
+                  translateX="-330" translateY="25" mouseTransparent="true" visible="false">
+                <!-- as duas opções ficam no mesmo Group: só uma aparece por vez,
+                     e o Group não soma altura mínima (senão empurra a caixa de diálogo) -->
+                <Group>
+                    <ImageView fx:id="imagemPersonagem" fitWidth="300" fitHeight="450" preserveRatio="true"
+                               visible="false" />
+                    <!-- reserva para quem ainda não tem arte: cabeça acima dos ombros -->
+                    <Group fx:id="silhueta">
+                        <Circle centerX="150.0" centerY="60.0" radius="44.0" fill="#161721"
+                                stroke="#b7a4d9" strokeWidth="2" />
+                        <SVGPath content="M 8 430 Q 22 208 94 164 Q 120 150 150 150 Q 180 150 206 164 Q 278 208 292 430 Z"
+                                 fill="#161721" stroke="#b7a4d9" strokeWidth="2" />
+                    </Group>
+                </Group>
             </VBox>
             <ScrollPane fx:id="listaOpcoes" fitToWidth="true" maxWidth="650" maxHeight="390"
                         visible="false" styleClass="escolhas" hbarPolicy="NEVER">
@@ -45,6 +59,8 @@
     </center>
     <bottom>
         <VBox spacing="9" styleClass="caixa-dialogo">
+            <!-- quem está falando, dentro da caixa e acima da fala -->
+            <Label fx:id="nomePersonagem" styleClass="nome-personagem" wrapText="true" />
             <ScrollPane fx:id="leitura" fitToWidth="true" prefViewportHeight="135" hbarPolicy="NEVER">
                 <content><Label fx:id="texto" wrapText="true" styleClass="narrativa" maxWidth="Infinity" /></content>
             </ScrollPane>

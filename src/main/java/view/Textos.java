@@ -54,5 +54,10 @@ public class Textos {
 
             Cenários:
               "Contemporary Visual Novel Backgrounds", por Spiral Atlas
-              https://spiralatlas.itch.io/contemporary-vn-backgrounds""";
+              https://spiralatlas.itch.io/contemporary-vn-backgrounds
+
+            Personagens:
+              "Village Elders Vol. 1 e Vol. 2" e "Faces of HOME",
+              por WonderWeave Studio
+              https://wonderweave.itch.io/""";
 }

@@ -4,7 +4,10 @@ import controller.ObservadorDeJogo;
 import controller.SessaoDeJogo;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import model.entidades.*;
@@ -13,15 +16,28 @@ import model.enums.Atributo;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /** Apresentação da partida. As decisões e os saves pertencem à sessão. */
 public class JogoViewController implements ObservadorDeJogo {
+
+    /**
+     * Quem já tem arte pronta: nome exibido no jogo -> pasta em
+     * img/personagem/. Quem não está aqui aparece como silhueta.
+     */
+    private static final Map<String, String> PERSONAGENS = Map.of(
+            "Otávio", "otavio",
+            "Dona Zulmira", "zulmira",
+            "Seu Antônio", "antonio");
+
     @FXML private Region cenario;
     @FXML private Label tituloCena, status, texto, avisos, nomePersonagem, progressoTexto;
     @FXML private ProgressBar progresso;
     @FXML private Button botaoContinuar;
     @FXML private VBox opcoes, personagemVisual;
     @FXML private ScrollPane leitura, listaOpcoes;
+    @FXML private ImageView imagemPersonagem;
+    @FXML private Group silhueta;
 
     private final SessaoDeJogo sessao = TelaMenuFX.getSessao();
     private final List<Trecho> trechos = new ArrayList<>();
@@ -60,7 +76,7 @@ public class JogoViewController implements ObservadorDeJogo {
                 tudo.append(trecho.texto()).append("\n\n");
             }
             texto.setText(tudo.toString().trim());
-            personagemVisual.setVisible(false);
+            esconderFalante();
             leitura.setVvalue(0);
             mostrarOpcoes();
             mostrarBotaoContinuar(sessao.cenaFinal());
@@ -74,12 +90,46 @@ public class JogoViewController implements ObservadorDeJogo {
         Trecho trecho = trechos.get(posicao);
         texto.setText(trecho.texto());
         leitura.setVvalue(0);
+
+        /* Nome de quem fala fica na caixa de diálogo; o retrato só para NPC. */
         PersonagemBase pessoa = trecho.personagem();
-        personagemVisual.setVisible(pessoa != null);
-        if (pessoa != null) nomePersonagem.setText(pessoa.getNome());
+        boolean falante = pessoa != null;
+        boolean temRetrato = falante && pessoa != sessao.getPartida().getProtagonista();
+
+        nomePersonagem.setText(falante ? pessoa.getNome() : "");
+        nomePersonagem.setVisible(falante);
+        nomePersonagem.setManaged(falante);
+
+        personagemVisual.setVisible(temRetrato);
+        if (temRetrato) {
+            mostrarPersonagem(pessoa.getNome());
+        }
+
         mostrarBotaoContinuar(true);
         botaoContinuar.setText(sessao.cenaFinal() && posicao == trechos.size() - 1
                 ? "Voltar ao menu" : "Continuar  [ENTER]");
+    }
+
+    /** Usa o sprite de quem já tem arte; os demais ficam na silhueta. */
+    private void mostrarPersonagem(String nome) {
+        String pasta = PERSONAGENS.get(nome);
+        URL recurso = pasta == null ? null
+                : TelaMenuFX.class.getResource("img/personagem/" + pasta + "/default.png");
+
+        boolean temSprite = recurso != null;
+        if (temSprite) {
+            imagemPersonagem.setImage(new Image(recurso.toExternalForm(), true));
+        }
+        imagemPersonagem.setVisible(temSprite);
+        silhueta.setVisible(!temSprite);
+    }
+
+    /** Esconde retrato e nome quando quem "fala" é a narração. */
+    private void esconderFalante() {
+        personagemVisual.setVisible(false);
+        nomePersonagem.setText("");
+        nomePersonagem.setVisible(false);
+        nomePersonagem.setManaged(false);
     }
 
     @FXML private void onContinuarClick() {
@@ -115,7 +165,7 @@ public class JogoViewController implements ObservadorDeJogo {
     private void escolher(Escolha escolha) {
         String aviso = sessao.escolher(escolha);
         esconderOpcoes();
-        personagemVisual.setVisible(false);
+        esconderFalante();
         if (aviso == null) { exibirCena(); return; }
         texto.setText(aviso);
         leitura.setVvalue(0);

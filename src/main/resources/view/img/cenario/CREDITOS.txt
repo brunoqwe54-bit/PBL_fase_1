@@ -1,0 +1,30 @@
+CENÁRIOS — CRÉDITOS E LICENÇA
+=============================
+
+Pacote: Contemporary Visual Novel Backgrounds
+Autor:   Spiral Atlas
+Página:  https://spiralatlas.itch.io/contemporary-vn-backgrounds
+Baixado: 2026-11-11
+
+Licença (do autor, na página do pacote):
+  "Use or edit any of these images for any sort of project, including
+   commercial works."
+  "If you use the images credit me and link back to this page."
+
+Ou seja: uso e edição liberados, inclusive comercial.
+O crédito é pedido e já está na tela de Créditos do jogo (view/Textos.java).
+
+Arquivos usados neste projeto (todos 1920x1080, JPG):
+  casa/      entrance, hallway, lounge, kitchen, dining, dining_kitchen,
+             bathroom, master bedroom, single bedroom, outside1, outside2
+  rua/       street, alley, front
+  praca/     park, smallpark, parknchairs
+  armazem/   warehouse_foyer, warehouse_foyer_plain, warehouse_floor,
+             warehouse_locker, warehouse_control, warehouse_break,
+             warehouse_conveyer
+  diversos/  cell, doctor, powerhill, alley, red, ro_car, ro_car_front,
+             warehouse_outside
+
+Observação: esta versão gratuita do pacote traz apenas os cenários de DIA.
+As variantes de entardecer/noite ("evening and night house.zip") fazem parte
+do tier pago de US$ 20 e NÃO foram baixadas.

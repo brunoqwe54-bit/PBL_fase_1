@@ -1,0 +1,21 @@
+PERSONAGENS — CRÉDITOS E LICENÇA
+===============================
+
+Pacotes: Village Elders Vol. 1, Village Elders Vol. 2 e Faces of HOME
+Autor:   WonderWeave Studio ("Western Painterly Series")
+Páginas: https://wonderweave.itch.io/
+Baixado: 2026-11-16
+
+Licença (COMMERCIAL_LICENSE.txt do pacote):
+  Uso em jogo comercial e não comercial, inclusive edição e recorte.
+  Proibido revender/redistribuir os arquivos como pack de arte.
+  Crédito não obrigatório (mas está na tela de Créditos do jogo).
+  O autor declara geração assistida por IA com curadoria e pintura manual.
+
+Estrutura: pasta por personagem, 6 expressões, 512x768 PNG com alfa:
+  default.png, warm.png, concerned.png, amused.png, firm.png, signature.png
+
+Elenco usado:
+  otavio/    -> Erasmo (Village Elders Vol. 1)
+  zulmira/   -> Miriam (Village Elders Vol. 1)
+  antonio/   -> Cobb   (Village Elders Vol. 1)

@@ -37,7 +37,7 @@
 .caixa-dialogo { -fx-padding: 18 24; -fx-background-color: #181923; }
 .narrativa { -fx-font-size: 17px; -fx-line-spacing: 4px; -fx-padding: 4 10 10 2; }
 .aviso { -fx-font-size: 12px; -fx-text-fill: #d3bfed; }
-.nome-personagem { -fx-font-size: 19px; -fx-font-weight: bold; -fx-padding: 8 16; -fx-background-color: #14141f; -fx-background-radius: 5; }
+.nome-personagem { -fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #c1a7dd; -fx-padding: 0 0 0 2; }
 .escolhas, .escolhas > .viewport { -fx-background-color: rgba(17,18,28,0.95); -fx-background-radius: 8; }
 .lista-escolhas { -fx-padding: 16; }
 .motivo { -fx-font-size: 12px; -fx-text-fill: #c9b4a8; -fx-padding: 0 10 8 10; }
