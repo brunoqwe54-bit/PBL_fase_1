@@ -31,7 +31,10 @@ public class JogoViewController implements ObservadorDeJogo {
             "Otávio", "otavio",
             "Dona Zulmira", "zulmira",
             "Seu Antônio", "antonio",
-            "Mãe", "mae");
+            "Mãe", "mae",
+            "Davi", "davi",
+            "Manuela", "manuela",
+            "Homem de Terno", "homem-de-terno");
 
     @FXML private Region cenario;
     @FXML private Label tituloCena, status, texto, avisos, nomePersonagem, progressoTexto;

@@ -20,3 +20,10 @@ Elenco usado:
   zulmira/   -> Miriam (Village Elders Vol. 1)
   antonio/   -> Cobb   (Village Elders Vol. 1)
   mae/       -> Wren   (Faces of HOME)
+PERSONAGENS COM ARTE GERADA (IA)
+  davi/  manuela/  homem-de-terno/
+  Gerados com apoio de IA generativa (ChatGPT) seguindo o estilo dos packs
+  acima; fundo removido e reduzidos a 512x768 por docs/recortar-gerados.py.
+  Obrigatorio declarar o uso de IA no relatorio (metodologia).
+  Por enquanto so a expressao default; as outras cinco podem ser geradas
+  depois com "mesma imagem, mudar so a expressao".
