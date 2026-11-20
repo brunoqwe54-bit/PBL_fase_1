@@ -23,7 +23,13 @@ sh mvnw javafx:run
 ```
 
 No IntelliJ, abra o `pom.xml` como projeto Maven, selecione o JDK 21 e execute
-`MainFX` ou a tarefa Maven `javafx:run`. A versão de terminal usa `Main`.
+`MainFX` ou a tarefa Maven `javafx:run`.
+
+A antiga versão de terminal está arquivada em `backup/terminal-fase3.zip`,
+com os caminhos originais dos oito arquivos. Para restaurá-la, extraia o ZIP
+em uma pasta separada. O backup contém a antiga `JogoController` do terminal;
+não a sobrescreva sobre a atual `controller/JogoController.java`, que coordena
+o jogo JavaFX. O backup não participa da compilação.
 
 ## Testar e compilar
 
@@ -66,7 +72,7 @@ excluídos ou sobrescritos e são ignorados pelo botão Continuar.
 
 - **Originator:** `Partida`.
 - **Memento:** `Partida.Memento`, com o estado serializado e encapsulado.
-- **Caretaker:** `Save` e `GerenciadorDeSaves`, coordenados por `SessaoDeJogo`.
+- **Caretaker:** `Save` e `GerenciadorDeSaves`, coordenados por `JogoController`.
 
 `Partida.criarMemento()` captura uma cópia independente. `Partida.restaurar()`
 reconstrói essa cópia. Continuar jogando não altera um snapshot já criado.
@@ -76,12 +82,12 @@ Isso resolve salvar e recuperar atributos, confiança, itens e decisões juntos.
 
 ### Observer
 
-- **Subject:** `SessaoDeJogo`, que mantém a lista de observadores.
+- **Subject:** `JogoController`, que mantém a lista de observadores.
 - **Observer:** `ObservadorDeJogo`.
 - **Concrete Observer:** `JogoViewController`.
 
-A sessão notifica mudanças após escolhas, salvamentos e carregamentos. A tela
-atualiza atributos, progresso e avisos sem que a sessão conheça JavaFX.
+O `JogoController` notifica mudanças após escolhas, salvamentos e carregamentos.
+A tela atualiza atributos, progresso e avisos sem que ele conheça JavaFX.
 O observador é removido ao sair da tela e registrado novamente ao voltar.
 
 ### Factory Method
@@ -100,8 +106,7 @@ estar no pacote factory.
 ## Organização MVC
 
 ```text
-MainFX -> TelaMenuFX -> controllers FXML -> SessaoDeJogo -> Model
-Main   -> JogoController (terminal) -----> SessaoDeJogo -> Model
+MainFX -> TelaMenuFX -> controllers FXML -> JogoController -> Model
                                           |
                                           +-> ObservadorDeJogo -> HUD
 ```
@@ -109,8 +114,9 @@ Main   -> JogoController (terminal) -----> SessaoDeJogo -> Model
 - `model/entidades`: estado, Memento, cenas, diálogos e regras das escolhas.
 - `model/factory`: criação dos personagens e montagem da história.
 - `model/persistencia`: arquivos, slots, preferências e registro de finais.
-- `controller`: coordenação da sessão e adaptador do terminal.
-- `view`: apresentação JavaFX e terminal, sem regras de persistência no FXML.
+- `controller`: coordenação do jogo pelo `JogoController` e contrato dos observadores.
+- `controller/fx`: controllers das telas JavaFX, que recebem ações e delegam operações ao `JogoController`.
+- `view`: janela JavaFX, navegação e textos da interface, sem regras de persistência no FXML.
 - `src/main/resources/view`: sete telas FXML, CSS e cenários.
 - `src/test/java/test`: testes JUnit 4.
 

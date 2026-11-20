@@ -1,4 +1,6 @@
-package view;
+package controller.fx;
+
+import view.TelaMenuFX;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -6,7 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.enums.Preset;
 
-/** Lê o formulário e pede à sessão para começar a partida. */
+/** Lê o formulário e pede ao JogoController para começar a partida. */
 public class NovaPartidaController {
     @FXML private TextField campoNome;
     @FXML private ComboBox<Preset> comboPreset;
@@ -14,7 +16,7 @@ public class NovaPartidaController {
 
     @FXML private void initialize() {
         comboPreset.getItems().addAll(Preset.values());
-        comboPreset.setValue(TelaMenuFX.getSessao().getPreferencias().getPresetPadrao());
+        comboPreset.setValue(TelaMenuFX.getJogoController().getPreferencias().getPresetPadrao());
         atualizarDescricao();
     }
 
@@ -29,7 +31,7 @@ public class NovaPartidaController {
     }
 
     @FXML private void onComecarClick() {
-        TelaMenuFX.getSessao().novaPartida(campoNome.getText(), comboPreset.getValue());
+        TelaMenuFX.getJogoController().novaPartida(campoNome.getText(), comboPreset.getValue());
         TelaMenuFX.mostrar("jogo-view.fxml");
     }
 

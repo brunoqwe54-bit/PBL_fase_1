@@ -1,7 +1,9 @@
-package view;
+package controller.fx;
+
+import view.TelaMenuFX;
 
 import controller.ObservadorDeJogo;
-import controller.SessaoDeJogo;
+import controller.JogoController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -18,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/** Apresentação da partida. As decisões e os saves pertencem à sessão. */
+/** Apresentação da partida. O JogoController coordena as decisões e os saves. */
 public class JogoViewController implements ObservadorDeJogo {
 
     /**
@@ -39,7 +41,7 @@ public class JogoViewController implements ObservadorDeJogo {
     @FXML private ImageView imagemPersonagem;
     @FXML private Group silhueta;
 
-    private final SessaoDeJogo sessao = TelaMenuFX.getSessao();
+    private final JogoController jogoController = TelaMenuFX.getJogoController();
     private final List<Trecho> trechos = new ArrayList<>();
     private int posicao;
     private boolean esperandoProximaCena;
@@ -51,22 +53,22 @@ public class JogoViewController implements ObservadorDeJogo {
     @FXML private void initialize() { exibirCena(); }
 
     private void exibirCena() {
-        leituraRapida = sessao.getPreferencias().isPularEnter();
-        Cena cena = sessao.getCenaAtual();
+        leituraRapida = jogoController.getPreferencias().isPularEnter();
+        Cena cena = jogoController.getCenaAtual();
         tituloCena.setText(cena.getTitulo());
         trocarFundo(cena.getId());
-        atualizar(sessao.getUltimaMensagem());
+        atualizar(jogoController.getUltimaMensagem());
         esconderOpcoes();
         trechos.clear();
         for (String paragrafo : cena.getTextoPrincipal().split("\n\n")) {
             String narrativa = paragrafo.replace('\n', ' ').replace("VICENTE:",
-                    sessao.getPartida().getProtagonista().getNome() + ":");
+                    jogoController.getPartida().getProtagonista().getNome() + ":");
             trechos.add(new Trecho(narrativa, null));
         }
         for (Dialogo fala : cena.getDialogos()) {
             trechos.add(new Trecho(fala.getTexto(), fala.getPersonagem()));
         }
-        if (sessao.cenaFinal()) trechos.add(new Trecho("FIM DE JOGO · Outras escolhas revelam novos desfechos.", null));
+        if (jogoController.cenaFinal()) trechos.add(new Trecho("FIM DE JOGO · Outras escolhas revelam novos desfechos.", null));
         posicao = 0;
         esperandoProximaCena = false;
         if (leituraRapida) {
@@ -79,7 +81,7 @@ public class JogoViewController implements ObservadorDeJogo {
             esconderFalante();
             leitura.setVvalue(0);
             mostrarOpcoes();
-            mostrarBotaoContinuar(sessao.cenaFinal());
+            mostrarBotaoContinuar(jogoController.cenaFinal());
             botaoContinuar.setText("Voltar ao menu");
         } else {
             mostrarTrecho();
@@ -94,7 +96,7 @@ public class JogoViewController implements ObservadorDeJogo {
         /* Nome de quem fala fica na caixa de diálogo; o retrato só para NPC. */
         PersonagemBase pessoa = trecho.personagem();
         boolean falante = pessoa != null;
-        boolean temRetrato = falante && pessoa != sessao.getPartida().getProtagonista();
+        boolean temRetrato = falante && pessoa != jogoController.getPartida().getProtagonista();
 
         nomePersonagem.setText(falante ? pessoa.getNome() : "");
         nomePersonagem.setVisible(falante);
@@ -106,7 +108,7 @@ public class JogoViewController implements ObservadorDeJogo {
         }
 
         mostrarBotaoContinuar(true);
-        botaoContinuar.setText(sessao.cenaFinal() && posicao == trechos.size() - 1
+        botaoContinuar.setText(jogoController.cenaFinal() && posicao == trechos.size() - 1
                 ? "Voltar ao menu" : "Continuar  [ENTER]");
     }
 
@@ -134,17 +136,17 @@ public class JogoViewController implements ObservadorDeJogo {
 
     @FXML private void onContinuarClick() {
         if (esperandoProximaCena) exibirCena();
-        else if (sessao.getPreferencias().isPularEnter() && sessao.cenaFinal()) onMenuInicialClick();
+        else if (jogoController.getPreferencias().isPularEnter() && jogoController.cenaFinal()) onMenuInicialClick();
         else if (posicao < trechos.size() - 1) { posicao++; mostrarTrecho(); }
-        else if (sessao.cenaFinal()) onMenuInicialClick();
+        else if (jogoController.cenaFinal()) onMenuInicialClick();
         else mostrarOpcoes();
     }
 
     private void mostrarOpcoes() {
         opcoes.getChildren().clear();
         mostrarBotaoContinuar(false);
-        for (Escolha escolha : sessao.getCenaAtual().getOpcoes()) {
-            boolean disponivel = escolha.estaDisponivel(sessao.getPartida());
+        for (Escolha escolha : jogoController.getCenaAtual().getOpcoes()) {
+            boolean disponivel = escolha.estaDisponivel(jogoController.getPartida());
             Button botao = new Button(escolha.getTextoExibido());
             botao.setMaxWidth(Double.MAX_VALUE);
             botao.setWrapText(true);
@@ -152,18 +154,18 @@ public class JogoViewController implements ObservadorDeJogo {
             botao.setOnAction(evento -> escolher(escolha));
             opcoes.getChildren().add(botao);
             if (!disponivel) {
-                Label motivo = new Label("Bloqueada: " + escolha.getMotivoDoBloqueio(sessao.getPartida()));
+                Label motivo = new Label("Bloqueada: " + escolha.getMotivoDoBloqueio(jogoController.getPartida()));
                 motivo.getStyleClass().add("motivo");
                 motivo.setWrapText(true);
                 opcoes.getChildren().add(motivo);
             }
         }
-        listaOpcoes.setVisible(!sessao.cenaFinal());
+        listaOpcoes.setVisible(!jogoController.cenaFinal());
         listaOpcoes.setVvalue(0);
     }
 
     private void escolher(Escolha escolha) {
-        String aviso = sessao.escolher(escolha);
+        String aviso = jogoController.escolher(escolha);
         esconderOpcoes();
         esconderFalante();
         if (aviso == null) { exibirCena(); return; }
@@ -188,22 +190,22 @@ public class JogoViewController implements ObservadorDeJogo {
 
     /** Volta de um painel mantendo o trecho lido e as escolhas na tela. */
     public void retomar() {
-        if (leituraRapida != sessao.getPreferencias().isPularEnter()) exibirCena();
+        if (leituraRapida != jogoController.getPreferencias().isPularEnter()) exibirCena();
         else {
-            atualizar(sessao.getUltimaMensagem());
+            atualizar(jogoController.getUltimaMensagem());
             if (botaoContinuar.isVisible()) Platform.runLater(botaoContinuar::requestFocus);
         }
     }
 
     /** Observer: o HUD muda ao escolher ou salvar, sem repetir a narração. */
     @Override public void atualizar(String mensagem) {
-        if (sessao.getPartida() == null) return;
-        Partida partida = sessao.getPartida();
+        if (jogoController.getPartida() == null) return;
+        Partida partida = jogoController.getPartida();
         status.setText("Fôlego " + partida.getProtagonista().getAtributo(Atributo.FOLEGO)
                 + "   ·   Coragem " + partida.getProtagonista().getAtributo(Atributo.CORAGEM)
                 + "   ·   Lucidez " + partida.getProtagonista().getAtributo(Atributo.LUCIDEZ));
-        progresso.setProgress(sessao.getProgresso() / 100.0);
-        progressoTexto.setText(sessao.getProgresso() + "%");
+        progresso.setProgress(jogoController.getProgresso() / 100.0);
+        progressoTexto.setText(jogoController.getProgresso() + "%");
         avisos.setText(mensagem == null ? "" : mensagem);
     }
 
@@ -237,14 +239,14 @@ public class JogoViewController implements ObservadorDeJogo {
 
     @FXML private void onReiniciarClick() {
         if (TelaMenuFX.confirmar("Reiniciar a partida? Você voltará à criação do protagonista.")) {
-            sessao.encerrarPartida();
+            jogoController.encerrarPartida();
             TelaMenuFX.mostrar("nova-partida-view.fxml");
         }
     }
 
     @FXML private void onMenuInicialClick() {
         if (TelaMenuFX.confirmarPerda()) {
-            sessao.encerrarPartida();
+            jogoController.encerrarPartida();
             TelaMenuFX.mostrar("menu-view.fxml");
         }
     }

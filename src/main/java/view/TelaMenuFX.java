@@ -2,7 +2,8 @@ package view;
 
 import atlantafx.base.theme.Dracula;
 import controller.ObservadorDeJogo;
-import controller.SessaoDeJogo;
+import controller.fx.JogoViewController;
+import controller.JogoController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +18,7 @@ import java.io.IOException;
 
 /** Cria a janela e organiza a navegação. Não contém regras de jogo. */
 public class TelaMenuFX extends Application {
-    private static final SessaoDeJogo sessao = new SessaoDeJogo();
+    private static final JogoController jogoController = new JogoController();
     private static Stage palco;
     private static Object controllerAtual;
     private static String telaAtual = "menu-view.fxml";
@@ -26,7 +27,7 @@ public class TelaMenuFX extends Application {
     private static Parent jogoEmPausa;
     private static Object controllerEmPausa;
 
-    public static SessaoDeJogo getSessao() { return sessao; }
+    public static JogoController getJogoController() { return jogoController; }
     public static boolean isModoSalvar() { return modoSalvar; }
 
     @Override
@@ -51,11 +52,11 @@ public class TelaMenuFX extends Application {
         FXMLLoader carregador = new FXMLLoader(TelaMenuFX.class.getResource(arquivo));
         Parent raiz = carregador.load();
         if (controllerAtual instanceof ObservadorDeJogo observador) {
-            sessao.removerObservador(observador);
+            jogoController.removerObservador(observador);
         }
         controllerAtual = carregador.getController();
         if (controllerAtual instanceof ObservadorDeJogo observador) {
-            sessao.adicionarObservador(observador);
+            jogoController.adicionarObservador(observador);
         }
         if (palco.getScene() == null) {
             Scene cena = new Scene(raiz);
@@ -105,7 +106,7 @@ public class TelaMenuFX extends Application {
         jogoEmPausa = null;
         controllerEmPausa = null;
         JogoViewController jogo = (JogoViewController) controllerAtual;
-        sessao.adicionarObservador(jogo);
+        jogoController.adicionarObservador(jogo);
         jogo.retomar();
     }
 
@@ -122,7 +123,7 @@ public class TelaMenuFX extends Application {
     }
 
     public static boolean confirmarPerda() {
-        return !sessao.temAlteracoesNaoSalvas()
+        return !jogoController.temAlteracoesNaoSalvas()
                 || confirmar("Há progresso que ainda não foi salvo. Deseja sair desta partida mesmo assim?");
     }
 

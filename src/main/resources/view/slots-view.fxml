@@ -2,7 +2,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="view.SlotsController" styleClass="pagina">
+            fx:controller="controller.fx.SlotsController" styleClass="pagina">
     <top><VBox spacing="8" styleClass="cabecalho">
         <Label fx:id="titulo" styleClass="titulo" />
         <Label text="Três espaços manuais e um autosave. Seus caminhos ficam guardados aqui." wrapText="true" />

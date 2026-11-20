@@ -3,8 +3,7 @@ package view;
 /**
  * Textos longos mostrados pelas telas.
  *
- * Ficam aqui para que o menu em console e o menu em janela exibam
- * exatamente o mesmo conteúdo.
+ * Centraliza as instruções e os créditos exibidos pela interface JavaFX.
  */
 public class Textos {
 
@@ -18,7 +17,6 @@ public class Textos {
             Você lê, você escolhe, você vive com isso.
             Na janela, clique em Continuar ou pressione ENTER para ler.
             Depois, clique na alternativa desejada.
-            No terminal, digite o número da alternativa e pressione ENTER.
 
             Use Status para ver atributos, itens, relacionamentos,
             objetivos e decisões. No Menu da partida você pode salvar,

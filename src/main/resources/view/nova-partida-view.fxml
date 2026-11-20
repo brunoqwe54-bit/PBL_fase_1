@@ -2,7 +2,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="view.NovaPartidaController" styleClass="fundo-menu">
+           fx:controller="controller.fx.NovaPartidaController" styleClass="fundo-menu">
     <Region styleClass="sombra-menu" />
     <VBox alignment="CENTER_LEFT" spacing="16" maxWidth="580" maxHeight="-Infinity" styleClass="painel-menu">
         <Label text="ANTES DE ABRIR A PORTA" styleClass="legenda" />

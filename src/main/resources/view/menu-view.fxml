@@ -2,7 +2,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="view.MenuController" styleClass="fundo-menu">
+           fx:controller="controller.fx.MenuController" styleClass="fundo-menu">
     <Region styleClass="sombra-menu" />
     <VBox alignment="CENTER" spacing="10" maxWidth="400" maxHeight="-Infinity" styleClass="painel-menu">
         <Label text="RIACHO DO FOGO · UMA NOITE POR ANO" styleClass="legenda" />

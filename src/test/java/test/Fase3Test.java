@@ -1,7 +1,7 @@
 package test;
 
 import controller.ObservadorDeJogo;
-import controller.SessaoDeJogo;
+import controller.JogoController;
 import model.entidades.*;
 import model.enums.*;
 import model.excecoes.FalhaAoCarregarException;
@@ -21,34 +21,34 @@ import static org.junit.Assert.*;
 /** Integração dos três GoF, persistência e percursos completos da história. */
 public class Fase3Test {
     @Rule public TemporaryFolder pasta = new TemporaryFolder();
-    private SessaoDeJogo sessao;
+    private JogoController jogoController;
     private static final String[] CAMINHO = {
             "ESC0102", "ESC0202", "ESC0204", "ESC0301", "ESC0305", "ESC0401", "ESC0406",
             "ESC0501", "ESC0601", "ESC0604", "ESC0702", "ESC0706", "ESC0803", "ESC0805", "ESC0901", "ESC0903"
     };
 
     @Before public void preparar() {
-        sessao = new SessaoDeJogo(pasta.getRoot().getPath());
-        sessao.novaPartida("Bruno", Preset.COMUM);
+        jogoController = new JogoController(pasta.getRoot().getPath());
+        jogoController.novaPartida("Bruno", Preset.COMUM);
     }
 
     private void escolher(String id) {
-        for (Escolha escolha : sessao.disponiveis()) {
-            if (escolha.getId().equals(id)) { sessao.escolher(escolha); return; }
+        for (Escolha escolha : jogoController.disponiveis()) {
+            if (escolha.getId().equals(id)) { jogoController.escolher(escolha); return; }
         }
-        fail("Escolha indisponível: " + id + " em " + sessao.getCenaAtual().getId());
+        fail("Escolha indisponível: " + id + " em " + jogoController.getCenaAtual().getId());
     }
 
     private void irAte(String cena) {
         for (String escolha : CAMINHO) {
-            if (sessao.getCenaAtual().getId().equals(cena)) return;
+            if (jogoController.getCenaAtual().getId().equals(cena)) return;
             escolher(escolha);
         }
-        assertEquals(cena, sessao.getCenaAtual().getId());
+        assertEquals(cena, jogoController.getCenaAtual().getId());
     }
 
     @Test public void mementoGuardaUmaCopiaIndependenteDeTodoOEstado() {
-        Partida original = sessao.getPartida();
+        Partida original = jogoController.getPartida();
         original.getInventario().adicionar(Item.CHAVE);
         original.ligarFlag(Flag.PORTA_ABERTA);
         original.getDavi().alterarConfianca(40);
@@ -65,29 +65,29 @@ public class Fase3Test {
 
     @Test public void saveNaoMudaQuandoAJogadaContinua() throws Exception {
         escolher("ESC0102");
-        sessao.salvar(1);
+        jogoController.salvar(1);
         escolher("ESC0202");
         escolher("ESC0204");
-        sessao.carregar(1);
-        assertEquals("CAP02", sessao.getCenaAtual().getId());
-        assertEquals(30, sessao.getPartida().getDavi().getConfianca());
-        assertTrue(sessao.getPartida().getInventario().possui(Item.TERCO));
-        assertTrue(sessao.getPartida().temFlag(Flag.PORTA_ABERTA));
+        jogoController.carregar(1);
+        assertEquals("CAP02", jogoController.getCenaAtual().getId());
+        assertEquals(30, jogoController.getPartida().getDavi().getConfianca());
+        assertTrue(jogoController.getPartida().getInventario().possui(Item.TERCO));
+        assertTrue(jogoController.getPartida().temFlag(Flag.PORTA_ABERTA));
         escolher("ESC0202");
         escolher("ESC0204");
-        assertEquals(70, sessao.getPartida().getDavi().getConfianca());
+        assertEquals(70, jogoController.getPartida().getDavi().getConfianca());
     }
 
     @Test public void observerRecebeUmAvisoPorAcaoEPodeSerRemovido() {
         List<String> mensagens = new ArrayList<>();
         ObservadorDeJogo observador = mensagens::add;
-        sessao.adicionarObservador(observador);
-        sessao.adicionarObservador(observador);
+        jogoController.adicionarObservador(observador);
+        jogoController.adicionarObservador(observador);
         escolher("ESC0102"); // Inclui autosave, mas é uma única mudança para a view.
         assertEquals(1, mensagens.size());
         assertTrue(mensagens.getFirst().contains("confiança +10"));
         assertTrue(mensagens.getFirst().contains("automaticamente"));
-        sessao.removerObservador(observador);
+        jogoController.removerObservador(observador);
         escolher("ESC0202");
         assertEquals(1, mensagens.size());
     }
@@ -115,73 +115,73 @@ public class Fase3Test {
         verificarFinal("CAP09B", "FIM_TARDE", "ESC0907");
         verificarFinal("CAP10", "MORTE_CÍRCULO", "ESC1006");
         verificarFinal("CAP10", "FIM_A_TEMPO", "ESC1001", "ESC1002", "ESC1004");
-        assertEquals(11, new SessaoDeJogo(pasta.getRoot().getPath()).getRegistroDeFinais().quantosViu());
+        assertEquals(11, new JogoController(pasta.getRoot().getPath()).getRegistroDeFinais().quantosViu());
     }
 
     private void verificarFinal(String cena, String finalEsperado, String... escolhas) {
-        sessao.novaPartida("Bruno", Preset.COMUM);
+        jogoController.novaPartida("Bruno", Preset.COMUM);
         irAte(cena);
         for (String id : escolhas) escolher(id);
-        assertEquals(finalEsperado, sessao.getCenaAtual().getId());
-        assertTrue(sessao.cenaFinal());
-        assertTrue(sessao.getRegistroDeFinais().jaViu(finalEsperado));
-        assertEquals(100, sessao.getProgresso());
+        assertEquals(finalEsperado, jogoController.getCenaAtual().getId());
+        assertTrue(jogoController.cenaFinal());
+        assertTrue(jogoController.getRegistroDeFinais().jaViu(finalEsperado));
+        assertEquals(100, jogoController.getProgresso());
     }
 
     @Test public void preferenciasPersistemEControlamOAutosave() throws Exception {
-        sessao.alterarPreferencias(Preset.OBSERVADOR, true, false);
-        sessao.excluir(0);
-        sessao.novaPartida("Ana", Preset.OBSERVADOR);
+        jogoController.alterarPreferencias(Preset.OBSERVADOR, true, false);
+        jogoController.excluir(0);
+        jogoController.novaPartida("Ana", Preset.OBSERVADOR);
         escolher("ESC0102");
-        assertFalse(sessao.existeSlot(0));
-        assertTrue(sessao.temAlteracoesNaoSalvas());
-        SessaoDeJogo outra = new SessaoDeJogo(pasta.getRoot().getPath());
+        assertFalse(jogoController.existeSlot(0));
+        assertTrue(jogoController.temAlteracoesNaoSalvas());
+        JogoController outra = new JogoController(pasta.getRoot().getPath());
         assertEquals(Preset.OBSERVADOR, outra.getPreferencias().getPresetPadrao());
         assertTrue(outra.getPreferencias().isPularEnter());
         assertFalse(outra.getPreferencias().isAutosaveLigado());
-        sessao.salvar(1);
-        assertFalse(sessao.temAlteracoesNaoSalvas());
+        jogoController.salvar(1);
+        assertFalse(jogoController.temAlteracoesNaoSalvas());
     }
 
     @Test public void carregarSaveInvalidoPreservaAPartidaAtual() throws Exception {
         new GerenciadorDeSaves(pasta.getRoot().getPath()).salvar(2,
-                new Save("Ana", LocalDateTime.now().plusHours(1), "CENA_INVALIDA", "?", 0, sessao.getPartida()));
-        try { sessao.carregar(2); fail("Deveria rejeitar a cena inválida"); }
-        catch (FalhaAoCarregarException esperado) { assertEquals("CAP01", sessao.getCenaAtual().getId()); }
-        sessao.continuar(); // Ignora o save inválido mais recente e usa o autosave.
-        assertEquals("CAP01", sessao.getCenaAtual().getId());
+                new Save("Ana", LocalDateTime.now().plusHours(1), "CENA_INVALIDA", "?", 0, jogoController.getPartida()));
+        try { jogoController.carregar(2); fail("Deveria rejeitar a cena inválida"); }
+        catch (FalhaAoCarregarException esperado) { assertEquals("CAP01", jogoController.getCenaAtual().getId()); }
+        jogoController.continuar(); // Ignora o save inválido mais recente e usa o autosave.
+        assertEquals("CAP01", jogoController.getCenaAtual().getId());
     }
 
     @Test public void falhaNoAutosaveAvisaSemImpedirOJogo() throws Exception {
-        sessao = new SessaoDeJogo(pasta.newFile("nao-e-pasta").getPath());
-        sessao.novaPartida("Ana", Preset.COMUM);
-        assertTrue(sessao.getUltimaMensagem().contains("Atenção"));
-        assertTrue(sessao.temAlteracoesNaoSalvas());
+        jogoController = new JogoController(pasta.newFile("nao-e-pasta").getPath());
+        jogoController.novaPartida("Ana", Preset.COMUM);
+        assertTrue(jogoController.getUltimaMensagem().contains("Atenção"));
+        assertTrue(jogoController.temAlteracoesNaoSalvas());
         escolher("ESC0102");
-        assertEquals("CAP02", sessao.getCenaAtual().getId());
+        assertEquals("CAP02", jogoController.getCenaAtual().getId());
     }
 
     @Test public void escolhaBloqueadaOuDeOutraCenaNaoPodeSerExecutada() {
-        Escolha bloqueada = sessao.bloqueadas().getFirst();
-        try { sessao.escolher(bloqueada); fail("Deveria rejeitar a escolha bloqueada"); }
-        catch (IllegalArgumentException esperado) { assertEquals("CAP01", sessao.getCenaAtual().getId()); }
-        Escolha antiga = sessao.disponiveis().getFirst();
-        sessao.escolher(antiga);
-        try { sessao.escolher(antiga); fail("Deveria rejeitar uma escolha antiga"); }
-        catch (IllegalArgumentException esperado) { assertEquals("CAP02", sessao.getCenaAtual().getId()); }
+        Escolha bloqueada = jogoController.bloqueadas().getFirst();
+        try { jogoController.escolher(bloqueada); fail("Deveria rejeitar a escolha bloqueada"); }
+        catch (IllegalArgumentException esperado) { assertEquals("CAP01", jogoController.getCenaAtual().getId()); }
+        Escolha antiga = jogoController.disponiveis().getFirst();
+        jogoController.escolher(antiga);
+        try { jogoController.escolher(antiga); fail("Deveria rejeitar uma escolha antiga"); }
+        catch (IllegalArgumentException esperado) { assertEquals("CAP02", jogoController.getCenaAtual().getId()); }
     }
 
     @Test public void motivoDoBloqueioCorrespondeACondicaoQueFalhou() {
         Escolha escolha = new Escolha("X", "texto", null)
                 .exigeFlag(Flag.DAVI_JUNTO, "Davi não está com você")
-                .exigeConfianca(sessao.getPartida().getDavi(), 60, "Davi não confia em você");
-        sessao.getPartida().getDavi().alterarConfianca(40);
-        assertEquals("Davi não está com você", escolha.getMotivoDoBloqueio(sessao.getPartida()));
+                .exigeConfianca(jogoController.getPartida().getDavi(), 60, "Davi não confia em você");
+        jogoController.getPartida().getDavi().alterarConfianca(40);
+        assertEquals("Davi não está com você", escolha.getMotivoDoBloqueio(jogoController.getPartida()));
     }
 
     @Test public void perguntaDeAntonioAgoraTemCaminhoDeDesbloqueio() {
         irAte("CAP04");
         escolher("ESC0402");
-        assertEquals("CAP04B", sessao.getCenaAtual().getId());
+        assertEquals("CAP04B", jogoController.getCenaAtual().getId());
     }
 }
