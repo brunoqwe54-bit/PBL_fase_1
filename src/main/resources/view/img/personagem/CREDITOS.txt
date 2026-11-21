@@ -16,7 +16,8 @@ Estrutura: pasta por personagem, 6 expressões, 512x768 PNG com alfa:
   default.png, warm.png, concerned.png, amused.png, firm.png, signature.png
 
 Elenco usado:
-  otavio/    -> Erasmo (Village Elders Vol. 1)
+  otavio/    -> Erasmo (Village Elders Vol. 1), somente expressoes extras.
+               O default foi substituido por arte gerada, descrita abaixo.
   zulmira/   -> Miriam (Village Elders Vol. 1)
   antonio/   -> Cobb   (Village Elders Vol. 1)
   mae/       -> Wren   (Faces of HOME)
@@ -27,3 +28,12 @@ PERSONAGENS COM ARTE GERADA (IA)
   Obrigatorio declarar o uso de IA no relatorio (metodologia).
   Por enquanto so a expressao default; as outras cinco podem ser geradas
   depois com "mesma imagem, mudar so a expressao".
+
+  vicente/ -> retrato gerado com ChatGPT em 20/11/2026, usando os retratos
+  de Manuela e Otavio como referencias de estilo. PNG 1024x1536 com alfa,
+  exibido pelo JavaFX no mesmo tamanho dos demais personagens.
+
+  otavio/default.png -> retrato gerado com ChatGPT em 20/11/2026,
+  com aparencia de cerca de 30 anos e referencias de estilo dos retratos
+  de Vicente e Manuela. PNG 1024x1536 com alfa. A idade e uma escolha
+  visual; a historia nao define uma idade exata para Otavio.

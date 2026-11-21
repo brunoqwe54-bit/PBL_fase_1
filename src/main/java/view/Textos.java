@@ -57,5 +57,8 @@ public class Textos {
             Personagens:
               "Village Elders Vol. 1 e Vol. 2" e "Faces of HOME",
               por WonderWeave Studio
-              https://wonderweave.itch.io/""";
+              https://wonderweave.itch.io/
+
+            Retratos de Vicente, Otávio, Davi, Manuela e Homem de Terno:
+              Gerados com apoio de IA (ChatGPT).""";
 }

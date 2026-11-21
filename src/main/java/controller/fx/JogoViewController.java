@@ -24,7 +24,7 @@ import java.util.Map;
 public class JogoViewController implements ObservadorDeJogo {
 
     /**
-     * Quem já tem arte pronta: nome exibido no jogo -> pasta em
+     * Tabela que associa o nome exibido no jogo à pasta em
      * img/personagem/. Quem não está aqui aparece como silhueta.
      */
     private static final Map<String, String> PERSONAGENS = Map.of(
@@ -97,18 +97,17 @@ public class JogoViewController implements ObservadorDeJogo {
         texto.setText(trecho.texto());
         leitura.setVvalue(0);
 
-        /* Nome de quem fala fica na caixa de diálogo; o retrato só para NPC. */
         PersonagemBase pessoa = trecho.personagem();
-        boolean falante = pessoa != null;
-        boolean temRetrato = falante && pessoa != jogoController.getPartida().getProtagonista();
+        if (pessoa == null) {
+            // Narração: não há nome nem retrato para mostrar.
+            esconderFalante();
+        } else {
+            nomePersonagem.setText(pessoa.getNome());
+            nomePersonagem.setVisible(true);
+            nomePersonagem.setManaged(true);
 
-        nomePersonagem.setText(falante ? pessoa.getNome() : "");
-        nomePersonagem.setVisible(falante);
-        nomePersonagem.setManaged(falante);
-
-        personagemVisual.setVisible(temRetrato);
-        if (temRetrato) {
-            mostrarPersonagem(pessoa.getNome());
+            personagemVisual.setVisible(true);
+            mostrarPersonagem(pessoa);
         }
 
         mostrarBotaoContinuar(true);
@@ -117,13 +116,22 @@ public class JogoViewController implements ObservadorDeJogo {
     }
 
     /** Usa o sprite de quem já tem arte; os demais ficam na silhueta. */
-    private void mostrarPersonagem(String nome) {
-        String pasta = PERSONAGENS.get(nome);
-        URL recurso = pasta == null ? null
-                : TelaMenuFX.class.getResource("img/personagem/" + pasta + "/default.png");
+    private void mostrarPersonagem(PersonagemBase pessoa) {
+        String pasta;
+        if (pessoa == jogoController.getPartida().getProtagonista()) {
+            // O retrato é o mesmo, mesmo quando o jogador escolhe outro nome.
+            pasta = "vicente";
+        } else {
+            pasta = PERSONAGENS.get(pessoa.getNome());
+        }
+        URL recurso = null;
+        if (pasta != null) {
+            recurso = TelaMenuFX.class.getResource("img/personagem/" + pasta + "/default.png");
+        }
 
         boolean temSprite = recurso != null;
         if (temSprite) {
+            // true: o JavaFX carrega a imagem em segundo plano.
             imagemPersonagem.setImage(new Image(recurso.toExternalForm(), true));
         }
         imagemPersonagem.setVisible(temSprite);
@@ -135,6 +143,7 @@ public class JogoViewController implements ObservadorDeJogo {
         personagemVisual.setVisible(false);
         nomePersonagem.setText("");
         nomePersonagem.setVisible(false);
+        // Além de esconder o nome, tira o espaço que ele ocupa no layout.
         nomePersonagem.setManaged(false);
     }
 

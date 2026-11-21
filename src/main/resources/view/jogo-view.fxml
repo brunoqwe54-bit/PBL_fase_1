@@ -4,7 +4,6 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.image.*?>
-<?import javafx.geometry.*?>
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controller.fx.JogoViewController" styleClass="tela-jogo">
     <top>
@@ -37,8 +36,7 @@
             <!-- retrato do falante: maior e deslocado para o canto inferior esquerdo -->
             <VBox fx:id="personagemVisual" alignment="BOTTOM_CENTER" maxWidth="300" spacing="4"
                   translateX="-330" translateY="25" mouseTransparent="true" visible="false">
-                <!-- as duas opções ficam no mesmo Group: só uma aparece por vez,
-                     e o Group não soma altura mínima (senão empurra a caixa de diálogo) -->
+                <!-- Agrupa retrato e silhueta na mesma posição; só um fica visível. -->
                 <Group>
                     <ImageView fx:id="imagemPersonagem" fitWidth="300" fitHeight="450" preserveRatio="true"
                                visible="false" />

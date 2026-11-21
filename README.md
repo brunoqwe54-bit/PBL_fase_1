@@ -131,5 +131,7 @@ Para testes visuais isolados, é possível definir a propriedade Java
 `-Dnoite.saves=target/ui-saves`. Essa opção não é necessária para jogar.
 
 Os cenários são de Spiral Atlas, "Contemporary Visual Novel Backgrounds".
-Os personagens são representados por silhuetas vetoriais simples em JavaFX,
-identificadas pelo nome de quem está falando. Nenhuma engine de jogo é usada.
+O protagonista e os sete NPCs têm retratos PNG, identificados pelo nome de
+quem está falando. O protagonista mantém seu retrato mesmo com nome personalizado.
+Os créditos das artes estão na tela de Créditos e nos arquivos CREDITOS.txt
+das pastas de imagens. Nenhuma engine de jogo é usada.
