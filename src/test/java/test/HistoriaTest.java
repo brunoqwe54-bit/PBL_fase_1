@@ -10,13 +10,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Testes da montagem da história.
- *
- * Não testam o TEXTO de cada capítulo, só a
- * estrutura: quantas cenas existem, qual é a primeira, e o que acontece
- * quando alguém pede uma cena que não existe.
- */
+/** Testa a montagem das cenas, a cena inicial e a busca por ID. */
 public class HistoriaTest {
 
     private Historia historia;
@@ -46,9 +40,7 @@ public class HistoriaTest {
     public void getCenaComIdInexistenteQuebraComMensagemClara() {
         historia.montarHistoria(partida);
 
-        /* "CENA_FANTASMA" nunca foi criada, getCena tem que reclamar, e
-        * não devolver null silenciosamente.
-        */
+        /* Uma cena inexistente deve gerar uma exceção. */
         historia.getCena("CENA_FANTASMA");
     }
 
@@ -63,9 +55,7 @@ public class HistoriaTest {
 
     @Test
     public void montarDuasVezesNaoDuplicaAsCenas() {
-        /* montarHistoria começa com cenas.clear(): montar de novo tem que
-        * dar a mesma quantidade, nunca o dobro.
-         */
+        /* Montar a história novamente não deve duplicar as cenas. */
         historia.montarHistoria(partida);
         historia.montarHistoria(partida);
 

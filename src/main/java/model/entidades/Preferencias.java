@@ -5,14 +5,8 @@ import model.enums.Preset;
 import java.io.Serializable;
 
 /**
- * Os ajustes do jogador, que valem para todas as partidas.
- *
- * São três: o preset que já vem escolhido ao começar uma partida nova, se
- * as pausas de ENTER nas cenas são puladas e se o autosave está ligado.
- * Ficam guardadas num arquivo, então continuam valendo quando o jogo é
- * fechado e aberto de novo.
- *
- * Os valores iniciais (de fábrica) são os do começo de cada campo.
+ * Guarda o preset padrão, a leitura rápida e a opção de autosave.
+ * As preferências são salvas em arquivo e valem para todas as partidas.
  */
 public class Preferencias implements Serializable {
 

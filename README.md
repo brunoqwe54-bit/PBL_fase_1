@@ -10,7 +10,7 @@ Instale um **JDK 21** e configure `JAVA_HOME` para a pasta desse JDK.
 O Maven Wrapper baixa o Maven e as dependências JavaFX na primeira execução;
 nessa primeira vez é necessário acesso à internet. O JDK não vem no projeto.
 
-Abra o terminal na pasta `PBL_fase_2`, onde está o `pom.xml`:
+Abra o terminal na pasta do projeto, onde está o `pom.xml`:
 
 ```powershell
 # Windows
@@ -23,13 +23,16 @@ sh mvnw javafx:run
 ```
 
 No IntelliJ, abra o `pom.xml` como projeto Maven, selecione o JDK 21 e execute
-`MainFX` ou a tarefa Maven `javafx:run`.
+a tarefa Maven `javafx:run`. A classe de entrada configurada é `MainFX`.
 
-A antiga versão de terminal está arquivada em `backup/terminal-fase3.zip`,
-com os caminhos originais dos oito arquivos. Para restaurá-la, extraia o ZIP
-em uma pasta separada. O backup contém a antiga `JogoController` do terminal;
-não a sobrescreva sobre a atual `controller/JogoController.java`, que coordena
-o jogo JavaFX. O backup não participa da compilação.
+No ZIP de entrega, a pasta do projeto tem o nome `PBL_fase_3`.
+O jogo usa a interface JavaFX.
+
+## Documentação
+
+Na raiz da entrega, abra `Javadoc_Fase_3/index.html` no navegador para consultar
+a documentação atualizada das classes e dos métodos. O arquivo
+`INSTRUCOES_INTELLIJ.txt` traz as instruções de abertura, execução e testes.
 
 ## Testar e compilar
 

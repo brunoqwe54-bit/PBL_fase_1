@@ -33,14 +33,14 @@
         <StackPane>
             <Region fx:id="cenario" />
             <Region styleClass="sombra-cenario" />
-            <!-- retrato do falante: maior e deslocado para o canto inferior esquerdo -->
+            <!-- Retrato no canto inferior esquerdo. -->
             <VBox fx:id="personagemVisual" alignment="BOTTOM_CENTER" maxWidth="300" spacing="4"
                   translateX="-330" translateY="25" mouseTransparent="true" visible="false">
-                <!-- Agrupa retrato e silhueta na mesma posição; só um fica visível. -->
+                <!-- Agrupa o retrato e a silhueta. Apenas um fica visível. -->
                 <Group>
                     <ImageView fx:id="imagemPersonagem" fitWidth="300" fitHeight="450" preserveRatio="true"
                                visible="false" />
-                    <!-- reserva para quem ainda não tem arte: cabeça acima dos ombros -->
+                    <!-- Silhueta usada quando o retrato não está disponível. -->
                     <Group fx:id="silhueta">
                         <Circle centerX="150.0" centerY="60.0" radius="44.0" fill="#161721"
                                 stroke="#b7a4d9" strokeWidth="2" />
@@ -57,7 +57,7 @@
     </center>
     <bottom>
         <VBox spacing="9" styleClass="caixa-dialogo">
-            <!-- quem está falando, dentro da caixa e acima da fala -->
+            <!-- Nome do personagem acima da fala. -->
             <Label fx:id="nomePersonagem" styleClass="nome-personagem" wrapText="true" />
             <ScrollPane fx:id="leitura" fitToWidth="true" prefViewportHeight="135" hbarPolicy="NEVER">
                 <content><Label fx:id="texto" wrapText="true" styleClass="narrativa" maxWidth="Infinity" /></content>

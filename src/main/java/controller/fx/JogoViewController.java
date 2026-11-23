@@ -20,13 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/** Apresentação da partida. O JogoController coordena as decisões e os saves. */
-public class JogoViewController implements ObservadorDeJogo {
+/** Mostra a partida e envia as ações do jogador ao JogoController. */
+public class     JogoViewController implements ObservadorDeJogo {
 
-    /**
-     * Tabela que associa o nome exibido no jogo à pasta em
-     * img/personagem/. Quem não está aqui aparece como silhueta.
-     */
+    /** Associa o nome de cada NPC à pasta do seu retrato. */
     private static final Map<String, String> PERSONAGENS = Map.of(
             "Otávio", "otavio",
             "Dona Zulmira", "zulmira",
@@ -51,7 +48,7 @@ public class JogoViewController implements ObservadorDeJogo {
     private boolean esperandoProximaCena;
     private boolean leituraRapida;
 
-    /** Um trecho de narração tem personagem null; uma fala tem seu autor. */
+    /** Guarda um texto e seu autor. Na narração, o personagem é null. */
     private record Trecho(String texto, PersonagemBase personagem) { }
 
     @FXML private void initialize() { exibirCena(); }
@@ -99,7 +96,7 @@ public class JogoViewController implements ObservadorDeJogo {
 
         PersonagemBase pessoa = trecho.personagem();
         if (pessoa == null) {
-            // Narração: não há nome nem retrato para mostrar.
+            // A narração não mostra nome nem retrato.
             esconderFalante();
         } else {
             nomePersonagem.setText(pessoa.getNome());
@@ -115,11 +112,11 @@ public class JogoViewController implements ObservadorDeJogo {
                 ? "Voltar ao menu" : "Continuar  [ENTER]");
     }
 
-    /** Usa o sprite de quem já tem arte; os demais ficam na silhueta. */
+    /** Mostra o retrato do personagem ou uma silhueta se a imagem não existir. */
     private void mostrarPersonagem(PersonagemBase pessoa) {
         String pasta;
         if (pessoa == jogoController.getPartida().getProtagonista()) {
-            // O retrato é o mesmo, mesmo quando o jogador escolhe outro nome.
+            // Usa o retrato de Vicente mesmo com um nome personalizado.
             pasta = "vicente";
         } else {
             pasta = PERSONAGENS.get(pessoa.getNome());
@@ -131,19 +128,19 @@ public class JogoViewController implements ObservadorDeJogo {
 
         boolean temSprite = recurso != null;
         if (temSprite) {
-            // true: o JavaFX carrega a imagem em segundo plano.
+            // O valor true permite carregar a imagem em segundo plano.
             imagemPersonagem.setImage(new Image(recurso.toExternalForm(), true));
         }
         imagemPersonagem.setVisible(temSprite);
         silhueta.setVisible(!temSprite);
     }
 
-    /** Esconde retrato e nome quando quem "fala" é a narração. */
+    /** Esconde o nome e o retrato durante a narração. */
     private void esconderFalante() {
         personagemVisual.setVisible(false);
         nomePersonagem.setText("");
         nomePersonagem.setVisible(false);
-        // Além de esconder o nome, tira o espaço que ele ocupa no layout.
+        // Retira o espaço reservado ao nome no layout.
         nomePersonagem.setManaged(false);
     }
 
@@ -201,7 +198,7 @@ public class JogoViewController implements ObservadorDeJogo {
         if (mostrar) Platform.runLater(botaoContinuar::requestFocus);
     }
 
-    /** Volta de um painel mantendo o trecho lido e as escolhas na tela. */
+    /** Retoma a leitura no mesmo trecho ao voltar de um painel. */
     public void retomar() {
         if (leituraRapida != jogoController.getPreferencias().isPularEnter()) exibirCena();
         else {
@@ -210,7 +207,7 @@ public class JogoViewController implements ObservadorDeJogo {
         }
     }
 
-    /** Observer: o HUD muda ao escolher ou salvar, sem repetir a narração. */
+    /** Recebe o aviso do Observer e atualiza atributos, progresso e mensagens. */
     @Override public void atualizar(String mensagem) {
         if (jogoController.getPartida() == null) return;
         Partida partida = jogoController.getPartida();

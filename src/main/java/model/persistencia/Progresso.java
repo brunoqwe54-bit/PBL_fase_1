@@ -1,21 +1,15 @@
 package model.persistencia;
 
 /**
- * Calcula a porcentagem de progresso mostrada na lista de slots.
- *
- * O progresso é a fração de capítulos já concluídos. Estar no capítulo 5
- * quer dizer que 4 de 10 foram concluídos, então 40%. O capítulo 1 dá 0%,
- * e nenhum save chega a 100%: no capítulo 10 o jogador ainda não terminou.
- *
- * O capítulo vem do id da cena: "CAP05" e "CAP05B" são o capítulo 5. Id
- * fora desse formato (como "FIM_TARDE") dá 0.
+ * Calcula o progresso dos capítulos de 0 a 90. Por exemplo, o capítulo 5 indica 40%.
+ * O JogoController define 100% para os finais.
  */
 public class Progresso {
 
     public static final int TOTAL_DE_CAPITULOS = 10;
 
     /**
-     * Calcula o progresso de quem está na cena com esse id.
+     * Calcula a porcentagem pelo ID da cena.
      *
      * @param idCena o id da cena atual, ex. "CAP05B"
      * @return a porcentagem de 0 a 90, em múltiplos de 10
@@ -29,7 +23,7 @@ public class Progresso {
         try {
             capitulo = Integer.parseInt(idCena.substring(3, 5));
         } catch (NumberFormatException e) {
-            return 0; // "CAPXX", por exemplo
+            return 0; // Retorna zero quando o número do capítulo é inválido.
         }
 
         int concluidos = capitulo - 1;

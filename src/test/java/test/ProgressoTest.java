@@ -6,10 +6,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Testes da classe Progresso: o capítulo sai do id da cena, e o progresso
- * é a fração de capítulos já concluídos.
- */
+/** Testa o progresso por capítulo e os IDs inválidos. */
 public class ProgressoTest {
 
     @Test

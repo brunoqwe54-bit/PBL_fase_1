@@ -7,13 +7,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Testes da classe Npc.
- *
- * A lógica é quase igual à do Protagonista: um único caminho de escrita
- * (alterarConfianca) que corta em 0 e 100. O que muda aqui é que existem
- * DOIS construtores, e os dois precisam respeitar esse limite.
- */
+/** Testa os construtores e os limites da confiança. */
 public class NpcTest {
 
 
@@ -53,7 +47,7 @@ public class NpcTest {
 
     @Test
     public void confiancaNaoPassaDeCem() {
-        // Muito mais do que caberia: tem que parar no teto.
+        // Limita a confiança máxima a 100.
         davi.alterarConfianca(200);
 
         assertEquals(Npc.MAXIMO, davi.getConfianca());
@@ -61,7 +55,7 @@ public class NpcTest {
 
     @Test
     public void confiancaNaoFicaAbaixoDeZero() {
-        // Muito mais do que existe: tem que parar no piso.
+        // Limita a confiança mínima a zero.
         davi.alterarConfianca(-200);
 
         assertEquals(Npc.MINIMO, davi.getConfianca());
@@ -69,9 +63,7 @@ public class NpcTest {
 
     @Test
     public void construtorComConfiancaTambemRespeitaOTeto() {
-        /* Se alguém tentar CRIAR um Npc já fora do limite, o construtor
-         *precisa cortar também, não só o alterarConfianca depois.
-         */
+        /* O construtor também deve respeitar os limites da confiança. */
         Npc npc = new Npc("Teste", 500);
 
         assertEquals(Npc.MAXIMO, npc.getConfianca());

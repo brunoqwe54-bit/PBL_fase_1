@@ -18,7 +18,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-/** Integração dos três GoF, persistência e percursos completos da história. */
+/** Testa os três padrões GoF, a restauração e as rotas dos onze finais. */
 public class Fase3Test {
     @Rule public TemporaryFolder pasta = new TemporaryFolder();
     private JogoController jogoController;

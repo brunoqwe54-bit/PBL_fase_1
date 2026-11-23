@@ -13,11 +13,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Testes do fluxo da partida: começar, listar escolhas, escolher e terminar.
- *
- * Não precisam de JavaFX: o JogoController não conhece interface nenhuma.
- */
+/** Testa o fluxo da partida sem iniciar o JavaFX. */
 public class JogoControllerTest {
 
     @Rule public TemporaryFolder pasta = new TemporaryFolder();

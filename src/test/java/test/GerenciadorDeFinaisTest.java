@@ -17,10 +17,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Testes do GerenciadorDeFinais. Usam uma pasta temporária, que o JUnit
- * apaga no fim, para não mexer nos finais de verdade.
- */
+/** Testa a leitura e a gravação de finais em pastas temporárias. */
 public class GerenciadorDeFinaisTest {
 
     @Rule

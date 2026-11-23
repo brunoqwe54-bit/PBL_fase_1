@@ -4,22 +4,14 @@ import model.enums.Atributo;
 import model.enums.Preset;
 
 /**
- * O personagem que o jogador controla: Vicente, irmão da Manuela.
- *
- * Guarda os três atributos (do enum Atributo), que vão de 0 a 100. Os
- * valores iniciais não são fixos: vêm do Preset escolhido no menu, e é
- * isso que faz um Atleta e um Observador terem caminhos diferentes pela
- * mesma história.
- *
- * Os atributos são privados e só podem ser mudados pelo método
- * alterarAtributo. Ter um caminho só é o que garante que nenhum valor
- * fora de 0..100 entre no jogo.
+ * Representa o jogador e seus atributos de fôlego, coragem e lucidez.
+ * O preset define os valores iniciais. alterarAtributo mantém os valores entre 0 e 100.
  */
 public class Protagonista extends PersonagemBase {
 
     private static final long serialVersionUID = 1L;
 
-    // Limites: nenhum atributo passa disso
+    // Limites dos atributos.
     public static final int MINIMO = 0;
     public static final int MAXIMO = 100;
 

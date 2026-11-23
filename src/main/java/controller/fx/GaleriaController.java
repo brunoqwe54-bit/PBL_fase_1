@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import model.entidades.RegistroDeFinais;
 
-/** Finais descobertos ficam visíveis; os demais preservam a surpresa. */
+/** Mostra os finais descobertos e esconde os nomes dos demais. */
 public class GaleriaController {
     @FXML private Label resumo;
     @FXML private VBox finais;

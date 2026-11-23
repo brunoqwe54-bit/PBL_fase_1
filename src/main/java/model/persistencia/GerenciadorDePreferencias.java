@@ -8,29 +8,22 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-/**
- * Quem grava e lê o arquivo das preferências (preferencias.dat), na mesma
- * pasta dos saves.
- *
- * Ler nunca dá erro: se o arquivo não existe ou está ruim, devolve as
- * preferências de fábrica, porque o jogo precisa abrir de qualquer jeito.
- * Gravar pode falhar, e aí lança FalhaAoSalvarException.
- */
+/** Grava e lê as preferências. Se a leitura falhar, usa os valores padrão. */
 public class GerenciadorDePreferencias {
 
     private String pasta;
 
-    /** Usa a pasta "saves", a mesma dos saves. */
+    /** Usa a pasta saves no diretório de execução. */
     public GerenciadorDePreferencias() {
         this("saves");
     }
 
-    /** Usa outra pasta. Serve para os testes não mexerem nos arquivos de verdade. */
+    /** Usa outra pasta para isolar os testes. */
     public GerenciadorDePreferencias(String pasta) {
         this.pasta = pasta;
     }
 
-    /** Lê as preferências. Sem arquivo, ou com arquivo ruim, devolve as de fábrica. */
+    /** Carrega as preferências ou devolve os valores padrão. */
     public Preferencias carregar() {
         File arquivo = new File(pasta, "preferencias.dat");
         if (!arquivo.exists()) {
@@ -44,7 +37,7 @@ public class GerenciadorDePreferencias {
                 return lidas;
             }
         } catch (Exception e) {
-            // arquivo ruim: cai no return de baixo, com os valores de fábrica
+            // Usa os valores padrão se o arquivo estiver inválido.
         }
         return new Preferencias();
     }
@@ -52,7 +45,8 @@ public class GerenciadorDePreferencias {
     /**
      * Grava as preferências, criando a pasta se ela ainda não existir.
      *
-     * @throws FalhaAoSalvarException se a pasta não puder ser criada ou a gravação falhar
+     * @throws FalhaAoSalvarException se a pasta não puder ser criada ou a gravação
+     *     falhar
      */
     public void salvar(Preferencias preferencias) throws FalhaAoSalvarException {
         File diretorio = new File(pasta);

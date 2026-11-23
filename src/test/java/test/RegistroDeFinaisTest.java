@@ -13,12 +13,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Testes da classe RegistroDeFinais.
- *
- * Também confere que cada id da lista existe na Historia e é mesmo uma
- * cena sem escolhas, para a lista nunca ficar fora do jogo.
- */
+/** Testa o registro dos finais e sua correspondência com as cenas. */
 public class RegistroDeFinaisTest {
 
     private RegistroDeFinais registro;

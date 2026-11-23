@@ -1,10 +1,6 @@
 package model.enums;
 
-/**
- * Os três atributos do protagonista.
- *
- * Os três vão de 0 a 100 e são guardados na classe Protagonista.
- */
+/** Define os três atributos do protagonista, com valores entre 0 e 100. */
 public enum Atributo {
     FOLEGO("Fôlego"),
     CORAGEM("Coragem"),

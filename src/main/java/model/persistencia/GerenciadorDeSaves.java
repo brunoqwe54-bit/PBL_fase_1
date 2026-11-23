@@ -10,16 +10,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 /**
- * Quem sabe mexer nos arquivos de save: grava, lê, exclui e descobre qual
- * é o mais recente.
- *
- * Existem 4 slots: os manuais, de 1 a 3, e o autosave, que é o número 0.
- * Cada um é um arquivo dentro da pasta de saves (slot1.dat, slot2.dat,
- * slot3.dat e autosave.dat).
- *
- * Qualquer falha vira uma exceção do jogo (FalhaAoSalvarException ou
- * FalhaAoCarregarException). Quem decide o que mostrar ao jogador é o
- * controller, aqui só se avisa que deu errado.
+ * Grava, lê e exclui os saves. O slot 0 é automático e os slots 1 a 3 são manuais.
+ * Falhas são informadas por exceções próprias do jogo.
  */
 public class GerenciadorDeSaves {
 
@@ -28,13 +20,13 @@ public class GerenciadorDeSaves {
 
     private String pasta;
 
-    /** Usa a pasta "saves", na raiz de onde o programa roda. */
+    /** Usa a pasta saves no diretório de execução. */
     public GerenciadorDeSaves() {
         this("saves");
     }
 
     /**
-     * Usa outra pasta. Serve para os testes não mexerem nos saves de verdade.
+     * Usa uma pasta indicada, permitindo isolar os arquivos dos testes.
      *
      * @param pasta o caminho da pasta onde os arquivos ficam
      */
@@ -43,8 +35,7 @@ public class GerenciadorDeSaves {
     }
 
     /**
-     * Grava o save no slot, criando a pasta se ela ainda não existir.
-     * Se já houver um save ali, ele é substituído.
+     * Grava o save e cria a pasta se necessário. Um save existente é substituído.
      *
      * @param slot 0 para o autosave, ou de 1 a 3 para os manuais
      * @param save o que será gravado
@@ -75,8 +66,8 @@ public class GerenciadorDeSaves {
      *
      * @param slot 0 para o autosave, ou de 1 a 3 para os manuais
      * @return o save lido
-     * @throws FalhaAoCarregarException se o slot for inválido, estiver vazio,
-     *         o arquivo estiver corrompido ou os dados não fizerem sentido
+     * @throws FalhaAoCarregarException se o slot for inválido, estiver vazio, o arquivo
+     *     estiver corrompido ou os dados não fizerem sentido
      */
     public Save carregar(int slot) throws FalhaAoCarregarException {
         if (!slotValido(slot)) {
@@ -88,7 +79,7 @@ public class GerenciadorDeSaves {
             throw new FalhaAoCarregarException("Não existe save para " + descricao(slot));
         }
 
-        // mesmo esquema do salvar: os dois recursos são fechados no fim
+        // Fecha os dois recursos ao terminar a leitura.
         try (FileInputStream arquivoAberto = new FileInputStream(arquivo);
              ObjectInputStream entrada = new ObjectInputStream(arquivoAberto)) {
             Object lido = entrada.readObject();
@@ -110,10 +101,7 @@ public class GerenciadorDeSaves {
         } catch (ClassNotFoundException e) {
             throw new FalhaAoCarregarException("Não foi possível carregar " + descricao(slot), e);
         } catch (RuntimeException e) {
-            /* Um arquivo estragado no meio também pode dar erros que não são
-             * IOException, como ClassCastException. Eles viram a exceção do
-             * jogo, para um slot ruim nunca derrubar o Continuar.
-             */
+            /* Converte erros de dados inválidos em uma exceção do jogo. */
             throw new FalhaAoCarregarException("O save de " + descricao(slot) + " está corrompido", e);
         }
     }
@@ -139,9 +127,7 @@ public class GerenciadorDeSaves {
     }
 
     /**
-     * Descobre o slot do save mais recente, olhando a data e hora de cada um.
-     * Slot vazio ou corrompido é ignorado, para um arquivo ruim não impedir
-     * o jogador de continuar.
+     * Busca o save mais recente pela data e ignora slots vazios ou corrompidos.
      *
      * @return o número do slot, ou -1 se nenhum save pôde ser lido
      */
@@ -157,7 +143,7 @@ public class GerenciadorDeSaves {
                     melhorSlot = slot;
                 }
             } catch (FalhaAoCarregarException e) {
-                // vazio ou corrompido: não serve para o "Continuar", segue para o próximo
+                // Ignora este slot e continua a busca.
             }
         }
         return melhorSlot;
@@ -172,7 +158,7 @@ public class GerenciadorDeSaves {
         return new File(pasta, nome);
     }
 
-    /** O nome do slot para as mensagens: "o autosave" ou "o slot 2". */
+    /** Devolve o nome do slot usado nas mensagens. */
     private String descricao(int slot) {
         return (slot == AUTOSAVE) ? "o autosave" : "o slot " + slot;
     }

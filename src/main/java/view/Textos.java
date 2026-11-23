@@ -1,13 +1,9 @@
 package view;
 
-/**
- * Textos longos mostrados pelas telas.
- *
- * Centraliza as instruções e os créditos exibidos pela interface JavaFX.
- */
+/** Reúne as instruções e os créditos mostrados nas telas. */
 public class Textos {
 
-    /** Classe só de constantes. */
+    /** Impede criar objetos desta classe de constantes. */
     private Textos() {
     }
 

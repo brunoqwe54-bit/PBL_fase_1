@@ -1,9 +1,6 @@
 package model.enums;
 
-/**
- * Os tipos de preset que o jogador pode escolher.
- * Cada um começa com valores diferentes nos três atributos.
- */
+/** Define os perfis iniciais e os valores dos atributos. */
 public enum Preset {
 
     ATLETA("Atleta",
@@ -56,13 +53,7 @@ public enum Preset {
         return lucidez;
     }
 
-    /**
-     * O texto que aparece quando o preset é mostrado na tela.
-     *
-     * A caixa de escolha do JavaFX (ComboBox) usa o toString() de cada
-     * item para escrever a opção. Sem isto, ela mostraria "ATLETA" em vez
-     * de "Atleta".
-     */
+    /** Devolve o nome do perfil mostrado na caixa de seleção do JavaFX. */
     @Override
     public String toString() {
         return nome;

@@ -18,12 +18,8 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Testes da classe Escolha: as cinco condições de estaDisponivel() e os
- * efeitos de aplicar(). É a classe com mais lógica do projeto.
- *
- * Em nenhum teste aqui a cena de destino importa, nem estaDisponivel()
- * nem aplicar() olham pra ela, então ela é sempre passada como null pra
- * não precisar criar uma Cena só pra isso.
+ * Testa as condições, os efeitos e a configuração das escolhas. A cena de destino não é
+ * necessária nesses testes.
  */
 public class EscolhaTest {
 
@@ -47,7 +43,7 @@ public class EscolhaTest {
 
     @Test
     public void atributoAbaixoDoMinimoBloqueiaAEscolha() {
-        // Vicente começa com 50 de coragem (preset COMUM); a escolha exige 55.
+        // O preset COMUM começa com coragem 50. A escolha exige 55.
         Escolha escolha = new Escolha("E1", "texto", null)
                 .exigeAtributo(Atributo.CORAGEM, 55, "sua voz não sai");
 
@@ -56,7 +52,7 @@ public class EscolhaTest {
 
     @Test
     public void atributoIgualAoMinimoLiberaAEscolha() {
-        // O mínimo é inclusivo: exatamente 50 já tem que liberar.
+        // O valor mínimo também deve liberar a escolha.
         Escolha escolha = new Escolha("E1", "texto", null)
                 .exigeAtributo(Atributo.CORAGEM, 50, "sua voz não sai");
 
@@ -95,7 +91,7 @@ public class EscolhaTest {
 
     @Test
     public void confiancaSuficienteLiberaAEscolha() {
-        // Otávio começa com 50; exigir exatamente 50 tem que liberar.
+        // Otávio começa com confiança 50, que já atende ao mínimo exigido.
         Escolha escolha = new Escolha("E1", "texto", null)
                 .exigeConfianca(partida.getOtavio(), 50, "ele não confia em você");
 
@@ -121,8 +117,8 @@ public class EscolhaTest {
         assertTrue(escolha.estaDisponivel(partida));
     }
 
-    // Condição de flag proibida: o contrário, só bloqueia se a decisão já
-    // tiver acontecido.
+    // A decisão registrada deve bloquear esta escolha.
+
 
     @Test
     public void flagProibidaPresenteBloqueiaAEscolha() {
@@ -214,7 +210,7 @@ public class EscolhaTest {
 
     @Test
     public void aplicarComVariacaoZeroNaoContaComoEfeito() {
-        // npc configurado, mas variação 0: não deveria gerar aviso nem mexe na confiança de ninguém.
+        // Uma variação zero não deve alterar a confiança nem gerar aviso.
         Npc otavio = partida.getOtavio();
         Escolha escolha = new Escolha("E1", "texto", null)
                 .comConfianca(otavio, 0);
@@ -225,8 +221,8 @@ public class EscolhaTest {
         assertEquals(50, otavio.getConfianca());
     }
 
-    // Vários efeitos na mesma escolha. Se algum destes falhar, é sinal de
-    // que voltaram a guardar um efeito só por tipo (bug do ESC0808).
+    // Verifica vários efeitos na mesma escolha.
+
 
     @Test
     public void aplicarDuasConfiancasAlteraOsDoisNpcs() {
@@ -246,8 +242,8 @@ public class EscolhaTest {
 
     @Test
     public void aplicarItemEDoisAtributosJuntos() {
-        // Caso real da Historia (ESC0808): beber o cantil gasta o item e
-        // tem que devolver fôlego E lucidez.
+        // Beber o cantil consome o item e recupera fôlego e lucidez.
+
         partida.getInventario().adicionar(Item.CANTIL);
 
         Escolha escolha = new Escolha("E1", "texto", null)
@@ -268,7 +264,7 @@ public class EscolhaTest {
     public void metodosDeConfiguracaoDevolvemAPropriaEscolha() {
         Escolha escolha = new Escolha("E1", "texto", null);
 
-        // "assertSame" verifica que é o MESMO objeto, não só um igual.
+        // assertSame verifica se a referência aponta para o mesmo objeto.
         assertSame(escolha, escolha.comAtributo(Atributo.LUCIDEZ, 5));
     }
 }

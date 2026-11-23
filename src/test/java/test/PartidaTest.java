@@ -14,11 +14,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Testes da classe Partida: o que o construtor monta (protagonista,
- * inventário inicial, NPCs com suas confianças) e o comportamento das
- * flags, que são a única coisa que a própria Partida sabe fazer sozinha.
- */
+/** Testa o estado inicial da partida e o registro de decisões. */
 public class PartidaTest {
 
     private Partida partida;
@@ -40,7 +36,7 @@ public class PartidaTest {
 
     @Test
     public void comecaComOTercoDaMaeNaMochila() {
-        // É o único item que o construtor da Partida entrega de graça.
+        // O terço é o item inicial da partida.
         assertTrue(partida.getInventario().possui(Item.TERCO));
     }
 
@@ -51,7 +47,7 @@ public class PartidaTest {
 
     @Test
     public void comecaSemCenaAtualDefinida() {
-        // Quem define a primeira cena é o Historia, não o construtor da Partida.
+        // Historia define a primeira cena após a criação da partida.
         assertNull(partida.getCenaAtual());
     }
 
@@ -87,7 +83,7 @@ public class PartidaTest {
 
     @Test
     public void ligarAMesmaFlagDuasVezesNaoDaErro() {
-        // O Set não permite duplicata: ligar de novo só não muda nada.
+        // Registrar a mesma flag novamente não deve mudar o conjunto.
         partida.ligarFlag(Flag.DAVI_JUNTO);
         partida.ligarFlag(Flag.DAVI_JUNTO);
 

@@ -4,13 +4,7 @@ import model.enums.Item;
 
 import java.io.Serializable;
 
-/**
- * A mochila do protagonista.
- *
- * Cada item é um booleano: tem ou não tem. Os métodos públicos traduzem
- * o enum Item para o campo certo, então o resto do jogo nunca precisa
- * saber que por baixo são variáveis separadas.
- */
+/** Guarda os itens do protagonista. Cada campo indica se ele possui um item. */
 public class Inventario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -22,9 +16,9 @@ public class Inventario implements Serializable {
     private boolean temVelaApagada = false;
     private boolean temCantil = false;
 
-    // ================================================================
-    // ACESSO PELO ENUM, é o que a Escolha usa
-    // ================================================================
+
+    // Consulta e alteração dos itens.
+
 
     /**
      * Diz se o item está na mochila.
@@ -45,7 +39,7 @@ public class Inventario implements Serializable {
     }
 
     /**
-     * Põe um item na mochila. Adicionar duas vezes é o mesmo que uma.
+     * Adiciona um item. Adicionar o mesmo item novamente não muda o inventário.
      *
      * @param item o item a guardar
      */
@@ -54,7 +48,7 @@ public class Inventario implements Serializable {
     }
 
     /**
-     * Tira um item da mochila. Remover o que não está lá não faz nada.
+     * Remove um item. Se ele já estiver ausente, nada muda.
      *
      * @param item o item a retirar
      */
@@ -74,12 +68,12 @@ public class Inventario implements Serializable {
         }
     }
 
-    /** Lista o que o jogador carrega, pra View mostrar. */
+
     /**
-     * Monta o texto da mochila para a view mostrar na barra de status.
+     * Lista os nomes dos itens presentes no inventário.
      *
-     * @return os nomes dos itens separados por ponto e vírgula,
-     *         ou "(vazia)" quando o jogador não carrega nada
+     * @return os nomes dos itens separados por ponto e vírgula, ou "(vazia)" quando o
+     *     jogador não carrega nada
      */
     public String listar() {
         String lista = "";

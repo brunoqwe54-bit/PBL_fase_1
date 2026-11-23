@@ -9,18 +9,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Testes da classe Protagonista.
- *
- * O método alterarAtributo é o único caminho para mudar um atributo, e é
- * dentro dele que mora o limite de 0 a 100. Se esse limite falhar, o jogo
- * inteiro fica errado, por isso ele é o que mais precisa de teste.
- */
+/** Testa os presets e os limites dos atributos. */
 public class ProtagonistaTest {
 
-    /* Este objeto é recriado antes de CADA teste, pelo método com @Before.
-    * Assim, um teste nunca começa com os resquicios do anterior.
-    */
+    /* Cria um protagonista novo antes de cada teste. */
     private Protagonista vicente;
 
     @Before
@@ -61,7 +53,7 @@ public class ProtagonistaTest {
 
     @Test
     public void atributoNaoPassaDeCem() {
-        // Muito mais do que caberia: tem que parar no teto.
+        // Limita o atributo máximo a 100.
         vicente.alterarAtributo(Atributo.LUCIDEZ, 200);
 
         assertEquals(Protagonista.MAXIMO, vicente.getAtributo(Atributo.LUCIDEZ));
@@ -69,7 +61,7 @@ public class ProtagonistaTest {
 
     @Test
     public void atributoNaoFicaAbaixoDeZero() {
-        // Muito mais do que existe: tem que parar no piso.
+        // Limita o atributo mínimo a zero.
         vicente.alterarAtributo(Atributo.FOLEGO, -200);
 
         assertEquals(Protagonista.MINIMO, vicente.getAtributo(Atributo.FOLEGO));

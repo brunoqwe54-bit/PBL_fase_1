@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Coordena a partida e a persistência sem conhecer JavaFX nem o terminal. */
+/** Coordena a partida e os arquivos sem depender da interface. */
 public class JogoController {
     private final Historia historia = new Historia();
     private final GerenciadorDeSaves saves;
@@ -27,7 +27,7 @@ public class JogoController {
 
     public JogoController() { this(System.getProperty("noite.saves", "saves")); }
 
-    /** Outra pasta permite testar sem tocar nos saves do jogador. */
+    /** Usa outra pasta para manter os testes separados dos saves do jogador. */
     public JogoController(String pasta) {
         saves = new GerenciadorDeSaves(pasta);
         ajustes = new GerenciadorDePreferencias(pasta);
@@ -49,6 +49,12 @@ public class JogoController {
         }
     }
 
+    /**
+     * Cria a partida e tenta fazer o autosave se ele estiver ligado.
+     *
+     * @param nome nome escolhido pelo jogador
+     * @param preset perfil com os atributos iniciais
+     */
     public void novaPartida(String nome, Preset preset) {
         partida = new Partida(nome, preset);
         partida.setCenaAtual(historia.montarHistoria(partida));
@@ -69,6 +75,13 @@ public class JogoController {
         return lista;
     }
 
+    /**
+     * Aplica uma escolha válida e avisa os observadores sobre o resultado.
+     *
+     * @param escolha opção da cena atual
+     * @return resumo das mudanças ou null quando não houver aviso
+     * @throws IllegalArgumentException se a escolha não estiver disponível
+     */
     public String escolher(Escolha escolha) {
         if (!disponiveis().contains(escolha) || escolha.getCenaDestino() == null) {
             throw new IllegalArgumentException("Essa escolha não está disponível nesta cena.");
@@ -90,6 +103,12 @@ public class JogoController {
         return getCenaAtual() != null && getCenaAtual().getOpcoes().isEmpty();
     }
 
+    /**
+     * Salva o estado atual no slot indicado.
+     *
+     * @param slot zero para o autosave ou de 1 a 3 para os slots manuais
+     * @throws FalhaAoSalvarException se a gravação falhar
+     */
     public void salvar(int slot) throws FalhaAoSalvarException {
         gravar(slot);
         notificar(slot == 0 ? "Jogo salvo automaticamente." : "Jogo salvo no slot " + slot + ".");
@@ -108,10 +127,16 @@ public class JogoController {
         alteracoesNaoSalvas = false;
     }
 
+    /**
+     * Valida o save antes de substituir a partida atual.
+     *
+     * @param slot número do slot que será carregado
+     * @throws FalhaAoCarregarException se o save não puder ser restaurado
+     */
     public void carregar(int slot) throws FalhaAoCarregarException {
         Save save = saves.carregar(slot);
         Partida restaurada = prepararPartida(save);
-        partida = restaurada; // Só troca a partida depois de validar tudo.
+        partida = restaurada; // Substitui a partida apenas depois de validar o save.
         alteracoesNaoSalvas = false;
         String mensagem = "Partida carregada: " + getCenaAtual().getTitulo() + ".";
         if (cenaFinal()) mensagem = juntar(mensagem, registrarFinal());
@@ -127,7 +152,7 @@ public class JogoController {
             }
             restaurada.getNpcs();
             restaurada.getFlags();
-            // A história é reconstruída para usar os NPCs da partida restaurada.
+            // Remonta a história com os NPCs restaurados.
             Historia reconstruida = new Historia();
             reconstruida.montarHistoria(restaurada);
             restaurada.setCenaAtual(reconstruida.getCena(save.getIdCena()));
@@ -137,6 +162,11 @@ public class JogoController {
         }
     }
 
+    /**
+     * Carrega o save válido mais recente.
+     *
+     * @throws FalhaAoCarregarException se não houver um save válido
+     */
     public void continuar() throws FalhaAoCarregarException {
         int slot = maisRecenteValido();
         if (slot == -1) throw new FalhaAoCarregarException("Não há nenhum save válido para continuar.");
@@ -160,7 +190,7 @@ public class JogoController {
                     escolhido = slot;
                 }
             } catch (FalhaAoCarregarException e) {
-                // Um slot ruim não impede continuar pelos outros.
+                // Ignora este slot e verifica os outros.
             }
         }
         return escolhido;
@@ -195,7 +225,7 @@ public class JogoController {
     private String registrarFinal() {
         String id = getCenaAtual().getId();
         if (registro.jaViu(id)) return null;
-        // Grava primeiro: se falhar, uma tentativa posterior ainda pode registrar.
+        // Grava antes de atualizar o registro em memória para permitir nova tentativa.
         RegistroDeFinais atualizado = new RegistroDeFinais();
         for (String finalId : RegistroDeFinais.IDS) {
             if (registro.jaViu(finalId)) atualizado.registrar(finalId);
@@ -235,6 +265,11 @@ public class JogoController {
     public String getUltimaMensagem() { return ultimaMensagem; }
     public int getProgresso() { return cenaFinal() ? 100 : Progresso.calcular(getCenaAtual() == null ? null : getCenaAtual().getId()); }
 
+    /**
+     * Monta os objetivos de acordo com a cena e as decisões da partida.
+     *
+     * @return texto exibido no painel de status
+     */
     public String getObjetivos() {
         if (partida == null) return "Nenhuma partida em andamento.";
         String id = getCenaAtual().getId();

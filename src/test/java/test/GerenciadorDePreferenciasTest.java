@@ -18,10 +18,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Testes do GerenciadorDePreferencias. Usam uma pasta temporária, que o
- * JUnit apaga no fim, para não mexer nas preferências de verdade.
- */
+/** Testa as preferências em pastas temporárias. */
 public class GerenciadorDePreferenciasTest {
 
     @Rule

@@ -10,13 +10,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Testes da classe Inventario.
- *
- * possui/adicionar/remover são a única porta de entrada e saída dos itens.
- * O que precisa ficar provado: cada item é independente dos outros, e
- * listar() sempre reflete o que realmente está guardado.
- */
+/** Testa a posse, a adição, a remoção e a listagem de itens. */
 public class InventarioTest {
 
     private Inventario mochila;
@@ -58,7 +52,7 @@ public class InventarioTest {
 
     @Test
     public void removerUmItemQueNuncaFoiAdicionadoNaoQuebra() {
-        // Não deveria dar erro nenhum, só continuar sem o item.
+        // Remover um item ausente não deve causar erro.
         mochila.remover(Item.MEDALHA);
 
         assertFalse(mochila.possui(Item.MEDALHA));
@@ -73,9 +67,7 @@ public class InventarioTest {
     public void listarComUmItemMostraSeuNomeDeExibicao() {
         mochila.adicionar(Item.TERCO);
 
-        /* listar() junta os itens com "; " no final de cada um, e só tira o
-         *espaço extra do fim, por isso o ";" continua na última posição.
-         */
+        /* A listagem mantém o ponto e vírgula depois do último item. */
         assertEquals(Item.TERCO.getNomeExibicao() + ";", mochila.listar());
     }
 

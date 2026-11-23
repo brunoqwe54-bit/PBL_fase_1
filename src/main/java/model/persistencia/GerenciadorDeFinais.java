@@ -9,28 +9,23 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 /**
- * Quem grava e lê o arquivo dos finais já vistos (finais.dat), na mesma
- * pasta dos saves.
- *
- * Funciona como o GerenciadorDePreferencias: ler nunca dá erro (sem
- * arquivo ou com arquivo ruim, devolve um registro vazio) e gravar pode
- * lançar FalhaAoSalvarException.
+ * Grava e lê os finais descobertos. Se a leitura falhar, começa com um registro vazio.
  */
 public class GerenciadorDeFinais {
 
     private String pasta;
 
-    /** Usa a pasta "saves", a mesma dos saves. */
+    /** Usa a pasta saves no diretório de execução. */
     public GerenciadorDeFinais() {
         this("saves");
     }
 
-    /** Usa outra pasta. Serve para os testes não mexerem nos arquivos de verdade. */
+    /** Usa outra pasta para isolar os testes. */
     public GerenciadorDeFinais(String pasta) {
         this.pasta = pasta;
     }
 
-    /** Lê o registro. Sem arquivo, ou com arquivo ruim, devolve um registro vazio. */
+    /** Carrega os finais ou devolve um registro vazio. */
     public RegistroDeFinais carregar() {
         File arquivo = new File(pasta, "finais.dat");
         if (!arquivo.exists()) {
@@ -42,14 +37,15 @@ public class GerenciadorDeFinais {
             RegistroDeFinais registro = (RegistroDeFinais) entrada.readObject();
             return registro == null ? new RegistroDeFinais() : registro;
         } catch (Exception e) {
-            return new RegistroDeFinais(); // arquivo ruim: começa vazio
+            return new RegistroDeFinais(); // Começa com o registro vazio se o arquivo estiver inválido.
         }
     }
 
     /**
      * Grava o registro, criando a pasta se ela ainda não existir.
      *
-     * @throws FalhaAoSalvarException se a pasta não puder ser criada ou a gravação falhar
+     * @throws FalhaAoSalvarException se a pasta não puder ser criada ou a gravação
+     *     falhar
      */
     public void salvar(RegistroDeFinais registro) throws FalhaAoSalvarException {
         File diretorio = new File(pasta);

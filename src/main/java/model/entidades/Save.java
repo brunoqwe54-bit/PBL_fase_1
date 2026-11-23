@@ -4,16 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * Um slot de salvamento: a Partida mais as informações que o menu mostra
- * na lista de slots.
- *
- * Guarda um Memento independente da partida. Quem monta o Save (com o
- * progresso já calculado) é o controller, e quem grava e lê o arquivo é
- * o GerenciadorDeSaves.
- *
- * A cena atual da Partida não vai pro arquivo (é transient). Por isso o
- * Save guarda o id e o título da cena: ao carregar, o controller usa o id
- * para colocar o jogador de volta no lugar.
+ * Guarda o Memento da partida e os dados exibidos no slot.
+ * O ID da cena permite recuperar o ponto da história ao carregar.
  */
 public class Save implements Serializable {
 
@@ -28,13 +20,13 @@ public class Save implements Serializable {
     private Partida.Memento estado;
 
     /**
-     * Cria o save com tudo já pronto.
+     * Cria o save com uma cópia do estado e os metadados da partida.
      *
      * @param nomeJogador o nome do protagonista
      * @param dataHora    o momento em que o save foi feito
      * @param idCena      o id da cena atual, ex. "CAP03B"
      * @param tituloCena  o título da cena atual, mostrado no slot
-     * @param progresso   porcentagem de capítulos concluídos, de 0 a 90
+     * @param progresso   porcentagem de progresso da partida
      * @param partida     a partida em andamento
      */
     public Save(String nomeJogador, LocalDateTime dataHora, String idCena,

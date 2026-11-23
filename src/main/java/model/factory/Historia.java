@@ -15,33 +15,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A HISTÓRIA COMPLETA, "A Noite Longa", dez capítulos.
- *
- * Esta classe é uma MONTADORA: ela cria todas as cenas, falas e escolhas e
- * devolve a primeira cena. Ela não guarda estado de partida nenhum.
- *
- * COMO ELA É ORGANIZADA (montagem em duas passadas):
- *
- *   1ª passada, criarCenas(): cria todas as cenas VAZIAS (id, título e
- *      narração). Nenhuma conhece nenhuma ainda.
- *
- *   2ª passada, montarCap01(), montarCap02()...: agora que todas as cenas
- *      já existem no mapa, cada capítulo recebe suas falas e suas escolhas, e
- *      pode apontar pra qualquer outra cena, inclusive pra si mesma.
- *
- * Sem as duas passadas seria preciso escrever a história de trás pra frente
- * (o capítulo 10 primeiro), porque o construtor de Escolha exige a cena de
- * destino já criada.
- *
- * Os textos longos ficam em constantes no topo pra criarCenas() ficar legível.
+ * Monta os dez capítulos, suas falas e suas escolhas.
+ * Primeiro cria as cenas. Depois define as ligações e os diálogos.
+ * As escolhas usam os personagens da partida recebida.
  */
 public class Historia {
 
-    /*
-     * ================================================================
-     * NARRAÇÃO
-     * ================================================================
-     */
+    /* Textos de narração. */
 
     private static final String T_CAP01 =
             "A chave ainda está na fechadura. Otávio não tirou.\n\n" +
@@ -296,26 +276,17 @@ public class Historia {
             "Ela só não queria ir sozinha.\n\n" +
             "O canto recomeça. Você sabe a letra.";
 
-    /*
-     * ================================================================
-     * O MAPA DAS CENAS
-     * ================================================================
-     */
+    /* Mapa das cenas. */
 
     private Map<String, Cena> cenas = new HashMap<>();
 
-    /**
-     * Monta a história inteira e devolve a primeira cena.
-     *
-     * Recebe a Partida porque as escolhas precisam apontar pros objetos Npc
-     * daquela partida específica, são eles que tem a confiança.
-     */
+    /** Monta a história com os personagens da partida e devolve a cena inicial. */
     public Cena montarHistoria(Partida partida) {
         cenas.clear();
 
-        criarCenas();                 // 1ª passada
+        criarCenas();                 // Cria as cenas.
 
-        montarCap01(partida);         // 2ª passada
+        montarCap01(partida);         // Preenche os capítulos.
         montarCap02(partida);
         montarCap03(partida);
         montarCap04(partida);
@@ -329,11 +300,7 @@ public class Historia {
         return getCena("CAP01");
     }
 
-    /*
-     * ================================================================
-     * 1ª PASSADA, todas as cenas nascem vazias
-     * ================================================================
-     */
+    /* Criação das cenas. */
 
     private void criarCenas() {
         criar("CAP01",  "Capítulo 1 - A Porta",               T_CAP01);
@@ -354,10 +321,7 @@ public class Historia {
         criar("CAP09B", "Capítulo 9 - As Três Entradas",      T_CAP09B);
         criar("CAP10",  "Capítulo 10 - O Amanhecer",          T_CAP10);
 
-        /*
-         * Desfechos e mortes: cenas SEM escolhas. O laço do controller já
-         * encerra o jogo quando a cena não tem opções.
-         */
+        /* Finais e mortes são cenas sem escolhas. */
         criar("FIM_A_TEMPO",   "FIM",       T_FIM_A_TEMPO);
         criar("FIM_TARDE",     "FIM",       T_FIM_TARDE);
         criar("FIM_DESISTE",   "FIM",       T_FIM_DESISTE);
@@ -371,17 +335,9 @@ public class Historia {
         criar("MORTE_CÍRCULO", "Companhia", T_MORTE_CIRCULO);
     }
 
-    /*
-     * ================================================================
-     * 2ª PASSADA, um método por capítulo
-     * ================================================================
-     */
+    /* Montagem dos capítulos. */
 
-    /**
-     * CAPÍTULO 1, A Porta.
-     * Pedir a porta destrancada aqui é o que permite desistir depois, nos
-     * capítulos 5 e 8, e volta a aparecer no capítulo 10.
-     */
+    /** Monta o capítulo 1 e a decisão de deixar a porta aberta. */
     private void montarCap01(Partida partida) {
         Cena cena = getCena("CAP01");
         Protagonista vicente = partida.getProtagonista();
@@ -414,11 +370,7 @@ public class Historia {
                         .comAtributo(Atributo.CORAGEM, -5));
     }
 
-    /**
-     * CAPÍTULO 2, A voz da mãe e o encontro com Davi.
-     * Dar o terço aumenta a confiança dele, e essa confiança é o que abre
-     * a medalha no capítulo 7.
-     */
+    /** Monta o capítulo 2, com a voz da mãe e o encontro com Davi. */
     private void montarCap02(Partida partida) {
         Cena cena = getCena("CAP02");
         Npc mae = partida.getMae();
@@ -474,11 +426,7 @@ public class Historia {
                         .comAtributo(Atributo.CORAGEM, -10));
     }
 
-    /**
-     * CAPÍTULO 3, A procissão passa e Zulmira ensina o resto.
-     * Gritar o nome não mata, mas derruba a lucidez e a confiança da
-     * Zulmira, fechando as melhores escolhas do capítulo 4.
-     */
+    /** Monta o capítulo 3 e as primeiras escolhas com Zulmira. */
     private void montarCap03(Partida partida) {
         Cena cena = getCena("CAP03");
         Npc zulmira = partida.getZulmira();
@@ -531,12 +479,7 @@ public class Historia {
                         .comConfianca(zulmira, -10));
     }
 
-    /**
-     * CAPÍTULO 4, Seu Antônio.
-     * Quem não ajoelhou na praça chega agitado demais para ouvir a
-     * transmissão, e sem ouvir não dá pra avisar Antônio. Sem o aviso,
-     * falta o rádio nos capítulos 5 e 8.
-     */
+    /** Monta o capítulo 4, com a transmissão e os avisos de Seu Antônio. */
     private void montarCap04(Partida partida) {
         Cena cena = getCena("CAP04");
         Npc antonio = partida.getAntonio();
@@ -589,11 +532,7 @@ public class Historia {
                         .comAtributo(Atributo.LUCIDEZ, 10));
     }
 
-    /**
-     * CAPÍTULO 5, A ponte.
-     * Primeiro ponto de desistência, só pra quem pediu a porta no capítulo
-     * 1, e a decisão sobre o Davi.
-     */
+    /** Monta o capítulo 5, com as escolhas sobre Davi e a volta para casa. */
     private void montarCap05(Partida partida) {
         Cena cena = getCena("CAP05");
         Npc davi = partida.getDavi();
@@ -630,11 +569,7 @@ public class Historia {
                         .exigeFlag(Flag.PORTA_ABERTA, "a porta está trancada"));
     }
 
-    /**
-     * CAPÍTULO 6, O pátio do hospital.
-     * A escolha que mata só aparece com lucidez baixa: quem tem lucidez
-     * alta acha que consegue contar as figuras e acaba morrendo.
-     */
+    /** Monta o capítulo 6 e as escolhas do hospital. */
     private void montarCap06(Partida partida) {
         Cena cena = getCena("CAP06");
         Npc zulmira = partida.getZulmira();
@@ -678,10 +613,7 @@ public class Historia {
                         .comConfianca(zulmira, -15));
     }
 
-    /**
-     * CAPÍTULO 7, A vela e a medalha.
-     * Aceitar a vela não mata aqui, ela fica no bolso e cobra no capítulo 8.
-     */
+    /** Monta o capítulo 7, com a vela e as formas de obter a medalha. */
     private void montarCap07(Partida partida) {
         Cena cena = getCena("CAP07");
         Npc homem = partida.getHomemDeTerno();
@@ -721,10 +653,7 @@ public class Historia {
                         .ganhaItem(Item.MEDALHA)
                         .comAtributo(Atributo.FOLEGO, -10));
 
-        /*
-         * Único caminho pra medalha com fôlego baixo, e só existe pra quem
-         * tratou bem o menino cinco capítulos atrás.
-         */
+        /* Libera a medalha pela confiança de Davi quando falta fôlego. */
         alpendre.getOpcoes().add(
                 new Escolha("ESC0706", "Pedir pro Davi subir nos seus ombros.", getCena("CAP08"))
                         .exigeFlag(Flag.DAVI_JUNTO, "Davi não está com você")
@@ -737,10 +666,7 @@ public class Historia {
                         .comAtributo(Atributo.CORAGEM, 5));
     }
 
-    /**
-     * CAPÍTULO 8, Onde a armadilha da vela fecha.
-     * Segundo ponto de desistência, e onde Zulmira entrega a chave.
-     */
+    /** Monta o capítulo 8, com as consequências da vela e a chave de Zulmira. */
     private void montarCap08(Partida partida) {
         Cena cena = getCena("CAP08");
         Npc antonio = partida.getAntonio();
@@ -801,11 +727,7 @@ public class Historia {
                         .comConfianca(zulmira, -10));
     }
 
-    /**
-     * CAPÍTULO 9, O casaco e as três entradas.
-     * Este capítulo cobra quase tudo que veio antes: chave, medalha e
-     * fôlego. A escolha ESC0907 existe pra ninguém ficar sem saída.
-     */
+    /** Monta o capítulo 9 e as entradas do cemitério. */
     private void montarCap09(Partida partida) {
         Cena cena = getCena("CAP09");
         Npc manuela = partida.getManuela();
@@ -840,11 +762,7 @@ public class Historia {
                         .comAtributo(Atributo.FOLEGO, -25)
                         .comAtributo(Atributo.CORAGEM, -5));
 
-        /*
-         * SAÍDA DE SEGURANÇA: sem ela, um jogador sem chave, sem medalha e
-         * com fôlego baixo só teria a escolha que mata. Toda cena precisa
-         * de pelo menos uma saída que não seja a morte.
-         */
+        /* Permite chegar a um final mesmo sem os recursos exigidos pelas entradas. */
         entradas.getOpcoes().add(
                 new Escolha("ESC0907", "Ficar no portão e esperar o sol nascer.", getCena("FIM_TARDE"))
                         .comAtributo(Atributo.CORAGEM, -15));
@@ -853,13 +771,7 @@ public class Historia {
                 new Escolha("ESC0906", "Chamar o nome dela.", getCena("MORTE_CHAMOU")));
     }
 
-    /**
-     * CAPÍTULO 10, O amanhecer.
-     * As três primeiras escolhas só conversam e aumentam a confiança da
-     * Manuela. O final bom só aparece com a confiança em 75, o que depende
-     * do casaco do capítulo 9, da lucidez acumulada e do pedido feito no
-     * capítulo 1.
-     */
+    /** Monta o capítulo 10 e as escolhas que aumentam a confiança de Manuela. */
     private void montarCap10(Partida partida) {
         Cena cena = getCena("CAP10");
         Npc manuela = partida.getManuela();
@@ -904,11 +816,7 @@ public class Historia {
                 new Escolha("ESC1006", "Entrar no círculo com ela.", getCena("MORTE_CÍRCULO")));
     }
 
-    /*
-     * ================================================================
-     * AUXILIARES
-     * ================================================================
-     */
+    /* Métodos auxiliares. */
 
     private void criar(String id, String titulo, String texto) {
         cenas.put(id, new Cena(id, titulo, texto));
@@ -918,10 +826,7 @@ public class Historia {
         cena.getDialogos().add(new Dialogo(quem, texto));
     }
 
-    /**
-     * Busca a cena pelo id. Se o id não existir, quebra AQUI com uma mensagem
-     * clara, em vez de dar NullPointerException lá na frente.
-     */
+    /** Busca a cena pelo ID e lança uma exceção se ela não existir. */
     public Cena getCena(String id) {
         Cena cena = cenas.get(id);
         if (cena == null) {

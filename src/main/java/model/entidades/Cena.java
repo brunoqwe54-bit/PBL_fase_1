@@ -4,33 +4,23 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Um trecho da história: o que o jogador lê e o que ele pode fazer ali.
- *
- * Uma cena guarda o título, a narração, a lista de falas e a lista de
- * escolhas. Ela não decide nada e não sabe para onde o jogador vai,
- * quem sabe isso é cada Escolha da lista de opções.
- *
- * As cenas são criadas vazias pela classe Historia e preenchidas depois.
- * Por isso os métodos getOpcoes() e getDialogos() devolvem as listas de
- * verdade, e não cópias: é assim que a Historia consegue ir acrescentando.
- *
- * Cena sem nenhuma opção é fim de jogo, o laço do controller para
- * quando não tem mais para onde ir.
+ * Guarda o título, a narração, as falas e as escolhas de uma cena.
+ * Historia preenche suas listas. Uma cena sem escolhas encerra a partida.
  */
 public class Cena {
-    // identificação do capítulo
+    // Identificador da cena.
     private String id;
-    // título do capítulo
+    // Título da cena.
     private String titulo;
-    // narração
+    // Narração da cena.
     private String textoPrincipal;
-    // turnos de decisões
+    // Escolhas da cena.
     private List<Escolha> opcoes;
-    // lista de diálogos
+    // Falas da cena.
     private List<Dialogo> dialogos;
 
     /**
-     * Cria a cena já com as listas de falas e de opções vazias.
+     * Cria a cena com as listas de falas e escolhas vazias.
      *
      * @param id            identificador usado para achar a cena, ex. "CAP03B"
      * @param titulo        o cabeçalho mostrado na tela
@@ -57,7 +47,7 @@ public class Cena {
     }
 
     /**
-     * Devolve a lista real de opções, não uma cópia.
+     * Devolve a lista usada por Historia para adicionar as escolhas.
      *
      * @return a lista onde a Historia acrescenta as escolhas da cena
      */

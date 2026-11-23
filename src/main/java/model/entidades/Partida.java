@@ -12,41 +12,26 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * O estado de um jogo em andamento: tudo que muda enquanto se joga.
- *
- * Ela guarda quatro coisas, e nenhuma outra parte do programa guarda:
- * o Protagonista, com os três atributos, o Inventario,
- * com os itens, os sete NPCs, cada um com sua confiança, e o conjunto de
- * flags ligadas, as decisões que o jogo memoriza.
- *
- * Mais a cena atual, que é onde o jogador está.
- *
- * Começar de novo é criar uma Partida nova: o construtor fabrica tudo do
- * zero, então nada da partida anterior sobrevive e não é preciso nenhum
- * método de "resetar".
+ * Guarda o estado da partida, incluindo protagonista, itens, NPCs, decisões e cena
+ * atual.
+ * Uma nova partida começa com seus próprios objetos e valores iniciais.
  */
 public class Partida implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    // 1. O JOGADOR E SEUS ITENS
+    // Protagonista e inventário.
     private Protagonista protagonista;
     private Inventario inventario;
 
-    // 2. ONDE O JOGADOR ESTÁ
-    /* transient: a Cena não vai pro arquivo de save, porque ela arrastaria
-     * a história inteira junto. Depois de carregar, este campo volta null e
-     * o controller coloca a cena de volta pelo id guardado no Save.
-     */
+    // Cena atual.
+    /* A cena não é serializada. Ao carregar, o controlador a recupera pelo ID do Save. */
     private transient Cena cenaAtual;
 
-    /* 3. DECISÕES ANTERIORES
-    * Um conjunto guarda as flags que já foram ligadas. O enum Flag lista
-    * as possíveis; este Set guarda as que aconteceram nesta partida.
-    */
+    /* Decisões registradas nesta partida. */
     private Set<Flag> flags;
 
-    // 4. O ELENCO desta rodada
+    // NPCs da partida.
     private Npc otavio;
     private Npc mae;
     private Npc davi;
@@ -60,7 +45,7 @@ public class Partida implements Serializable {
         this.inventario = new Inventario();
         this.flags = new HashSet<>();
 
-        // Confianças iniciais diferentes
+        // Confiança inicial dos NPCs.
         FabricaDeNpc neutro = new FabricaDeNpc(50);
         this.otavio       = neutro.criar(Personagens.OTAVIO.getNomeExibicao());
         this.mae          = neutro.criar(Personagens.MAE.getNomeExibicao());
@@ -70,17 +55,14 @@ public class Partida implements Serializable {
         this.homemDeTerno = new FabricaDeNpc(0).criar(Personagens.HOMEM_DE_TERNO.getNomeExibicao());
         this.manuela      = new FabricaDeNpc(30).criar(Personagens.MANUELA.getNomeExibicao());
 
-        // Item inicial: o terço da mãe, a única coisa que ele leva de casa.
+        // O protagonista começa com o terço da mãe.
         this.inventario.adicionar(model.enums.Item.TERCO);
     }
 
-    // flags
+    // Decisões da partida.
 
     /**
-     * Marca que uma decisão aconteceu nesta partida.
-     *
-     * Flag não desliga: uma decisão tomada não volta atrás. Ligar a mesma
-     * flag duas vezes é o mesmo que ligar uma — é o conjunto que garante isso.
+     * Registra uma decisão. Repetir a mesma flag não altera o conjunto.
      *
      * @param flag a decisão a memorizar
      */
@@ -89,10 +71,7 @@ public class Partida implements Serializable {
     }
 
     /**
-     * Pergunta se uma decisão já aconteceu nesta partida.
-     *
-     * É o que a classe Escolha consulta para decidir se aparece ou fica
-     * bloqueada, muitas vezes capítulos depois de a flag ter sido ligada.
+     * Verifica se a decisão já foi registrada.
      *
      * @param flag a decisão a consultar
      * @return true se a flag já foi ligada
@@ -108,7 +87,12 @@ public class Partida implements Serializable {
         return List.of(otavio, mae, davi, zulmira, antonio, homemDeTerno, manuela);
     }
 
-    /** Memento: uma fotografia independente, sem expor os dados internos. */
+    /**
+     * Cria uma cópia independente do estado no Memento.
+     *
+     * @return estado capturado da partida
+     * @throws IllegalStateException se não conseguir copiar o estado
+     */
     public Memento criarMemento() {
         try (ByteArrayOutputStream bytes = new ByteArrayOutputStream();
              ObjectOutputStream saida = new ObjectOutputStream(bytes)) {
@@ -119,7 +103,14 @@ public class Partida implements Serializable {
         }
     }
 
-    /** Só a própria Partida sabe reconstruir o estado guardado no Memento. */
+    /**
+     * Restaura uma partida a partir do Memento.
+     *
+     * @param memento estado que será restaurado
+     * @return uma nova partida com o estado salvo
+     * @throws IllegalArgumentException se o Memento estiver vazio
+     * @throws IllegalStateException se não conseguir restaurar o estado
+     */
     public static Partida restaurar(Memento memento) {
         if (memento == null) throw new IllegalArgumentException("O estado da partida está vazio");
         try (ObjectInputStream entrada = new ObjectInputStream(
@@ -130,6 +121,7 @@ public class Partida implements Serializable {
         }
     }
 
+    /** Guarda os dados da cópia sem permitir acesso direto ao conteúdo. */
     public static final class Memento implements Serializable {
         private static final long serialVersionUID = 1L;
         private final byte[] dados;

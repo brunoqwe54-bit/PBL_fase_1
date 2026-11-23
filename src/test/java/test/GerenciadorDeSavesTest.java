@@ -21,18 +21,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Testes da classe GerenciadorDeSaves.
- *
- * O que precisa ficar provado: o que é gravado volta igual, slot vazio,
- * inválido ou corrompido vira a exceção do jogo (e não um erro técnico do
- * Java), e o "mais recente" escolhe pela data e ignora slot ruim.
- */
+/** Testa saves válidos, slots inválidos, arquivos corrompidos e a busca por data. */
 public class GerenciadorDeSavesTest {
 
-    /* Uma pasta temporária que o JUnit cria antes de CADA teste e apaga
-     * depois. Assim os testes nunca mexem na pasta saves de verdade.
-     */
+    /* Cria uma pasta separada para cada teste. */
     @Rule
     public TemporaryFolder pasta = new TemporaryFolder();
 
@@ -49,7 +41,7 @@ public class GerenciadorDeSavesTest {
         return new Save(nome, dataHora, "CAP03", "Capítulo 3 - A Praça", 20, partida);
     }
 
-    // Grava lixo no lugar do arquivo de um slot, para simular corrupção.
+    // Grava um texto inválido para simular um save corrompido.
     private void corromperSlot(String nomeDoArquivo) throws Exception {
         File arquivo = new File(pasta.getRoot(), nomeDoArquivo);
         Files.write(arquivo.toPath(), "isto nao e um save".getBytes());

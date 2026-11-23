@@ -10,28 +10,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A classe onde mora a lógica de encadeamento do jogo.
- *
- * Além do texto e da cena de destino, cada escolha guarda dois grupos,
- * todos opcionais:
- *
- * Consequências (comConfianca, comAtributo, ganhaItem, perdeItem, ligaFlag):
- * o que ela muda quando é escolhida. Ficam em COLEÇÕES, porque uma escolha
- * pode mudar dois atributos ou a confiança de dois NPCs de uma vez. Quem
- * aplica é o método aplicar().
- *
- * Condições (os métodos exige... e proibeFlag): o que precisa ser
- * verdade para ela aparecer. Verificadas pelo método estaDisponivel().
- *
- * Item não preenchido simplesmente não é verificado nem aplicado. Uma
- * escolha sem nenhuma condição aparece sempre.
- *
- * Os métodos de configuração devolvem a própria escolha (return this),
- * o que permite encadear as chamadas e montar uma escolha inteira numa
- * sequência só, do jeito que está feito na classe Historia.
- *
- * A escolha é escrita na Historia e lida no controller: os campos são
- * preenchidos em um lugar só e consultados em outro lugar só.
+ * Guarda o texto, o destino, as condições e os efeitos de uma escolha.
+ * estaDisponivel verifica as condições. aplicar altera o estado da partida.
+ * Os métodos de configuração devolvem a própria escolha para permitir chamadas em
+ * sequência.
  */
 public class Escolha {
 
@@ -40,8 +22,8 @@ public class Escolha {
     private String textoExibido;
     private Cena cenaDestino;
 
-    // Consequências. LinkedHashMap e ArrayList guardam a ordem em que
-    // foram escritas na Historia, então o aviso sai na mesma ordem.
+    // Guarda os efeitos na ordem em que foram definidos.
+
     private final Map<Atributo, Integer> atributosAfetados = new LinkedHashMap<>();
     private final Map<Npc, Integer> confiancasAfetadas = new LinkedHashMap<>();
     private final List<Item> itensGanhos = new ArrayList<>();
@@ -55,29 +37,26 @@ public class Escolha {
     private Npc npcConfianca;
     private int confiancaMinima;
     private Flag flagExigida;
-    private Flag flagProibida;       // só aparece se a flag NÃO estiver ligada
+    private Flag flagProibida;       // Bloqueia a escolha se esta flag estiver ligada.
     private String motivoDoBloqueio = "você não pode fazer isso agora";
     private String motivoAtributo, motivoItem, motivoConfianca, motivoFlag, motivoProibida;
 
-    /** Construtor simples: escolha sem efeito nenhum. */
+    /** Cria uma escolha sem condições ou efeitos. */
     public Escolha(String id, String textoExibido, Cena cenaDestino) {
         this.id = id;
         this.textoExibido = textoExibido;
         this.cenaDestino = cenaDestino;
     }
 
-    // ================================================================
-    // CONFIGURAÇÃO
-    // ================================================================
+
+    // Configuração da escolha.
+
 
     /**
-     * Consequência: muda a confiança de um NPC quando esta escolha for feita.
-     *
-     * Pode ser chamado mais de uma vez: os valores são somados, não
-     * substituídos.
+     * Define uma mudança na confiança do NPC. Chamadas repetidas somam os valores.
      *
      * @param npc      o personagem afetado
-     * @param variacao quanto somar; negativo diminui
+     * @param variacao variação aplicada. Valores negativos diminuem
      * @return a própria escolha, para encadear
      */
     public Escolha comConfianca(Npc npc, int variacao) {
@@ -86,13 +65,10 @@ public class Escolha {
     }
 
     /**
-     * Consequência: muda um atributo do protagonista.
-     *
-     * Pode ser chamado mais de uma vez: a escolha que bebe o cantil, por
-     * exemplo, devolve fôlego e lucidez ao mesmo tempo.
+     * Define uma mudança em um atributo. A mesma escolha pode alterar vários atributos.
      *
      * @param atributo qual dos três
-     * @param variacao quanto somar; negativo diminui
+     * @param variacao variação aplicada. Valores negativos diminuem
      * @return a própria escolha, para encadear
      */
     public Escolha comAtributo(Atributo atributo, int variacao) {
@@ -101,7 +77,7 @@ public class Escolha {
     }
 
     /**
-     * Consequência: põe um item na mochila.
+     * Define um item que será adicionado ao inventário.
      *
      * @param item o item ganho
      * @return a própria escolha, para encadear
@@ -112,7 +88,7 @@ public class Escolha {
     }
 
     /**
-     * Consequência: tira um item da mochila.
+     * Define um item que será removido do inventário.
      *
      * @param item o item consumido ou entregue
      * @return a própria escolha, para encadear
@@ -123,11 +99,7 @@ public class Escolha {
     }
 
     /**
-     * Consequência: memoriza esta decisão para ser cobrada depois.
-     *
-     * É o único efeito que não aparece na tela na hora, a flag fica
-     * guardada e só se manifesta quando outra escolha, capítulos adiante,
-     * exigir ou proibir ela. É o que produz consequência posterior.
+     * Registra uma decisão para ser consultada em outras escolhas.
      *
      * @param flag a decisão a memorizar
      * @return a própria escolha, para encadear
@@ -138,7 +110,7 @@ public class Escolha {
     }
 
     /**
-     * Condição: só aparece se o atributo estiver no mínimo exigido.
+     * Exige um valor mínimo para o atributo.
      *
      * @param atributo qual dos três é cobrado
      * @param minimo   o valor mínimo, inclusive
@@ -154,10 +126,7 @@ public class Escolha {
     }
 
     /**
-     * Condição: só aparece se o item estiver na mochila.
-     *
-     * Exigir não consome. Se a escolha também deve gastar o item, use
-     * o método perdeItem junto.
+     * Exige a posse do item sem consumi-lo. Use perdeItem para removê-lo.
      *
      * @param item   o item necessário
      * @param motivo a frase mostrada quando a escolha aparece bloqueada
@@ -171,7 +140,7 @@ public class Escolha {
     }
 
     /**
-     * Condição: só aparece se aquele NPC confiar o bastante no protagonista.
+     * Exige um valor mínimo de confiança do NPC.
      *
      * @param npc    o personagem consultado
      * @param minimo a confiança mínima, inclusive
@@ -187,7 +156,7 @@ public class Escolha {
     }
 
     /**
-     * Condição: só aparece se aquela decisão já tiver sido tomada.
+     * Exige que a decisão já tenha sido registrada.
      *
      * @param flag   a decisão necessária
      * @param motivo a frase mostrada quando a escolha aparece bloqueada
@@ -201,10 +170,7 @@ public class Escolha {
     }
 
     /**
-     * Condição ao contrário: some se aquela decisão já tiver sido tomada.
-     *
-     * Como flag nunca desliga, é a única forma de escrever "isto vale
-     * enquanto tal coisa não aconteceu".
+     * Bloqueia a escolha se a decisão já foi registrada.
      *
      * @param flag   a decisão que bloqueia esta escolha
      * @param motivo a frase mostrada quando a escolha aparece bloqueada
@@ -217,20 +183,12 @@ public class Escolha {
         return this;
     }
 
-    // ================================================================
-    // CONDIÇÕES DE ACESSO
-    // ================================================================
+
+    // Condições de acesso.
+
 
     /**
-     * Diz se esta escolha pode ser feita no estado atual da partida.
-     *
-     * Verifica, em sequência, as cinco condições possíveis: atributo
-     * mínimo, item na mochila, confiança de um NPC, flag exigida e flag
-     * proibida. Condição não preenchida não é verificada. Basta uma
-     * falhar para a escolha ficar indisponível, é um E lógico.
-     *
-     * Quem devolve false não some da tela: o controller a coloca na lista
-     * de bloqueadas, e a view a mostra riscada com o motivo.
+     * Verifica as condições da escolha. Se alguma falhar, a opção fica bloqueada.
      *
      * @param partida o estado atual do jogo
      * @return true se a escolha pode ser oferecida ao jogador
@@ -256,21 +214,17 @@ public class Escolha {
         return true;
     }
 
-    // ================================================================
-    // CONSEQUÊNCIAS
-    // ================================================================
+
+    // Aplicação dos efeitos.
+
 
     /**
-     * Aplica na partida todos os efeitos desta escolha.
-     *
-     * Cada efeito aplicado vira uma linha no texto devolvido, para a view
-     * imprimir uma embaixo da outra e não confundir o que mudou no NPC
-     * com o que mudou no jogador. A flag é o único efeito silencioso, de
-     * propósito: ela só se manifesta quando for cobrada, capítulos depois.
+     * Aplica os efeitos e devolve um resumo das mudanças. As flags são registradas sem
+     * aviso próprio.
      *
      * @param partida o estado do jogo, que será alterado
-     * @return o resumo do que mudou, ou null se a escolha não teve
-     *         nenhum efeito visível
+     * @return o resumo do que mudou, ou null se a escolha não teve nenhum efeito
+     *     visível
      */
     public String aplicar(Partida partida) {
         StringBuilder aviso = new StringBuilder();
@@ -308,32 +262,28 @@ public class Escolha {
         }
         for (Flag flag : flagsLigadas) {
             partida.ligarFlag(flag);
-            // flag é silenciosa: o efeito dela aparece capítulos depois
+            // Guarda a decisão para outras escolhas.
         }
 
         return aviso.length() == 0 ? null : aviso.toString().trim();
     }
 
-    /** Escreve o número com o sinal na frente: +10, -5. */
+    /** Formata a variação com sinal positivo ou negativo. */
     private String comSinal(int valor) {
         return valor > 0 ? "+" + valor : "" + valor;
     }
 
-    // ================================================================
-    // LEITURA
-    // ================================================================
+
+    // Consulta dos dados.
+
 
     public String getId() { return id; }
     public String getTextoExibido() { return textoExibido; }
     public Cena getCenaDestino() { return cenaDestino; }
 
     /**
-     * A variação de confiança da primeira mudança de confiança, ou 0 se
-     * a escolha não mexe com a confiança de ninguém.
-     *
-     * Serve para ler o caso comum, de uma mudança só. Numa escolha que
-     * muda dois NPCs, o getter mostra apenas a primeira — aplicar()
-     * aplica as duas.
+     * Devolve a primeira variação de confiança. Os demais efeitos são aplicados por
+     * aplicar.
      *
      * @return a variação, ou 0 quando não há esse efeito
      */
@@ -342,8 +292,7 @@ public class Escolha {
     }
 
     /**
-     * O NPC da primeira mudança de confiança, ou null se a escolha não
-     * mexe com a confiança de ninguém.
+     * Devolve o NPC da primeira mudança de confiança.
      *
      * @return o personagem afetado, ou null quando não há esse efeito
      */
@@ -353,7 +302,7 @@ public class Escolha {
 
     public String getMotivoDoBloqueio() { return motivoDoBloqueio; }
 
-    /** Explica a primeira condição que realmente falhou nesta partida. */
+    /** Devolve o motivo da primeira condição que falhou. */
     public String getMotivoDoBloqueio(Partida partida) {
         if (atributoExigido != null
                 && partida.getProtagonista().getAtributo(atributoExigido) < valorMinimoAtributo) {
